@@ -29,7 +29,7 @@ async function load(client: Client, cm: CommandManager) {
 			msg.channel.send({
 				embeds: [
 					new EmbedBuilder()
-						.setColor(parseInt(i18n.globe.color, 16))
+						.setConfig()
 						.setDescription(
 							`${translated}\n\n${hitokoto}\n- ${author}`
 						)

@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
-const ap_1 = require("./../services/ap");
-const parsers_1 = __importDefault(require("./../services/parsers"));
+const ap_1 = require("../services/ap");
+const parsers_1 = __importDefault(require("../services/parsers"));
 const Cooldown = new discord_js_1.Collection();
 const prefix = process.env.PREFIX;
 async function HandleCommands(client, msg) {

@@ -1,8 +1,8 @@
 /* eslint-disable-no-var */
-import icons from "../assets/icons.json";
-import CommandManager from "./core/CommandManager";
-import PluginLoader from "./core/PluginLoader";
-import { langTypes, langKeys, langs } from "./services/i18n";
+import icons from "~/assets/icons.json";
+import CommandManager from "@core/CommandManager";
+import PluginLoader from "@core/PluginLoader";
+import { langTypes, langKeys, langs } from "@services/i18n";
 import { Client } from "discord.js";
 import { Database } from "quickmongo";
 
@@ -29,6 +29,9 @@ declare module "discord.js" {
 	}
 	interface Message {
 		lang: langTypes;
+	}
+	interface EmbedBuilder {
+		setConfig: () => this;
 	}
 }
 export {};

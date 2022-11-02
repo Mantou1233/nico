@@ -1,16 +1,15 @@
-import "./services/i18n";
-import "./services/random";
-import "./services/ap";
+import "@services/i18n";
+import "@services/random";
+import "@services/djsAddition";
+import "@services/ap";
 
 import "dotenv/config";
 import "reflect-metadata";
 
-import { ActivityType, Client, GatewayIntentBits, Partials } from "discord.js";
+import { ActivityType, Client } from "discord.js";
 
-import { Database } from "quickmongo";
-
-import PluginLoader from "./core/PluginLoader";
-import CommandHandler from "./core/CommandHandler";
+import PluginLoader from "@core/PluginLoader";
+import CommandHandler from "@core/CommandHandler";
 
 const { client } = storage;
 

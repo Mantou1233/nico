@@ -252,7 +252,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 			msg.channel.send({
 				embeds: [
 					new Discord.EmbedBuilder()
-						.setColor("#CFF2FF")
+						.setConfig()
 						.setTitle(
 							`nico ${"0.1"} ${(
 								(process.env.BUILD as string) || "Development "

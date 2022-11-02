@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./services/i18n");
 require("./services/random");
+require("./services/djsAddition");
 require("./services/ap");
 require("dotenv/config");
 require("reflect-metadata");

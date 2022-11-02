@@ -29,7 +29,7 @@ async function load(client, cm) {
             msg.channel.send({
                 embeds: [
                     new discord_js_1.EmbedBuilder()
-                        .setColor(parseInt(i18n.globe.color, 16))
+                        .setConfig()
                         .setDescription(`${translated}\n\n${hitokoto}\n- ${author}`)
                         .setFooter({
                         text: `${id}`

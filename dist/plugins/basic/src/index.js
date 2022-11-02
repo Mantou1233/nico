@@ -234,7 +234,7 @@ async function load(client, cm) {
             msg.channel.send({
                 embeds: [
                     new Discord.EmbedBuilder()
-                        .setColor("#CFF2FF")
+                        .setConfig()
                         .setTitle(`nico ${"0.1"} ${(process.env.BUILD || "Development ").toLowerCase()}`)
                         .setThumbnail(client.user.displayAvatarURL({
                         dynamic: true
