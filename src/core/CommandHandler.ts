@@ -1,16 +1,8 @@
-import {
-	Client,
-	Collection,
-	Message,
-	Guild,
-	TextChannel,
-	GuildChannelManager
-} from "discord.js";
+import { Client, Collection, Message } from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
-import { langs } from "./../services/i18n";
-import { flagParser } from "./../services/ap";
-import Parsers from "./../services/parsers";
+import { flagParser } from "@services/ap";
+import Parsers from "@services/parsers";
 
 const Cooldown = new Collection<string, number>();
 

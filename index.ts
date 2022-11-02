@@ -6,7 +6,7 @@
 // import { Client, Partials, GatewayIntentBits } from "discord.js";
 
 // const db = new Database(
-//     "mongodb+srv://userBot:oneTwoThreeFour@cluster0.yczkt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+//     "mongodb+srv://"
 // ); ///process.env.MONGO!);
 
 // const client = new Client({
