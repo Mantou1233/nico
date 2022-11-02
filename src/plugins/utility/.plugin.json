@@ -1,0 +1,5 @@
+{
+	"name": "utility",
+	"version": "b40",
+	"entry": "src/index.js"
+}
