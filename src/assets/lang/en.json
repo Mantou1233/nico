@@ -1,0 +1,32 @@
+{
+	"command.run.cooldown": "You have to wait %s to use the command again!",
+	"command.run.error": "Oops! a error appeared: %s",
+	"command.run.notfound": "Command not found.",
+	"command.run.invaild": "You have to fill a argument.",
+
+	"basic.say.description": "Say something you want to say -> ([json builder](https://glitchii.github.io/embedbuilder/?username=FDYBoT&guitabs=title,fields,description&avatar=https://cdn.discordapp.com/avatars/977542041670152212/cf54c7c185fa433014bfd2ec79df0f21.png&data=JTdCJTIyZW1iZWQlMjIlM0ElN0IlMjJ0aXRsZSUyMiUzQSUyMkxvcmVtJTIwaXBzdW0lMjIlMkMlMjJkZXNjcmlwdGlvbiUyMiUzQSUyMkRvbG9yJTIwc2l0JTIwYW1ldC4uLiUyMiUyQyUyMmNvbG9yJTIyJTNBMzkxMjklN0QlN0Q=))",
+	"basic.say.usage": "Say something you want to say. supports raw ctx.",
+	"basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
+	"basic.say.error.noargs": "what do you want to say??",
+
+	"basic.toggle.description": "Toggle specified modules.",
+	"basic.toggle.usage": "%ptoggle <category|command> <name> [--s|--l]",
+	"basic.toggle.command.toggled": "%s is %s",
+	"basic.toggle.command.enabledText": "enabled",
+	"basic.toggle.command.disabledText": "disabled",
+
+	"basic.help.description": "do `%sh <command>` to see a description of a command you need more info on! For example `%sh hitokoto`.",
+	"basic.help.usage": "%phelp\n%phelp <command>",
+	"basic.help.notfound": "I can't find that command. Please verify that the command exists before trying again.",
+
+	"basic.ping.pong": "Pong! :ping_pong: %s ms",
+	"basic.lang.current": "Your current language on the bot is %s.\ncurrently %s langs available: %s",
+	"basic.lang.set": "I have set your language to %s!",
+
+	"basic.hitokoto.description": "get a quote from internet that looked inspiring. (or it just make senses)",
+	"basic.hitokoto.usage": "%phitokoto",
+
+	"moderation.buttonrole.error.noperms": "You do not have sufficent permission to run this command!",
+	"moderation.buttonrole.error.botnoperms": "well, i got no permission to set roles. please give me permission to set roles.",
+	"moderation.buttonrole.error.cantedit": "well, i dont think i can edit that message and add a button on it, that message probably isnt mine. use `%ssay` to let me say something btw."
+}

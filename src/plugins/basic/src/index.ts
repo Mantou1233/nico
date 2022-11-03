@@ -16,6 +16,7 @@ import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { langs, langAlias } from "../../../services/i18n";
 import pb from "../../../services/pb";
 import help from "../../../services/help";
+import { UserProfile } from "~/core/databases";
 
 /**
  * @returns void
@@ -355,6 +356,44 @@ async function load(client: Discord.Client, cm: CommandManager) {
 						)
 				]
 			});
+		}
+	});
+	cm.register({
+		command: "lang",
+		category: "Basic",
+		desc: "Get how many money you got!",
+		handler: async msg => {
+			let args = ap(msg.content);
+			const p = await UserProfile(msg.author.id);
+
+			let pass = (function (pa) {
+				for (let [key, [...rest]] of Object.entries(langAlias)) {
+					if (rest.includes(pa)) return key;
+				}
+				return false;
+			})(args[1]);
+			if (args.length == 1 || !pass)
+				return msg.channel.send(
+					i18n.parse(
+						msg.lang,
+						"basic.lang.current",
+						msg.lang,
+						Object.keys(langs).length,
+						`\`${(function () {
+							let r = "";
+							for (let [key, ...rest] of Object.values(
+								langAlias
+							)) {
+								r += `\n${key} - ${rest.join(",")}`;
+							}
+							return r;
+						})()}\``
+					)
+				);
+
+			p.lang = pass as any;
+			p.save();
+			msg.channel.send(i18n.parse(pass, "basic.lang.set", pass));
 		}
 	});
 	cm.register({

@@ -9,7 +9,6 @@ config.json
 
 # debug
 arc/
-src/assets/
 
 #
 public/

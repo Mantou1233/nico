@@ -34,8 +34,10 @@ const axios_1 = __importDefault(require("axios"));
 const os_1 = __importDefault(require("os"));
 const ms_1 = __importDefault(require("ms"));
 const snowflake_1 = require("../../../services/snowflake");
+const i18n_1 = require("../../../services/i18n");
 const pb_1 = __importDefault(require("../../../services/pb"));
 const help_1 = __importDefault(require("../../../services/help"));
+const databases_1 = require("../../../core/databases");
 /**
  * @returns void
  */
@@ -272,6 +274,33 @@ async function load(client, cm) {
                         .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] ?? "NOTHING"}`)
                 ]
             });
+        }
+    });
+    cm.register({
+        command: "lang",
+        category: "Basic",
+        desc: "Get how many money you got!",
+        handler: async (msg) => {
+            let args = ap(msg.content);
+            const p = await (0, databases_1.UserProfile)(msg.author.id);
+            let pass = (function (pa) {
+                for (let [key, [...rest]] of Object.entries(i18n_1.langAlias)) {
+                    if (rest.includes(pa))
+                        return key;
+                }
+                return false;
+            })(args[1]);
+            if (args.length == 1 || !pass)
+                return msg.channel.send(i18n.parse(msg.lang, "basic.lang.current", msg.lang, Object.keys(i18n_1.langs).length, `\`${(function () {
+                    let r = "";
+                    for (let [key, ...rest] of Object.values(i18n_1.langAlias)) {
+                        r += `\n${key} - ${rest.join(",")}`;
+                    }
+                    return r;
+                })()}\``));
+            p.lang = pass;
+            p.save();
+            msg.channel.send(i18n.parse(pass, "basic.lang.set", pass));
         }
     });
     cm.register({

@@ -45,6 +45,7 @@ class PluginLoader {
         this.loadedNames = [];
     }
     async load(path = "src/plugins") {
+        var _a;
         const plugins = await (await (0, fast_glob_1.default)(["**/.plugin.json"], { dot: true }))
             .map(e => e.replace(".plugin.json", ""))
             .filter(e => e.includes("dist")); //precheck smh >_<
@@ -68,7 +69,7 @@ class PluginLoader {
                 throw new Error("Plugin Names should be unique!");
             this.loadedNames.push(pluginName);
             global.loading = pluginName;
-            const entry = (await Promise.resolve().then(() => __importStar(require(`${outpath}${plugin}${temp.entry.replace(".js", "")}`)))).default;
+            const entry = (await (_a = `${outpath}${plugin}${temp.entry.replace(".js", "")}`, Promise.resolve().then(() => __importStar(require(_a))))).default;
             this.unloadList.push(`${outpath}${plugin}.plugin.json`, `${outpath}${plugin}${temp.entry}`);
             if (temp?.reload)
                 this.unloadList.push(...temp.reload.map(a => `${outpath}${plugin}${a}`));
@@ -86,10 +87,11 @@ class PluginLoader {
         log(0, "Bot started!");
     }
     async expo() {
-        for (let uw of Object.keys(require.cache)) {
-            if (uw.includes("node_modules"))
+        this.client.removeAllListeners();
+        for (let k3 of Object.keys(require.cache)) {
+            if (k3.includes("node_modules"))
                 continue;
-            delete require.cache[uw];
+            delete require.cache[k3];
         }
         require("../main");
     }

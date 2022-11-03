@@ -5,7 +5,8 @@ Object.defineProperties(discord_js_1.EmbedBuilder.prototype, {
     setConfig: {
         value: function (member, authorText, footerText) {
             return this.setColor(parseInt(i18n.globe.color, 16));
-        }
+        },
+        enumerable: false
     }
 });
 //# sourceMappingURL=djsAddition.js.map

@@ -7,13 +7,17 @@ const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 const ap_1 = require("../services/ap");
 const parsers_1 = __importDefault(require("../services/parsers"));
+const databases_1 = require("./databases");
 const Cooldown = new discord_js_1.Collection();
 const prefix = process.env.PREFIX;
 async function HandleCommands(client, msg) {
     if (msg.author.bot)
         return;
-    msg.lang = "en";
-    //msg.lang = p.lang as keyof typeof langs;
+    const p = await (0, databases_1.UserProfile)(msg);
+    if (!(await p.check())) {
+        await p.newSchema();
+    }
+    msg.lang = p.lang ?? "en";
     const mappings = client.manager.commands;
     const isp = msg.content.startsWith(prefix);
     const launch = msg.content.trim().split(" ")[0].replace(prefix, "");

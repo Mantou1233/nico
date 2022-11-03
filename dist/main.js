@@ -7,12 +7,10 @@ require("./services/i18n");
 require("./services/random");
 require("./services/djsAddition");
 require("./services/ap");
-require("dotenv/config");
-require("reflect-metadata");
 const discord_js_1 = require("discord.js");
 const PluginLoader_1 = __importDefault(require("./core/PluginLoader"));
 const CommandHandler_1 = __importDefault(require("./core/CommandHandler"));
-const { client } = storage;
+const { client, db } = storage;
 console.log("Starting nico...");
 const fnMain = async () => {
     console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
@@ -20,12 +18,13 @@ const fnMain = async () => {
 };
 async function main() {
     // Legacy DiscordJS Client
-    client.once("ready", fnMain);
     client.on("messageCreate", async (msg) => {
         await (0, CommandHandler_1.default)(client, msg);
     });
-    if (!client.isReady())
+    if (!client.isReady()) {
+        client.once("ready", fnMain);
         client.login(process.env.TOKEN).then(r => { });
+    }
     else
         fnMain();
 }
@@ -34,6 +33,12 @@ main();
 async function botMain(client) {
     try {
         // Load Plugins
+        if (!db.ready) {
+            await db.connect();
+            let _tmp = Date.now();
+            await db.add("sys:time", 1);
+            console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`);
+        }
         const loader = new PluginLoader_1.default(client);
         client.loader = loader;
         await loader.load();

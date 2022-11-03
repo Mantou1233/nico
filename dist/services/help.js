@@ -8,7 +8,7 @@ const toNewFields = (name, value, inline = false) => ({ name, value, inline });
 exports.default = async (client, msg, prefix) => {
     /* prettier-ignore */
     let commands = [...client.manager.commands.values()];
-    const args = ap(msg.content);
+    const args = ap(msg.content, true);
     if (!args[1]) {
         let categorys = {};
         for (let c of commands) {
@@ -24,21 +24,21 @@ exports.default = async (client, msg, prefix) => {
         }
         const newEmbed = new discord_js_1.default.EmbedBuilder()
             .setColor("#CFF2FF")
-            .setTitle("nico help menu")
-            .setDescription(`do \`${prefix}h module\` to see a description of a command you need more info on! For example \`${prefix}h jrrp\``);
+            .setTitle("nico")
+            .setDescription(i18n.parse(msg.lang, "basic.help.description", prefix, prefix));
         for (let [key, value] of Object.entries(categorys)) {
-            newEmbed.addFields(toNewFields(`**${key}**`, value));
+            newEmbed.addFields(toNewFields(`**${i18n.parse(msg.lang, "basic.help.categorys")[key] ?? key}**`, value));
         }
         return msg.channel.send({ embeds: [newEmbed] });
     }
     else {
         const command = commands.find(a => (a.alias ?? []).includes(args[1]) || a.command === args[1]);
-        if (command === undefined)
+        if (!command)
             return msg.channel.send({
                 embeds: [
                     new discord_js_1.default.EmbedBuilder()
                         .setColor("#B33A3A")
-                        .setDescription("I can't find that command. Please verify that the command exists before trying again.")
+                        .setDescription(i18n.parse(msg.lang, "basic.help.notfound"))
                 ]
             });
         /*
@@ -57,26 +57,18 @@ exports.default = async (client, msg, prefix) => {
               return;
             }
         })*/
-        let title = "";
-        let name = command?.command;
-        let usage = command?.usage ? command?.usage : "`" + prefix + name + "`";
-        usage = usage.replace(/%p/g, prefix).replace(/{prefix}/g, prefix);
-        let desc = command?.desc;
-        let alias = command?.alias ? command?.alias : [];
-        if (alias.length == 0) {
-            title = `\`${prefix}${name}\``;
-        }
-        else {
-            title = `\`${prefix}${name}\``;
-            for (let e of alias) {
-                title += ` **/** \`${prefix}`;
-                title += e;
-                title += "`";
-            }
-        }
+        let [desc, usage] = [
+            i18n.parse(msg.lang ?? "en", `-${command.category?.toLowerCase()}.${command.command.toLowerCase()}.description`),
+            i18n.parse(msg.lang ?? "en", `-${command.category?.toLowerCase()}.${command.command.toLowerCase()}.usage`)
+        ].map(v => v.endsWith(".usage") || v.endsWith(".description") ? undefined : v);
+        usage = (usage ??
+            (command.usage ? command.usage : `${prefix}${command.command}`)).replaceAll("%p", prefix);
+        desc = (desc ??
+            (command.desc ? command.desc : `${prefix}${command.command}`)).replaceAll("%p", prefix);
         const newEmbed = new discord_js_1.default.EmbedBuilder()
             .setColor(i18n.globe.color)
-            .setTitle(title)
+            .setTitle(`\`${prefix}${command.command}\`` +
+            (command.alias ?? []).reduce((p, v) => p + ` **/** \`${prefix}${v}\``, ""))
             .setDescription(`${desc}`)
             .addFields({ name: "Usage", value: `${usage}`, inline: true });
         msg.channel.send({ embeds: [newEmbed] });

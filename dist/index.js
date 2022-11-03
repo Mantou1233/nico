@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
+require("reflect-metadata");
 const discord_js_1 = require("discord.js");
 const quickmongo_1 = require("quickmongo");
 const client = new discord_js_1.Client({

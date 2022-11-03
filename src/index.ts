@@ -1,5 +1,7 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import "dotenv/config";
+import "reflect-metadata";
 
+import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Database } from "quickmongo";
 
 const client = new Client({

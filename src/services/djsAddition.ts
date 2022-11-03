@@ -9,6 +9,7 @@ Object.defineProperties(EmbedBuilder.prototype, {
 			footerText?: string
 		): EmbedBuilder {
 			return this.setColor(parseInt(i18n.globe.color, 16));
-		}
+		},
+		enumerable: false
 	}
 });

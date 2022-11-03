@@ -1,16 +1,14 @@
 import { AllKeysOf, KeyOfUnion } from "../core/Utils";
 
 import en from "../assets/lang/en.json";
-import zh from "../assets/lang/zh_zh.json";
 import tw from "../assets/lang/zh_tw.json";
 
 import icons from "../assets/icons.json";
 
-export let langs = { en, zh, tw };
+export let langs = { en, tw };
 
 export const langAlias = {
 	en: ["en", "english"],
-	zh: ["zh", "zh-cn", "简体中文"],
 	tw: ["tw", "zh-tw", "繁體中文"]
 };
 

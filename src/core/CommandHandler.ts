@@ -3,6 +3,7 @@ import ms from "ms";
 import { Command } from "./structure/Types";
 import { flagParser } from "@services/ap";
 import Parsers from "@services/parsers";
+import { UserProfile } from "./databases";
 
 const Cooldown = new Collection<string, number>();
 
@@ -11,8 +12,11 @@ const prefix = process.env.PREFIX as string;
 async function HandleCommands(client: Client, msg: Message) {
 	if (msg.author.bot) return;
 
-	msg.lang = "en";
-	//msg.lang = p.lang as keyof typeof langs;
+	const p = await UserProfile(msg);
+	if (!(await p.check())) {
+		await p.newSchema();
+	}
+	msg.lang = p.lang ?? "en";
 	const mappings = client.manager.commands as Collection<string, Command>;
 
 	const isp = msg.content.startsWith(prefix);

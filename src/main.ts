@@ -3,15 +3,12 @@ import "@services/random";
 import "@services/djsAddition";
 import "@services/ap";
 
-import "dotenv/config";
-import "reflect-metadata";
-
 import { ActivityType, Client } from "discord.js";
 
 import PluginLoader from "@core/PluginLoader";
 import CommandHandler from "@core/CommandHandler";
 
-const { client } = storage;
+const { client, db } = storage;
 
 console.log("Starting nico...");
 
@@ -23,15 +20,14 @@ const fnMain = async () => {
 async function main() {
 	// Legacy DiscordJS Client
 
-	client.once("ready", fnMain);
-
 	client.on("messageCreate", async msg => {
 		await CommandHandler(client, msg);
 	});
 
-	if (!client.isReady())
+	if (!client.isReady()) {
+		(client as Client).once("ready", fnMain);
 		(client as Client).login(process.env.TOKEN).then(r => {});
-	else fnMain();
+	} else fnMain();
 }
 
 main();
@@ -39,7 +35,16 @@ main();
 async function botMain(client: Client) {
 	try {
 		// Load Plugins
-
+		if (!db.ready) {
+			await db.connect();
+			let _tmp = Date.now();
+			await db.add("sys:time", 1);
+			console.log(
+				`connected to mongo! DB ping: ${require("ms")(
+					Date.now() - _tmp
+				)}`
+			);
+		}
 		const loader = new PluginLoader(client);
 
 		client.loader = loader;
