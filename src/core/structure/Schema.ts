@@ -1,4 +1,5 @@
 import { langTypes } from "@services/i18n";
+import { Copy } from "../Utils";
 
 const UserSchema = {
 	lang: "en",
@@ -8,7 +9,10 @@ const UserSchema = {
 
 const GuildSchema = {
 	lang: "en",
-	lastUsed: 0
+	prefix: process.env.PREFIX as string,
+	lastUsed: 0,
+	ducks: 0,
+	buttonroles: {n: 0}
 } satisfies GuildSchema;
 
 interface UserSchema {
@@ -19,7 +23,16 @@ interface UserSchema {
 
 interface GuildSchema {
 	lang: langTypes;
+	prefix: string;
 	lastUsed: number;
+	ducks: number;
+	buttonroles: {
+		[K: number]: {
+			id: string,
+			add: string,
+			remove: string
+		}
+	} & {n: number};
 }
 
 export { UserSchema, GuildSchema };

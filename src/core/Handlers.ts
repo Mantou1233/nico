@@ -1,21 +1,25 @@
-import { Client, Collection, Message } from "discord.js";
+import { Client, Collection, Interaction, Message } from "discord.js";
 import ms from "ms";
 import { Command } from "./structure/Types";
 import { flagParser } from "@services/ap";
 import Parsers from "@services/parsers";
-import { UserProfile } from "./databases";
+import { UserProfile, GuildProfile } from "./databases";
 
 const Cooldown = new Collection<string, number>();
+const client: Client = storage.client;
 
-const prefix = process.env.PREFIX as string;
+let prefix: string = process.env.PREFIX as string;
 
-async function HandleCommands(client: Client, msg: Message) {
+async function CommandHandler(msg: Message) {
 	if (msg.author.bot) return;
 
 	const p = await UserProfile(msg);
-	if (!(await p.check())) {
-		await p.newSchema();
-	}
+	await p.checkAndUpdate();
+
+	const g = await GuildProfile(msg);
+	await g.checkAndUpdate();
+
+	prefix = g.prefix ?? (process.env.PREFIX as string);
 	msg.lang = p.lang ?? "en";
 	const mappings = client.manager.commands as Collection<string, Command>;
 
@@ -57,4 +61,16 @@ async function HandleCommands(client: Client, msg: Message) {
 	}
 }
 
-export default HandleCommands;
+async function InteractionHandler(interaction: Interaction) {
+	if (interaction.user.bot) return;
+
+	const p = await UserProfile(interaction);
+	await p.checkAndUpdate();
+
+	const g = await GuildProfile(interaction);
+	await g.checkAndUpdate();
+
+	client.manager.emit("interactionCreate", interaction);
+}
+
+export { CommandHandler, InteractionHandler };

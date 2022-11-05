@@ -1,12 +1,11 @@
 import "@services/i18n";
 import "@services/random";
-import "@services/djsAddition";
 import "@services/ap";
 
 import { ActivityType, Client } from "discord.js";
 
 import PluginLoader from "@core/PluginLoader";
-import CommandHandler from "@core/CommandHandler";
+import { CommandHandler, InteractionHandler } from "~/core/Handlers";
 
 const { client, db } = storage;
 
@@ -20,9 +19,8 @@ const fnMain = async () => {
 async function main() {
 	// Legacy DiscordJS Client
 
-	client.on("messageCreate", async msg => {
-		await CommandHandler(client, msg);
-	});
+	client.on("messageCreate", CommandHandler as any);
+	client.on("interactionCreate", InteractionHandler as any);
 
 	if (!client.isReady()) {
 		(client as Client).once("ready", fnMain);

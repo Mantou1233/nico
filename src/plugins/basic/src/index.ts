@@ -16,7 +16,7 @@ import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { langs, langAlias } from "../../../services/i18n";
 import pb from "../../../services/pb";
 import help from "../../../services/help";
-import { UserProfile } from "~/core/databases";
+import { GuildProfile, UserProfile } from "~/core/databases";
 
 /**
  * @returns void
@@ -419,74 +419,38 @@ async function load(client: Discord.Client, cm: CommandManager) {
 			help(client, msg, prefix);
 		}
 	});
+	
+
 	cm.register({
-		command: "userinfo",
+		command: "prefix",
 		category: "Basic",
-		desc: "Display user information from snowflake.",
-		cooldown: 5 * 1000,
-		force: true,
-		handler: async (msg, { prefix }) => {
+		desc: "Display bot information",
+		handler: async (msg, { prefix: oprefix }) => {
 			const args = ap(msg.content, true);
-			const id =
-				msg.mentions.users.first()?.id || args[1] || msg.author.id;
-			let response = await axios
-				.get(`https://discord.com/api/users/${id}`, {
-					headers: {
-						Authorization: `Bot ${process.env.TOKEN}`
-					}
-				})
-				.catch(e => {
-					throw e;
-				});
-			let { username, discriminator, banner, avatar, banner_color } =
-				response.data;
-			let _0 = "discord.com";
+			const g = await GuildProfile(msg);
 
-			let embed = new Discord.EmbedBuilder();
-			embed.setTitle(`${username}#${discriminator}`);
-			if (avatar)
-				embed.setThumbnail(
-					`https://cdn.discordapp.com/avatars/${id}/${avatar}${
-						avatar.startsWith("a_") ? ".gif" : ".png"
-					}?size=256`
+			const prefix = args[1].trim();
+			if (prefix.length > 5)
+				return msg.reply(
+					"prefix too long!! you will forgor it probably so set a shorter one"
 				);
-			if (banner)
-				_0 = `https://cdn.discordapp.com/banners/${id}/${banner}${
-					banner.startsWith("a_") ? ".gif" : ".png"
-				}?size=2048`;
-			else
-				_0 = `https://serux.pro/rendercolour?hex=${banner_color?.replace(
-					"#",
-					""
-				)}&height=200&width=512`;
-			embed.setImage(_0);
-			embed.setColor(banner_color);
-			embed.setDescription(
-				`Account Created on ${convertSnowflakeToDate(
-					id
-				).toUTCString()} | [Avatar](${`https://cdn.discordapp.com/avatars/${id}/${avatar}${
-					avatar.startsWith("a_") ? ".gif" : ".png"
-				}?size=256`}) | [Banner](${_0}) | Color: ${banner_color}`
-			);
-			//snowflake
-			//       .convertSnowflakeToDate(id)
-			//       .toDateString()
+			if (prefix.includes(" ")) return msg.reply("no space!!!@");
 
-			msg.channel.send({ embeds: [embed] });
-			//if (banner) {
-			//    let extension = banner.startsWith("a_") ? ".gif" : ".png";
-			//    let url = `https://cdn.discordapp.com/banners/${member.id}/${banner}${extension}?size=2048`;
-			//    embed.setImage(url)
-			//    return message.channel.send({ embeds: [embed] });
-			//}
+			g.prefix = prefix;
+			console.log(g);
+			msg.reply(
+				`server prefix has been changed from ${oprefix} to ${prefix}`
+			);
+			await g.save();
 		}
 	});
+
 	cm.register({
 		command: "ping",
 		category: "Basic",
 		desc: "Display bot information",
 		handler: async (msg, { prefix }) => {
-			await msg.reply(
+			msg.reply(
 				i18n.parse(
 					msg.lang,
 					"basic.ping.pong",

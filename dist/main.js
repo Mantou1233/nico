@@ -5,11 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./services/i18n");
 require("./services/random");
-require("./services/djsAddition");
 require("./services/ap");
 const discord_js_1 = require("discord.js");
 const PluginLoader_1 = __importDefault(require("./core/PluginLoader"));
-const CommandHandler_1 = __importDefault(require("./core/CommandHandler"));
+const Handlers_1 = require("./core/Handlers");
 const { client, db } = storage;
 console.log("Starting nico...");
 const fnMain = async () => {
@@ -18,9 +17,8 @@ const fnMain = async () => {
 };
 async function main() {
     // Legacy DiscordJS Client
-    client.on("messageCreate", async (msg) => {
-        await (0, CommandHandler_1.default)(client, msg);
-    });
+    client.on("messageCreate", Handlers_1.CommandHandler);
+    client.on("interactionCreate", Handlers_1.InteractionHandler);
     if (!client.isReady()) {
         client.once("ready", fnMain);
         client.login(process.env.TOKEN).then(r => { });

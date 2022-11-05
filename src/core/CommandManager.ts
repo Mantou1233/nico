@@ -1,12 +1,22 @@
-import { Collection, Client } from "discord.js";
+import { TypedEmitter } from "tiny-typed-emitter";
+import { Collection, Client, ClientEvents } from "discord.js";
+
 import type { Command } from "./structure/Types";
-class CommandManager {
+import { Copy } from "./Utils";
+
+type ToSignature<T extends Record<string, any[]>> = {
+	[K in keyof T]: (...args: T[K]) => any;
+};
+
+class CommandManager extends TypedEmitter<
+	ToSignature<Copy<Pick<ClientEvents, "interactionCreate">>>
+> {
 	client: Client;
-	commands: Collection<string, Command>;
+	commands = new Collection<string, Command>();
 
 	constructor(client) {
+		super();
 		this.client = client;
-		this.commands = new Collection();
 	}
 
 	register(cmd: Command) {

@@ -1,5 +1,5 @@
 {
 	"name": "moderation",
-	"version": "b2",
+	"version": "b4",
 	"entry": "src/index.js"
 }

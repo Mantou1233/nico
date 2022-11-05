@@ -85,11 +85,11 @@ export default async (
 		);
 		usage = (
 			usage ??
-			(command.usage ? command.usage : `${prefix}${command.command}`)
+			(command.usage || `${prefix}${command.command}`)
 		).replaceAll("%p", prefix);
 		desc = (
 			desc ??
-			(command.desc ? command.desc : `${prefix}${command.command}`)
+			(command.desc || `${prefix}${command.command}`)
 		).replaceAll("%p", prefix);
 
 		const newEmbed = new Discord.EmbedBuilder()

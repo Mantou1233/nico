@@ -25,6 +25,8 @@
     "basic.lang.set": "已經把你的語言設置成%s!",
     "basic.hitokoto.description": "從網絡上獲取感覺很有道理的一句話。",
     "basic.hitokoto.usage": "%phitokoto",
+    "basic.avatar.self": "這是你的頭像",
+    "basic.avatar.others": "`%s`的頭像:",
     "moderation.buttonrole.error.noperms": "你需要有管理身份組的權限才能來叫我啦...",
     "moderation.buttonrole.error.botnoperms": "啊額，我好像管理不了身份組。麻煩給我下權限。",
     "moderation.buttonrole.error.cantedit": "啊這，這信息不是我的欸，我好像編輯不了。你可以用`%ssay`讓我説話。"

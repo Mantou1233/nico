@@ -1,6 +1,10 @@
 import "dotenv/config";
 import "reflect-metadata";
 
+import "discord.js";
+
+import "@services/djsAddition";
+
 import { Client, GatewayIntentBits, Partials } from "discord.js";
 import { Database } from "quickmongo";
 

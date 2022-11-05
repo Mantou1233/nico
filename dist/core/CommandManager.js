@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const tiny_typed_emitter_1 = require("tiny-typed-emitter");
 const discord_js_1 = require("discord.js");
-class CommandManager {
+class CommandManager extends tiny_typed_emitter_1.TypedEmitter {
     client;
-    commands;
+    commands = new discord_js_1.Collection();
     constructor(client) {
+        super();
         this.client = client;
-        this.commands = new discord_js_1.Collection();
     }
     register(cmd) {
         if (this.commands.get(cmd.command) !== undefined)

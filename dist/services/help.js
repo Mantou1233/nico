@@ -62,9 +62,9 @@ exports.default = async (client, msg, prefix) => {
             i18n.parse(msg.lang ?? "en", `-${command.category?.toLowerCase()}.${command.command.toLowerCase()}.usage`)
         ].map(v => v.endsWith(".usage") || v.endsWith(".description") ? undefined : v);
         usage = (usage ??
-            (command.usage ? command.usage : `${prefix}${command.command}`)).replaceAll("%p", prefix);
+            (command.usage || `${prefix}${command.command}`)).replaceAll("%p", prefix);
         desc = (desc ??
-            (command.desc ? command.desc : `${prefix}${command.command}`)).replaceAll("%p", prefix);
+            (command.desc || `${prefix}${command.command}`)).replaceAll("%p", prefix);
         const newEmbed = new discord_js_1.default.EmbedBuilder()
             .setColor(i18n.globe.color)
             .setTitle(`\`${prefix}${command.command}\`` +

@@ -1,7 +1,7 @@
 {
 	"name": "nico",
-	"version": "1.0.0",
-	"description": "",
+	"version": "1.0.1",
+	"description": "feryqutious skid fucking camellia on laur's grave where aran had a small talk with ak+q, then notice they are toaster and fucked toaster because toaster is bad",
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -9,9 +9,19 @@
 		"build": "tsc && resolve-tspaths",
 		"watch": "tsc-watch --onSuccess resolve-tspaths"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": [
+		"bad",
+		"worse",
+		"worst",
+		"bad bot",
+		"lan",
+		"not lao",
+		"stopstaringatme",
+		"whydoyoureadpackage.json??",
+		"go away"
+	],
+	"author": "P*Light",
+	"license": "616SB",
 	"dependencies": {
 		"@iamtraction/google-translate": "^2.0.0",
 		"axios": "^0.21.4",
@@ -21,7 +31,8 @@
 		"express": "^4.17.1",
 		"fast-glob": "^3.2.12",
 		"quickmongo": "^5.2.0",
-		"reflect-metadata": "^0.1.13"
+		"reflect-metadata": "^0.1.13",
+		"tiny-typed-emitter": "^2.1.0"
 	},
 	"devDependencies": {
 		"@types/axios": "^0.14.0",

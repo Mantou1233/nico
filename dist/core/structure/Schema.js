@@ -9,7 +9,10 @@ const UserSchema = {
 exports.UserSchema = UserSchema;
 const GuildSchema = {
     lang: "en",
-    lastUsed: 0
+    prefix: process.env.PREFIX,
+    lastUsed: 0,
+    ducks: 0,
+    buttonroles: { n: 0 }
 };
 exports.GuildSchema = GuildSchema;
 //# sourceMappingURL=Schema.js.map

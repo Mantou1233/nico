@@ -1,9 +1,9 @@
-import { AllKeysOf, KeyOfUnion } from "../core/Utils";
+import { AllKeysOf, KeyOfUnion } from "@core/Utils";
 
-import en from "../assets/lang/en.json";
-import tw from "../assets/lang/zh_tw.json";
+import en from "~/assets/lang/en.json";
+import tw from "~/assets/lang/zh_tw.json";
 
-import icons from "../assets/icons.json";
+import icons from "~/assets/icons.json";
 
 export let langs = { en, tw };
 
@@ -13,10 +13,7 @@ export const langAlias = {
 };
 
 export type langKeys =
-	| Exclude<
-			AllKeysOf<KeyOfUnion<typeof langs>>,
-			`item.${string}` | `//${string}`
-	  >
+	| Exclude<AllKeysOf<KeyOfUnion<typeof langs>>, `item.${string}`>
 	| `-${string}`;
 
 export type langTypes = keyof typeof langs;

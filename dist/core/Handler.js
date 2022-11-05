@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HandleInteraction = exports.HandleCommands = void 0;
+exports.HandleInteraction = exports.CommandHandler = void 0;
 const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 const ap_1 = require("../services/ap");
@@ -11,7 +11,7 @@ const parsers_1 = __importDefault(require("../services/parsers"));
 const databases_1 = require("./databases");
 const Cooldown = new discord_js_1.Collection();
 let prefix = process.env.PREFIX;
-async function HandleCommands(client, msg) {
+async function CommandHandler(client, msg) {
     if (msg.author.bot)
         return;
     const p = await (0, databases_1.UserProfile)(msg);
@@ -54,7 +54,15 @@ async function HandleCommands(client, msg) {
         setTimeout(() => Cooldown.delete(msg.author.id), command.cooldown);
     }
 }
-exports.HandleCommands = HandleCommands;
-async function HandleInteraction(client, interaction) { }
+exports.CommandHandler = CommandHandler;
+async function HandleInteraction(client, interaction) {
+    if (interaction.user.bot)
+        return;
+    const p = await (0, databases_1.UserProfile)(interaction);
+    await p.checkAndUpdate();
+    const g = await (0, databases_1.GuildProfile)(interaction);
+    await g.checkAndUpdate();
+    client.manager.emit("interactionCreate", interaction);
+}
 exports.HandleInteraction = HandleInteraction;
-//# sourceMappingURL=CommandHandler.js.map
+//# sourceMappingURL=Handler.js.map
