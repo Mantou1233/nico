@@ -3,8 +3,8 @@ import { Client, Embed, EmbedBuilder, User } from "discord.js";
 import axios from "axios";
 import translate from "@iamtraction/google-translate";
 
-import Manager from "~/core/Manager";
-import { UserProfile, GuildProfile } from "~/core/Profile";
+import Manager from "@core/Manager";
+import { UserProfile, GuildProfile } from "@core/Profile";
 
 import { convertSnowflakeToDate } from "@services/snowflake";
 import { getUser } from "@services/gets";
