@@ -1,6 +1,8 @@
 import { Client, Collection, Interaction, Message } from "discord.js";
 import ms from "ms";
 import { MessageCommand } from "./structure/Types";
+import { flagParser } from "@services/ap";
+import Parsers from "@services/parsers";
 import { UserProfile, GuildProfile } from "./Profile";
 
 const Cooldown = new Collection<string, number>();
@@ -36,17 +38,24 @@ async function CommandHandler(msg: Message) {
 	if (command.disabled) return;
 	if (command.cooldown && Cooldown.has(msg.author.id))
 		return msg.channel.send(
-			`You need to wait ${ms(
-				Cooldown.get(msg.author.id)
-			)} to use this command again!!`
+			i18n
+				.parse(msg.lang, "command.run.cooldown")
+				.replaceAll("%s", `${ms(Cooldown.get(msg.author.id))}`)
 		);
+
+	const flags = flagParser(ap(msg.content), {
+		dout: Parsers.Boolean
+	});
 	try {
 		await command.handler(msg, {
 			prefix
 		});
 	} catch (e) {
+		if (flags["dout"]) console.log(e);
 		return msg.channel.send(
-			`wawa!! something wrong happened...\n${e.message}`
+			i18n
+				.parse(msg.lang, "command.run.error")
+				.replaceAll("%s", `${e.message}`)
 		);
 	}
 	if (command.cooldown) {
