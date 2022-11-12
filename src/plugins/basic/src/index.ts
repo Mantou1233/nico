@@ -10,18 +10,18 @@ import os from "os";
 import ms from "ms";
 import fs from "fs/promises";
 
-import CommandManager from "../../../core/CommandManager";
+import Manager from "../../../core/Manager";
 
 import { convertSnowflakeToDate } from "../../../services/snowflake";
 import { langs, langAlias } from "../../../services/i18n";
 import pb from "../../../services/pb";
 import help from "../../../services/help";
-import { GuildProfile, UserProfile } from "~/core/databases";
+import { GuildProfile, UserProfile } from "~/core/Profile";
 
 /**
  * @returns void
  */
-async function load(client: Discord.Client, cm: CommandManager) {
+async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "say",
 		category: "Basic",
@@ -419,7 +419,6 @@ async function load(client: Discord.Client, cm: CommandManager) {
 			help(client, msg, prefix);
 		}
 	});
-	
 
 	cm.register({
 		command: "prefix",

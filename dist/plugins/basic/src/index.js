@@ -35,7 +35,7 @@ const ms_1 = __importDefault(require("ms"));
 const i18n_1 = require("../../../services/i18n");
 const pb_1 = __importDefault(require("../../../services/pb"));
 const help_1 = __importDefault(require("../../../services/help"));
-const databases_1 = require("../../../core/databases");
+const Profile_1 = require("../../../core/Profile");
 /**
  * @returns void
  */
@@ -280,7 +280,7 @@ async function load(client, cm) {
         desc: "Get how many money you got!",
         handler: async (msg) => {
             let args = ap(msg.content);
-            const p = await (0, databases_1.UserProfile)(msg.author.id);
+            const p = await (0, Profile_1.UserProfile)(msg.author.id);
             let pass = (function (pa) {
                 for (let [key, [...rest]] of Object.entries(i18n_1.langAlias)) {
                     if (rest.includes(pa))
@@ -330,7 +330,7 @@ async function load(client, cm) {
         desc: "Display bot information",
         handler: async (msg, { prefix: oprefix }) => {
             const args = ap(msg.content, true);
-            const g = await (0, databases_1.GuildProfile)(msg);
+            const g = await (0, Profile_1.GuildProfile)(msg);
             const prefix = args[1].trim();
             if (prefix.length > 5)
                 return msg.reply("prefix too long!! you will forgor it probably so set a shorter one");

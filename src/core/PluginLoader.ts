@@ -1,29 +1,26 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Client } from "discord.js";
 import fg from "fast-glob";
-import CommandManager from "./CommandManager";
+import Manager from "./Manager";
 const outpath = "../../";
 const log = (times: number, message: string): void =>
 	console.log(`${"  ".repeat(times)}-> ${message}`);
 class PluginLoader {
 	client: Client;
 	loadedList: string[];
-	unloadList: string[];
 	loadedNames: string[];
 	loadArgs: any;
-	constructor(client) {
-		global.loading = -1;
-		client.manager = new CommandManager(client);
+	constructor(client: Client) {
+		client.manager = new Manager(client);
 		this.client = client;
 		this.loadedList = [];
-		this.unloadList = [];
 		this.loadedNames = [];
 	}
 
 	async load(path = "src/plugins") {
 		const plugins = await (await fg(["**/.plugin.json"], { dot: true }))
 			.map(e => e.replace(".plugin.json", ""))
-			.filter(e => e.includes("dist")); //precheck smh >_<
+			.filter(e => e.includes("dist"));
 
 		log(
 			0,
@@ -47,23 +44,15 @@ class PluginLoader {
 			if (this.loadedNames.includes(pluginName))
 				throw new Error("Plugin Names should be unique!");
 			this.loadedNames.push(pluginName);
-			global.loading = pluginName;
-			const entry = (
-				await import(
-					`${outpath}${plugin}${temp.entry.replace(".js", "")}`
-				)
-			).default;
-			this.unloadList.push(
-				`${outpath}${plugin}.plugin.json`,
-				`${outpath}${plugin}${temp.entry}`
+			this.client.manager.nowLoading = pluginName;
+			let entry = await import(
+				`${outpath}${plugin}${temp.entry.replace(".js", "")}`
 			);
-			if (temp?.reload)
-				this.unloadList.push(
-					...temp.reload.map(a => `${outpath}${plugin}${a}`)
-				);
+			entry = typeof entry == "function" ? entry : entry.default;
 			try {
 				await entry(this.client, this.client.manager);
 			} catch (e) {
+				console.log(e);
 				log(3, `Launching plugin ${pluginName} fail: ${e.message}`);
 				continue;
 			}

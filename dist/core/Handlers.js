@@ -8,16 +8,16 @@ const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 const ap_1 = require("../services/ap");
 const parsers_1 = __importDefault(require("../services/parsers"));
-const databases_1 = require("./databases");
+const Profile_1 = require("./Profile");
 const Cooldown = new discord_js_1.Collection();
 const client = storage.client;
 let prefix = process.env.PREFIX;
 async function CommandHandler(msg) {
     if (msg.author.bot)
         return;
-    const p = await (0, databases_1.UserProfile)(msg);
+    const p = await (0, Profile_1.UserProfile)(msg);
     await p.checkAndUpdate();
-    const g = await (0, databases_1.GuildProfile)(msg);
+    const g = await (0, Profile_1.GuildProfile)(msg);
     await g.checkAndUpdate();
     prefix = g.prefix ?? process.env.PREFIX;
     msg.lang = p.lang ?? "en";
@@ -59,11 +59,23 @@ exports.CommandHandler = CommandHandler;
 async function InteractionHandler(interaction) {
     if (interaction.user.bot)
         return;
-    const p = await (0, databases_1.UserProfile)(interaction);
+    const p = await (0, Profile_1.UserProfile)(interaction);
     await p.checkAndUpdate();
-    const g = await (0, databases_1.GuildProfile)(interaction);
+    const g = await (0, Profile_1.GuildProfile)(interaction);
     await g.checkAndUpdate();
-    client.manager.emit("interactionCreate", interaction);
+    console.log(client.manager.interactions);
+    let handlers = [];
+    if (interaction.isButton())
+        handlers = client.manager.interactions.filter(v => v.type === "button");
+    if (interaction.isSelectMenu())
+        handlers = client.manager.interactions.filter(v => v.type === "selection");
+    if (interaction.isModalSubmit())
+        handlers = client.manager.interactions.filter(v => v.type === "modal");
+    if (interaction.isAutocomplete())
+        handlers = client.manager.interactions.filter(v => v.type === "autocomplete");
+    for (let handler of handlers) {
+        await handler.handler(interaction);
+    }
 }
 exports.InteractionHandler = InteractionHandler;
 //# sourceMappingURL=Handlers.js.map

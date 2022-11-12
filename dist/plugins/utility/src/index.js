@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const axios_1 = __importDefault(require("axios"));
 const google_translate_1 = __importDefault(require("@iamtraction/google-translate"));
-const databases_1 = require("../../../core/databases");
+const Profile_1 = require("../../../core/Profile");
 const snowflake_1 = require("../../../services/snowflake");
 const gets_1 = require("../../../services/gets");
 /**
@@ -144,8 +144,8 @@ async function load(client, cm) {
         desc: "feed a duck from 2020.",
         handler: async (msg) => {
             const args = ap(msg.content, true);
-            const p = await (0, databases_1.UserProfile)(msg);
-            const g = await (0, databases_1.GuildProfile)(msg);
+            const p = await (0, Profile_1.UserProfile)(msg);
+            const g = await (0, Profile_1.GuildProfile)(msg);
             p.ducks++;
             g.ducks++;
             msg.reply(`wawa!! you have feed ${p.ducks} ducks! the people here feed ${g.ducks}!!`);

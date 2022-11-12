@@ -1,13 +1,12 @@
-import { Message } from "discord.js";
-import { langs } from "./../../services/i18n";
+import { Message, Interaction } from "discord.js";
 import { Awaitable } from "../Utils";
-import { Parser } from "./../../services/parsers";
 
-type OverrideLangString<T> = {
-	[key in keyof typeof langs]?: T;
-};
-type snowflake = string;
-interface Command {
+interface RawMessageHandler {
+	from?: string;
+	handler: (message: Message, ext: any) => Awaitable<void | any>;
+}
+
+interface MessageCommand extends RawMessageHandler {
 	display?: string;
 	command: string;
 	force?: boolean;
@@ -20,8 +19,12 @@ interface Command {
 	alias2?: string[];
 	disabled?: boolean;
 	hidden?: boolean;
-	from?: string;
-	handler: (message: Message, ext: any) => Awaitable<void | any>;
 }
 
-export type { Command, Message };
+interface InteractionContext<T extends Interaction = Interaction> {
+	type: "button" | "selection" | "modal" | "autocomplete";
+	from?: string;
+	handler: (interaction: T, ext: any) => Awaitable<void | any>;
+}
+
+export type { MessageCommand, InteractionContext, RawMessageHandler };

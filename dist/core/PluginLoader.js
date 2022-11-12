@@ -27,28 +27,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fast_glob_1 = __importDefault(require("fast-glob"));
-const CommandManager_1 = __importDefault(require("./CommandManager"));
+const Manager_1 = __importDefault(require("./Manager"));
 const outpath = "../../";
 const log = (times, message) => console.log(`${"  ".repeat(times)}-> ${message}`);
 class PluginLoader {
     client;
     loadedList;
-    unloadList;
     loadedNames;
     loadArgs;
     constructor(client) {
-        global.loading = -1;
-        client.manager = new CommandManager_1.default(client);
+        client.manager = new Manager_1.default(client);
         this.client = client;
         this.loadedList = [];
-        this.unloadList = [];
         this.loadedNames = [];
     }
     async load(path = "src/plugins") {
         var _a;
         const plugins = await (await (0, fast_glob_1.default)(["**/.plugin.json"], { dot: true }))
             .map(e => e.replace(".plugin.json", ""))
-            .filter(e => e.includes("dist")); //precheck smh >_<
+            .filter(e => e.includes("dist"));
         log(0, `fetched ${plugins.length} plugin${plugins.length > 1 ? "s" : ""}!`);
         log(1, "Loading plugin...");
         for (const plugin of plugins) {
@@ -68,15 +65,14 @@ class PluginLoader {
             if (this.loadedNames.includes(pluginName))
                 throw new Error("Plugin Names should be unique!");
             this.loadedNames.push(pluginName);
-            global.loading = pluginName;
-            const entry = (await (_a = `${outpath}${plugin}${temp.entry.replace(".js", "")}`, Promise.resolve().then(() => __importStar(require(_a))))).default;
-            this.unloadList.push(`${outpath}${plugin}.plugin.json`, `${outpath}${plugin}${temp.entry}`);
-            if (temp?.reload)
-                this.unloadList.push(...temp.reload.map(a => `${outpath}${plugin}${a}`));
+            this.client.manager.nowLoading = pluginName;
+            let entry = await (_a = `${outpath}${plugin}${temp.entry.replace(".js", "")}`, Promise.resolve().then(() => __importStar(require(_a))));
+            entry = typeof entry == "function" ? entry : entry.default;
             try {
                 await entry(this.client, this.client.manager);
             }
             catch (e) {
+                console.log(e);
                 log(3, `Launching plugin ${pluginName} fail: ${e.message}`);
                 continue;
             }

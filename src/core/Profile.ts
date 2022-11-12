@@ -1,8 +1,4 @@
-import { Message, Interaction } from "discord.js";
 import { GuildSchema, UserSchema } from "./structure/Schema";
-
-declare const Interaction;
-
 const { db } = storage;
 
 export class Profile<

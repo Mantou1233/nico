@@ -22,7 +22,7 @@ export let globes = {
 	color: "CFF2FF"
 };
 class i18n {
-	public globe: any;
+	public globe: typeof globes;
 	public icon: typeof icons;
 	constructor() {
 		this.globe = globes;

@@ -21,7 +21,6 @@
 		"go away"
 	],
 	"author": "P*Light",
-	"license": "616SB",
 	"dependencies": {
 		"@iamtraction/google-translate": "^2.0.0",
 		"axios": "^0.21.4",

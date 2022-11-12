@@ -1,15 +1,17 @@
 import * as Discord from "discord.js";
 
 import { validateSnowflake } from "@services/snowflake";
-import CommandManager from "@core/CommandManager";
-import { GuildProfile } from "@core/databases";
+import Manager from "~/core/Manager";
+import { GuildProfile } from "~/core/Profile";
+import { getMessageId, getRole } from "./../../../services/gets";
 
 /**
  * @returns void
  */
-async function load(client: Discord.Client, cm: CommandManager) {
-	cm.on("interactionCreate", async interaction => {
-		if (interaction.isButton()) {
+async function load(client: Discord.Client, cm: Manager) {
+	cm.register({
+		type: "button",
+		handler: async (interaction: Discord.ButtonInteraction) => {
 			if (
 				interaction.customId.startsWith("grole/") &&
 				interaction.member!.roles instanceof
@@ -77,6 +79,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 
 			const g = await GuildProfile(msg);
 			const args = ap(msg.content);
+			args[1] = getMessageId(args[1]);
 			const vl = validateSnowflake(args[1]);
 			if (typeof vl == "string") return msg.reply(vl);
 
@@ -118,8 +121,7 @@ async function load(client: Discord.Client, cm: CommandManager) {
 					style: 1
 				});
 			}
-			args[3] =
-				/<@&(?<id>\d{17,20})>/.exec(args[3])?.groups?.id || args[3];
+			args[3] = getRole(args[3]);
 
 			const vl2 = validateSnowflake(args[3]);
 			if (typeof vl2 == "string") return msg.reply(vl2);

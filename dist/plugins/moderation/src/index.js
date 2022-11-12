@@ -25,18 +25,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Discord = __importStar(require("discord.js"));
 const snowflake_1 = require("../../../services/snowflake");
-const databases_1 = require("../../../core/databases");
+const Profile_1 = require("../../../core/Profile");
+const gets_1 = require("../../../services/gets");
 /**
  * @returns void
  */
 async function load(client, cm) {
-    cm.on("interactionCreate", async (interaction) => {
-        if (interaction.isButton()) {
+    cm.register({
+        type: "button",
+        handler: async (interaction) => {
             if (interaction.customId.startsWith("grole/") &&
                 interaction.member.roles instanceof
                     Discord.GuildMemberRoleManager) {
                 const but_id = parseInt(interaction.customId.slice(6));
-                const g = await (0, databases_1.GuildProfile)(interaction);
+                const g = await (0, Profile_1.GuildProfile)(interaction);
                 const id = g.buttonroles[but_id].id;
                 // prettier-ignore
                 if (!interaction.guild?.members.me?.permissions.has("ManageRoles"))
@@ -87,8 +89,9 @@ async function load(client, cm) {
                 return msg.reply(i18n.parse(msg.lang, "moderation.buttonrole.error.noperms"));
             if (!msg.guild?.members.me?.permissions.has("ManageRoles"))
                 return msg.reply(i18n.parse(msg.lang, "moderation.buttonrole.error.botnoperms"));
-            const g = await (0, databases_1.GuildProfile)(msg);
+            const g = await (0, Profile_1.GuildProfile)(msg);
             const args = ap(msg.content);
+            args[1] = (0, gets_1.getMessageId)(args[1]);
             const vl = (0, snowflake_1.validateSnowflake)(args[1]);
             if (typeof vl == "string")
                 return msg.reply(vl);
@@ -119,8 +122,7 @@ async function load(client, cm) {
                     style: 1
                 });
             }
-            args[3] =
-                /<@&(?<id>\d{17,20})>/.exec(args[3])?.groups?.id || args[3];
+            args[3] = (0, gets_1.getRole)(args[3]);
             const vl2 = (0, snowflake_1.validateSnowflake)(args[3]);
             if (typeof vl2 == "string")
                 return msg.reply(vl2);

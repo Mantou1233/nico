@@ -1,9 +1,9 @@
 import { Client, Collection, Interaction, Message } from "discord.js";
 import ms from "ms";
-import { Command } from "./structure/Types";
+import { MessageCommand } from "./structure/Types";
 import { flagParser } from "@services/ap";
 import Parsers from "@services/parsers";
-import { UserProfile, GuildProfile } from "./databases";
+import { UserProfile, GuildProfile } from "./Profile";
 
 const Cooldown = new Collection<string, number>();
 const client: Client = storage.client;
@@ -21,7 +21,10 @@ async function CommandHandler(msg: Message) {
 
 	prefix = g.prefix ?? (process.env.PREFIX as string);
 	msg.lang = p.lang ?? "en";
-	const mappings = client.manager.commands as Collection<string, Command>;
+	const mappings = client.manager.commands as Collection<
+		string,
+		MessageCommand
+	>;
 
 	const isp = msg.content.startsWith(prefix);
 	const launch = msg.content.trim().split(" ")[0].replace(prefix, "");
@@ -30,7 +33,7 @@ async function CommandHandler(msg: Message) {
 			((cmd.command === launch || (cmd.alias ?? []).includes(launch)) &&
 				isp) ||
 			(cmd.alias2 ?? []).includes(launch)
-	) as Command;
+	) as MessageCommand;
 	if (!command) return;
 	if (command.disabled) return;
 	if (command.cooldown && Cooldown.has(msg.author.id))
@@ -69,8 +72,24 @@ async function InteractionHandler(interaction: Interaction) {
 
 	const g = await GuildProfile(interaction);
 	await g.checkAndUpdate();
+	console.log(client.manager.interactions);
 
-	client.manager.emit("interactionCreate", interaction);
+	let handlers: any[] = [];
+	if (interaction.isButton())
+		handlers = client.manager.interactions.filter(v => v.type === "button");
+	if (interaction.isSelectMenu())
+		handlers = client.manager.interactions.filter(
+			v => v.type === "selection"
+		);
+	if (interaction.isModalSubmit())
+		handlers = client.manager.interactions.filter(v => v.type === "modal");
+	if (interaction.isAutocomplete())
+		handlers = client.manager.interactions.filter(
+			v => v.type === "autocomplete"
+		);
+	for (let handler of handlers) {
+		await handler.handler(interaction);
+	}
 }
 
 export { CommandHandler, InteractionHandler };

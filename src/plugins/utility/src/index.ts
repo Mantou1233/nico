@@ -3,8 +3,8 @@ import { Client, Embed, EmbedBuilder, User } from "discord.js";
 import axios from "axios";
 import translate from "@iamtraction/google-translate";
 
-import CommandManager from "@core/CommandManager";
-import { UserProfile, GuildProfile } from "@core/databases";
+import Manager from "~/core/Manager";
+import { UserProfile, GuildProfile } from "~/core/Profile";
 
 import { convertSnowflakeToDate } from "@services/snowflake";
 import { getUser } from "@services/gets";
@@ -12,7 +12,7 @@ import { getUser } from "@services/gets";
 /**
  * @returns void
  */
-async function load(client: Client, cm: CommandManager) {
+async function load(client: Client, cm: Manager) {
 	cm.register({
 		command: "hitokoto",
 		category: "Fun",
