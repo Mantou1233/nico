@@ -27,17 +27,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fast_glob_1 = __importDefault(require("fast-glob"));
-const Manager_1 = __importDefault(require("./Manager"));
+const Reflector_1 = require("../services/Reflector");
 const outpath = "../../";
 const log = (times, message) => console.log(`${"  ".repeat(times)}-> ${message}`);
 class PluginLoader {
     client;
+    ready;
     loadedList;
     loadedNames;
     loadArgs;
     constructor(client) {
-        client.manager = new Manager_1.default(client);
         this.client = client;
+        this.ready = false;
         this.loadedList = [];
         this.loadedNames = [];
     }
@@ -66,21 +67,28 @@ class PluginLoader {
                 throw new Error("Plugin Names should be unique!");
             this.loadedNames.push(pluginName);
             this.client.manager.nowLoading = pluginName;
-            let entry = await (_a = `${outpath}${plugin}${temp.entry.replace(".js", "")}`, Promise.resolve().then(() => __importStar(require(_a))));
+            let entry = await (_a = `${outpath}${plugin}${temp.entry
+                .replace(".ts", "")
+                .replace(".js", "")
+                .replace("./", "")}`, Promise.resolve().then(() => __importStar(require(_a))));
             entry = typeof entry == "function" ? entry : entry.default;
-            try {
-                await entry(this.client, this.client.manager);
-            }
-            catch (e) {
-                console.log(e);
-                log(3, `Launching plugin ${pluginName} fail: ${e.message}`);
+            const meta = Reflector_1.md.get(entry, "pluginMeta");
+            const data = Reflector_1.md.get(entry, "pluginData");
+            const inst = new entry();
+            if (!meta || !data) {
+                console.log(`${pluginName} isnt a vaild plugin, rejecting.`);
                 continue;
             }
+            Object.values(data.handlers).map((pr) => pr.map(pr => this.client.manager.register({
+                ...pr,
+                handler: pr.handler.bind(inst)
+            })));
             log(2, `Loaded plugin ${pluginName}!`);
             continue;
         }
         log(1, "Plugin loaded!");
         log(0, "Bot started!");
+        this.ready = true;
     }
     async expo() {
         this.client.removeAllListeners();

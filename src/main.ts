@@ -1,11 +1,12 @@
-import "@services/i18n";
-import "@services/random";
-import "@services/ap";
+//import "./services/i18n";
+import "./services/random";
+import "./services/ap";
 
 import { ActivityType, Client } from "discord.js";
 
-import PluginLoader from "@core/PluginLoader";
-import { CommandHandler, InteractionHandler } from "~/core/Handlers";
+import PluginLoader from "./core/PluginLoader";
+import { CommandHandler, InteractionHandler } from "./core/Handlers";
+import Manager from "./core/Manager";
 
 const { client, db } = storage;
 
@@ -44,6 +45,7 @@ async function botMain(client: Client) {
 			);
 		}
 		const loader = new PluginLoader(client);
+		client.manager = new Manager(client);
 
 		client.loader = loader;
 		await loader.load();

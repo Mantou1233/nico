@@ -1,30 +1,44 @@
 import { Message, Interaction } from "discord.js";
 import { Awaitable } from "../Utils";
 
-interface RawMessageHandler {
-	from?: string;
-	handler: (message: Message, ext: any) => Awaitable<void | any>;
+interface Events {
+	unknown: {
+		params: [];
+	};
+	command: {
+		command?: string;
+		disabled?: boolean;
+		cooldown?: number;
+		alias?: string[];
+		params: [msg: Message, ext: any];
+	};
+	interaction: {
+		type: "button" | "selection" | "modal" | "autocomplete";
+		params: [interaction: Interaction, ext: any];
+	};
 }
 
-interface MessageCommand extends RawMessageHandler {
-	display?: string;
-	command: string;
-	force?: boolean;
-	refer?: string;
-	desc?: string;
-	usage?: string;
-	cooldown?: number;
-	category?: string;
-	alias?: string[];
-	alias2?: string[];
-	disabled?: boolean;
-	hidden?: boolean;
+type EventMeta<K extends keyof Events = "unknown"> = {
+	__type__: K;
+	from: string;
+	at: string;
+	handler: (...args: Events[K]["params"]) => Awaitable<any>;
+} & Omit<Events[K], "params">;
+type RawEventMeta<K extends keyof Events = "unknown"> = Omit<
+	Events[K],
+	"params"
+>;
+
+interface PluginMeta {
+	name?: string;
 }
 
-interface InteractionContext<T extends Interaction = Interaction> {
-	type: "button" | "selection" | "modal" | "autocomplete";
-	from?: string;
-	handler: (interaction: T, ext: any) => Awaitable<void | any>;
-}
+// prettier-ignore
+export type { 
+	Events,
 
-export type { MessageCommand, InteractionContext, RawMessageHandler };
+	RawEventMeta,
+	EventMeta,
+	
+	PluginMeta
+};

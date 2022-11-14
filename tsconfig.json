@@ -13,7 +13,7 @@
 		/* Language and Environment */
 		"target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 		"lib": [
-			"es2021",
+			"es2022",
 			"DOM"
 		] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
 		// "jsx": "preserve",                                /* Specify what JSX code is generated. */
@@ -109,5 +109,5 @@
 			"@core/*": ["./src/core/*"]
 		}
 	},
-	"include": ["src/**/*", "src/**/.plugin.json", "src/core/Sum.ts"]
+	"include": ["src/**/*", "src/**/.plugin.json"]
 }

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv/config");
 require("reflect-metadata");
 require("discord.js");
-require("./services/djsAddition");
+//import "./services/djsAddition.js";
 const discord_js_1 = require("discord.js");
 const quickmongo_1 = require("quickmongo");
 const client = new discord_js_1.Client({

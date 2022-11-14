@@ -1,0 +1,41 @@
+{
+	"command.run.cooldown": "你需要等待 %s 才能再次使用這個指令！",
+	"command.run.error": "哦喲，有一個錯誤出現了：%s",
+	"command.run.notfound": "指令不存在。",
+	"command.run.invaild": "你需要填入參數。",
+
+	"basic.say.description": "Say something you want to say. supports raw ctx.",
+	"basic.say.usage": "Say something you want to say. supports raw ctx.",
+	"basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
+	"basic.say.error.noargs": "what do you want to say??",
+
+	"basic.toggle.description": "Toggle specified modules.",
+	"basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
+	"basic.toggle.command.toggled": "我已經將命令%s%s了!",
+	"basic.toggle.command.enabledText": "開啓",
+	"basic.toggle.command.disabledText": "關閉",
+
+	"basic.help.description": "使用`%ph <command>`可以看見指令的簡介及用法! 例如`%ph hitokoto`可以看見hitokoto指令的用法.",
+	"basic.help.usage": "%phelp\n%phelp <command>",
+	"basic.help.notfound": "沒找到這指令。如果你想看的是指令列表，可以不給任何參數。",
+
+	"basic.help.categorys": {
+		"Basic": "基本模塊",
+		"Moderation": "管理模塊",
+		"Fun": "娛樂模塊"
+	},
+
+	"basic.ping.pong": "叮! :ping_pong: %sms",
+	"basic.lang.current": "你目前設置的語言是%s.\n有%s個語言可供使用:%s",
+	"basic.lang.set": "已經把你的語言設置成%s!",
+
+	"basic.hitokoto.description": "從網絡上獲取感覺很有道理的一句話。",
+	"basic.hitokoto.usage": "%phitokoto",
+
+	"basic.avatar.self": "這是你的頭像",
+	"basic.avatar.others": "`%s`的頭像:",
+
+	"moderation.buttonrole.error.noperms": "你需要有管理身份組的權限才能來叫我啦...",
+	"moderation.buttonrole.error.botnoperms": "啊額，我好像管理不了身份組。麻煩給我下權限。",
+	"moderation.buttonrole.error.cantedit": "啊這，這信息不是我的欸，我好像編輯不了。你可以用`%ssay`讓我説話。"
+}

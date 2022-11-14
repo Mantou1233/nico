@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("./services/i18n");
+//import "./services/i18n.js";
 require("./services/random");
 require("./services/ap");
 const discord_js_1 = require("discord.js");
 const PluginLoader_1 = __importDefault(require("./core/PluginLoader"));
 const Handlers_1 = require("./core/Handlers");
+const Manager_1 = __importDefault(require("./core/Manager"));
 const { client, db } = storage;
 console.log("Starting nico...");
 const fnMain = async () => {
@@ -38,6 +39,7 @@ async function botMain(client) {
             console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`);
         }
         const loader = new PluginLoader_1.default(client);
+        client.manager = new Manager_1.default(client);
         client.loader = loader;
         await loader.load();
         console.log("-> miraicle has started!");

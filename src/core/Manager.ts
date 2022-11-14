@@ -7,11 +7,7 @@ import {
 	ModalSubmitInteraction
 } from "discord.js";
 
-import type {
-	InteractionContext,
-	MessageCommand,
-	RawMessageHandler
-} from "./structure/Types";
+import type { EventMeta } from "./structure/Types";
 import { Copy } from "./Utils";
 
 type ToSignature<T extends Record<string, any[]>> = {
@@ -21,23 +17,17 @@ type ToSignature<T extends Record<string, any[]>> = {
 class Manager {
 	nowLoading: string | number = -1;
 	client: Client;
-	commands = new Collection<string, MessageCommand>();
-	interactions: InteractionContext[] = [];
+	commands = new Collection<string, EventMeta<"command">>();
+	interactions: EventMeta<"interaction">[] = [];
 
 	constructor(client) {
 		this.client = client;
 	}
 
-	register(
-		ctx:
-			| (InteractionContext<ButtonInteraction> & {
-					type: "button" | "selection" | "modal" | "autocomplete";
-			  })
-			| MessageCommand
-	): void;
+	register(ctx: EventMeta<"interaction"> | EventMeta<"command">): void;
 	register(ctx): void {
-		if (ctx.type == "command" || !ctx.type) {
-			delete ctx["type"];
+		if (ctx.__type__ == "command") {
+			delete ctx["__type__"];
 			if (this.commands.has(ctx.command))
 				throw new Error("Naming conflict!");
 			this.commands.set(ctx.command, {

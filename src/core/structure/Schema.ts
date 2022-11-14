@@ -1,14 +1,12 @@
-import { langTypes } from "@services/i18n";
+
 import { Copy } from "../Utils";
 
 const UserSchema = {
-	lang: "en",
 	lastUsed: 0,
 	ducks: 0
 } satisfies UserSchema;
 
 const GuildSchema = {
-	lang: "en",
 	prefix: process.env.PREFIX as string,
 	lastUsed: 0,
 	ducks: 0,
@@ -16,13 +14,11 @@ const GuildSchema = {
 } satisfies GuildSchema;
 
 interface UserSchema {
-	lang: langTypes;
 	lastUsed: number;
 	ducks: number;
 }
 
 interface GuildSchema {
-	lang: langTypes;
 	prefix: string;
 	lastUsed: number;
 	ducks: number;

@@ -10,8 +10,8 @@ class Manager {
         this.client = client;
     }
     register(ctx) {
-        if (ctx.type == "command" || !ctx.type) {
-            delete ctx["type"];
+        if (ctx.__type__ == "command") {
+            delete ctx["__type__"];
             if (this.commands.has(ctx.command))
                 throw new Error("Naming conflict!");
             this.commands.set(ctx.command, {

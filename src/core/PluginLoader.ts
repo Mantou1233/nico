@@ -1,18 +1,20 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Client } from "discord.js";
 import fg from "fast-glob";
-import Manager from "./Manager";
+import { md } from "@services/Reflector";
+import { EventMeta } from "./structure/Types";
 const outpath = "../../";
 const log = (times: number, message: string): void =>
 	console.log(`${"  ".repeat(times)}-> ${message}`);
 class PluginLoader {
 	client: Client;
+	ready: boolean;
 	loadedList: string[];
 	loadedNames: string[];
 	loadArgs: any;
 	constructor(client: Client) {
-		client.manager = new Manager(client);
 		this.client = client;
+		this.ready = false;
 		this.loadedList = [];
 		this.loadedNames = [];
 	}
@@ -46,22 +48,35 @@ class PluginLoader {
 			this.loadedNames.push(pluginName);
 			this.client.manager.nowLoading = pluginName;
 			let entry = await import(
-				`${outpath}${plugin}${temp.entry.replace(".js", "")}`
+				`${outpath}${plugin}${temp.entry
+					.replace(".ts", "")
+					.replace(".js", "")
+					.replace("./", "")}`
 			);
 			entry = typeof entry == "function" ? entry : entry.default;
-			try {
-				await entry(this.client, this.client.manager);
-			} catch (e) {
-				console.log(e);
-				log(3, `Launching plugin ${pluginName} fail: ${e.message}`);
+
+			const meta = md.get(entry, "pluginMeta");
+			const data = md.get(entry, "pluginData");
+			const inst = new entry();
+			if (!meta || !data) {
+				console.log(`${pluginName} isnt a vaild plugin, rejecting.`);
 				continue;
 			}
+			(Object.values(data.handlers) as EventMeta[]).map((pr: any) =>
+				pr.map(pr =>
+					this.client.manager.register({
+						...pr,
+						handler: pr.handler.bind(inst)
+					})
+				)
+			);
 			log(2, `Loaded plugin ${pluginName}!`);
 			continue;
 		}
 
 		log(1, "Plugin loaded!");
 		log(0, "Bot started!");
+		this.ready = true;
 	}
 	async expo() {
 		this.client.removeAllListeners();
