@@ -9,6 +9,7 @@ const google_translate_1 = __importDefault(require("@iamtraction/google-translat
 const Profile_1 = require("../../../core/Profile");
 const snowflake_1 = require("../../../services/snowflake");
 const gets_1 = require("../../../services/gets");
+const ap_1 = require("../../../services/ap");
 /**
  * @returns void
  */
@@ -115,6 +116,52 @@ async function load(client, cm) {
             //    embed.setImage(url)
             //    return message.channel.send({ embeds: [embed] });
             //}
+        }
+    });
+    cm.register({
+        command: "steal",
+        category: "Basic",
+        desc: "Display user's avatar",
+        force: true,
+        handler: async (msg, { prefix }) => {
+            const args = ap(msg.content, true);
+            const U_emotes = (0, ap_1.emojiParser)(args[1]);
+            if (U_emotes.length === 0)
+                return msg.channel.send("please give me a emoji to add in the argument!!");
+            const msg2 = await msg.channel.send({
+                embeds: [
+                    new discord_js_1.EmbedBuilder()
+                        .setConfig()
+                        .setDescription(U_emotes.reduce((i, v) => i + `${v.display} \`${v.name}\`\n`, "**Adding emotes**: \n"))
+                ]
+            });
+            const success = U_emotes.reduce((i, v) => {
+                i[v.name] = {
+                    display: ":x:",
+                    reason: ""
+                };
+                return i;
+            }, {});
+            for (let emote of U_emotes) {
+                try {
+                    const newEmote = await msg.guild?.emojis.create({
+                        name: emote.name,
+                        attachment: emote.url
+                    });
+                    success[emote.name].display = newEmote?.toString();
+                }
+                catch (e) {
+                    success[emote.name].reason = ` (${e.message})`;
+                }
+            }
+            await msg2.edit({
+                embeds: [
+                    new discord_js_1.EmbedBuilder()
+                        .setConfig()
+                        .setDescription(U_emotes.reduce((i, v) => i +
+                        `${success[v.name].display} \`${v.name}${success[v.name].reason}\`\n`, "**Added emotes**: \n"))
+                ]
+            });
         }
     });
     cm.register({

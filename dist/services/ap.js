@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.flagParser = void 0;
+exports.emojiParser = exports.flagParser = void 0;
 function argumentParser(msg, mode = false, flags = []) {
     if (mode) {
         let temp = msg.split(/ +/);
@@ -21,5 +21,18 @@ function flagParser(args, options) {
     return flags;
 }
 exports.flagParser = flagParser;
+function emojiParser(pr) {
+    const emojis = [];
+    pr.replace(/<(?<animated>a)?:(?<name>\w{2,32}):(?<id>\d{17,20})>/g, (display, _1, _2, _3, _4, _5, group) => void emojis.push({
+        ...group,
+        animated: Boolean(group.animated ?? false),
+        // prettier-ignore
+        url: `https://cdn.discordapp.com/emojis/${group.id}.${Boolean(group.animated ?? false) ? "gif" : "png"}`,
+        // prettier-ignore
+        display
+    }) ?? display);
+    return emojis;
+}
+exports.emojiParser = emojiParser;
 global.ap = argumentParser;
 //# sourceMappingURL=ap.js.map

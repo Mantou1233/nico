@@ -1,4 +1,4 @@
-import { Client, Embed, EmbedBuilder, User } from "discord.js";
+import { Client, Embed, EmbedBuilder, Message, User } from "discord.js";
 
 import axios from "axios";
 import translate from "@iamtraction/google-translate";
@@ -8,6 +8,7 @@ import { UserProfile, GuildProfile } from "~/core/Profile";
 
 import { convertSnowflakeToDate } from "@services/snowflake";
 import { getUser } from "@services/gets";
+import { emojiParser } from "~/services/ap";
 
 /**
  * @returns void
@@ -146,6 +147,69 @@ async function load(client: Client, cm: Manager) {
 			//}
 		}
 	});
+
+	cm.register({
+		command: "steal",
+		category: "Basic",
+		desc: "Adding emotes you specified",
+		usage: "%psteal :tairitsu_cat: :a_bonk:",
+		force: true,
+		handler: async (msg: Message, { prefix }) => {
+			const args = ap(msg.content, true);
+			const U_emotes = emojiParser(args[1]);
+			if (U_emotes.length === 0)
+				return msg.channel.send(
+					"please give me a emoji to add in the argument!!"
+				);
+			const msg2 = await msg.channel.send({
+				embeds: [
+					new EmbedBuilder()
+						.setConfig()
+						.setDescription(
+							U_emotes.reduce(
+								(i, v) => i + `${v.display} \`${v.name}\`\n`,
+								"**Adding emotes**: \n"
+							)
+						)
+				]
+			});
+			const success = U_emotes.reduce((i, v) => {
+				i[v.name] = {
+					display: ":x:",
+					reason: ""
+				};
+				return i;
+			}, {});
+			for (let emote of U_emotes) {
+				try {
+					const newEmote = await msg.guild?.emojis.create({
+						name: emote.name,
+						attachment: emote.url
+					});
+					success[emote.name].display = newEmote?.toString();
+				} catch (e) {
+					success[emote.name].reason = ` (${e.message})`;
+				}
+			}
+			await msg2.edit({
+				embeds: [
+					new EmbedBuilder()
+						.setConfig()
+						.setDescription(
+							U_emotes.reduce(
+								(i, v) =>
+									i +
+									`${success[v.name].display} \`${v.name}${
+										success[v.name].reason
+									}\`\n`,
+								"**Added emotes**: \n"
+							)
+						)
+				]
+			});
+		}
+	});
+
 	cm.register({
 		command: "avatar",
 		category: "Basic",
