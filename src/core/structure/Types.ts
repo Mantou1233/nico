@@ -22,7 +22,7 @@ interface MessageCommand extends RawMessageHandler {
 }
 
 interface InteractionContext<T extends Interaction = Interaction> {
-	type: "button" | "selection" | "modal" | "autocomplete";
+	type: "button" | "messageContext" | "userContext" | "selectMenu" | "modal";
 	from?: string;
 	handler: (interaction: T, ext: any) => Awaitable<void | any>;
 }

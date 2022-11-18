@@ -6,6 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"main": "node dist/index",
+		"deploy": "node dist/services/deploy",
 		"build": "tsc && resolve-tspaths",
 		"watch": "tsc-watch --onSuccess resolve-tspaths"
 	},
@@ -24,6 +25,7 @@
 	"dependencies": {
 		"@iamtraction/google-translate": "^2.0.0",
 		"axios": "^0.21.4",
+		"botarcapi_lib": "^1.1.9",
 		"connect-timeout": "^1.9.0",
 		"discord.js": "^14.6.0",
 		"dotenv": "^10.0.0",
@@ -43,5 +45,8 @@
 		"ts-node": "^10.2.1",
 		"tsc-watch": "^5.0.3",
 		"typescript": "^5.0.0-dev.20221102"
+	},
+	"overrides": {
+		"discord-api-types": "0.37.14"
 	}
 }

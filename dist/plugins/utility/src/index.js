@@ -10,6 +10,7 @@ const Profile_1 = require("../../../core/Profile");
 const snowflake_1 = require("../../../services/snowflake");
 const gets_1 = require("../../../services/gets");
 const ap_1 = require("../../../services/ap");
+const pagination_1 = require("../../../services/pagination");
 /**
  * @returns void
  */
@@ -17,7 +18,7 @@ async function load(client, cm) {
     cm.register({
         command: "hitokoto",
         category: "Fun",
-        desc: "get a quote from internet.",
+        desc: "get a quote from internet",
         handler: async (msg) => {
             try {
                 var { hitokoto, creator: author, id } = (await axios_1.default.get("https://international.v1.hitokoto.cn/"))
@@ -38,6 +39,61 @@ async function load(client, cm) {
                         text: `${id}`
                     })
                 ]
+            });
+        }
+    });
+    /*
+
+    */
+    cm.register({
+        command: "fetchr",
+        category: "Fun",
+        desc: "get a q&a from bill wurtz's website",
+        handler: async (msg) => {
+            const args = ap(msg.content);
+            args[1] = (0, gets_1.getMessageId)(args[1]);
+            const vl = (0, snowflake_1.validateSnowflake)(args[1]);
+            if (typeof vl == "string")
+                return msg.reply(vl);
+            let msg2;
+            try {
+                msg2 = await msg.channel.messages.fetch(args[1]);
+            }
+            catch (e) {
+                return msg.channel.send({
+                    embeds: [
+                        {
+                            description: `nah, ${e.message}`,
+                            color: parseInt(i18n.globe["color"], 16)
+                        }
+                    ]
+                });
+            }
+            console.log(msg2);
+        }
+    });
+    cm.register({
+        command: "test",
+        category: "Fun",
+        desc: "test the newest pagination module from 2027",
+        handler: async (msg) => {
+            (0, pagination_1.pagination)(msg, [
+                new discord_js_1.EmbedBuilder().setDescription("hi"),
+                new discord_js_1.EmbedBuilder().setDescription("whi"),
+                new discord_js_1.EmbedBuilder().setDescription("wh3i"),
+                new discord_js_1.EmbedBuilder().setDescription("wh4i"),
+                new discord_js_1.EmbedBuilder().setDescription("whi1"),
+                new discord_js_1.EmbedBuilder().setDescription("wzhi"),
+                new discord_js_1.EmbedBuilder().setDescription("wwhi"),
+                new discord_js_1.EmbedBuilder()
+                    .setDescription("w1hi")
+                    .setDescription("sbsbs"),
+                new discord_js_1.EmbedBuilder().setDescription("whi"),
+                new discord_js_1.EmbedBuilder().setDescription("whi").setTitle("SV"),
+                new discord_js_1.EmbedBuilder().setDescription("ccc").setTitle("SBSBSB"),
+                new discord_js_1.EmbedBuilder().setDescription("643")
+            ], {
+                footer: "nico nico ni!!"
             });
         }
     });
@@ -78,7 +134,7 @@ async function load(client, cm) {
     cm.register({
         command: "userinfo",
         category: "Basic",
-        desc: "Display user information from snowflake.",
+        desc: "Display user information from snowflake",
         cooldown: 5 * 1000,
         force: true,
         handler: async (msg, { prefix }) => {
@@ -121,7 +177,8 @@ async function load(client, cm) {
     cm.register({
         command: "steal",
         category: "Basic",
-        desc: "Display user's avatar",
+        desc: "Adding emotes you specified",
+        usage: "%psteal :tairitsu_cat: :a_bonk:",
         force: true,
         handler: async (msg, { prefix }) => {
             const args = ap(msg.content, true);

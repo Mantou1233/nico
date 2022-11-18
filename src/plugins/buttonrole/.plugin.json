@@ -1,5 +1,5 @@
 {
-	"name": "moderation",
+	"name": "buttonrole",
 	"version": "b4",
 	"entry": "src/index.js"
 }

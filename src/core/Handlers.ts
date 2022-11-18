@@ -65,30 +65,31 @@ async function CommandHandler(msg: Message) {
 }
 
 async function InteractionHandler(interaction: Interaction) {
-	if (interaction.user.bot) return;
-
 	const p = await UserProfile(interaction);
 	await p.checkAndUpdate();
 
 	const g = await GuildProfile(interaction);
 	await g.checkAndUpdate();
-	console.log(client.manager.interactions);
 
 	let handlers: any[] = [];
 	if (interaction.isButton())
 		handlers = client.manager.interactions.filter(v => v.type === "button");
 	if (interaction.isSelectMenu())
 		handlers = client.manager.interactions.filter(
-			v => v.type === "selection"
+			v => v.type === "selectMenu"
 		);
 	if (interaction.isModalSubmit())
 		handlers = client.manager.interactions.filter(v => v.type === "modal");
-	if (interaction.isAutocomplete())
+	if (interaction.isMessageContextMenuCommand())
 		handlers = client.manager.interactions.filter(
-			v => v.type === "autocomplete"
+			v => v.type === "messageContext"
+		);
+	if (interaction.isUserContextMenuCommand())
+		handlers = client.manager.interactions.filter(
+			v => v.type === "userContext"
 		);
 	for (let handler of handlers) {
-		await handler.handler(interaction);
+		handler.handler(interaction);
 	}
 }
 

@@ -82,7 +82,7 @@ async function load(client, cm) {
     cm.register({
         command: "buttonrole",
         category: "Moderation",
-        desc: "",
+        desc: "make a button on a existing message of me so when people press it they can get roles boo",
         usage: "`%pbuttonrole <MessageID> <buttontext> <role> [addmessage] [removemessage]`",
         handler: async (msg, { prefix }) => {
             if (!msg.member?.permissions.has("ManageRoles"))

@@ -7,6 +7,16 @@ Object.defineProperties(discord_js_1.EmbedBuilder.prototype, {
             return this.setColor(parseInt(i18n.globe.color, 16));
         },
         enumerable: false
+    },
+    addField: {
+        value: function (name, value, inline = false) {
+            return this.addFields({
+                name,
+                value,
+                inline
+            });
+        },
+        enumerable: false
     }
 });
 //# sourceMappingURL=djsAddition.js.map

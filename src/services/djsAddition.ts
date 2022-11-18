@@ -11,5 +11,20 @@ Object.defineProperties(EmbedBuilder.prototype, {
 			return this.setColor(parseInt(i18n.globe.color, 16));
 		},
 		enumerable: false
+	},
+	addField: {
+		value: function (
+			this: EmbedBuilder,
+			name: string,
+			value: string,
+			inline: boolean = false
+		): EmbedBuilder {
+			return this.addFields({
+				name,
+				value,
+				inline
+			});
+		},
+		enumerable: false
 	}
 });

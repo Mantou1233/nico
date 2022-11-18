@@ -35,6 +35,7 @@ declare module "discord.js" {
 	}
 	interface EmbedBuilder {
 		setConfig: () => this;
+		addField: (k, v, i?) => this;
 	}
 }
 export {};

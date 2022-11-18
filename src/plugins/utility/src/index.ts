@@ -6,9 +6,10 @@ import translate from "@iamtraction/google-translate";
 import Manager from "~/core/Manager";
 import { UserProfile, GuildProfile } from "~/core/Profile";
 
-import { convertSnowflakeToDate } from "@services/snowflake";
-import { getUser } from "@services/gets";
+import { convertSnowflakeToDate, validateSnowflake } from "@services/snowflake";
+import { getMessageId, getUser } from "@services/gets";
 import { emojiParser } from "~/services/ap";
+import { pagination } from "~/services/pagination";
 
 /**
  * @returns void
@@ -17,7 +18,7 @@ async function load(client: Client, cm: Manager) {
 	cm.register({
 		command: "hitokoto",
 		category: "Fun",
-		desc: "get a quote from internet.",
+		desc: "get a quote from internet",
 		handler: async msg => {
 			try {
 				var {
@@ -45,6 +46,67 @@ async function load(client: Client, cm: Manager) {
 						})
 				]
 			});
+		}
+	});
+
+	/*
+
+	*/
+
+	cm.register({
+		command: "fetchr",
+		category: "Fun",
+		desc: "get a q&a from bill wurtz's website",
+		handler: async msg => {
+			const args = ap(msg.content);
+			args[1] = getMessageId(args[1]);
+			const vl = validateSnowflake(args[1]);
+			if (typeof vl == "string") return msg.reply(vl);
+
+			let msg2: Message;
+			try {
+				msg2 = await msg.channel.messages.fetch(args[1]);
+			} catch (e) {
+				return msg.channel.send({
+					embeds: [
+						{
+							description: `nah, ${e.message}`,
+							color: parseInt(i18n.globe["color"], 16)
+						}
+					]
+				});
+			}
+			console.log(msg2);
+		}
+	});
+
+	cm.register({
+		command: "test",
+		category: "Fun",
+		desc: "test the newest pagination module from 2027",
+		handler: async msg => {
+			pagination(
+				msg,
+				[
+					new EmbedBuilder().setDescription("hi"),
+					new EmbedBuilder().setDescription("whi"),
+					new EmbedBuilder().setDescription("wh3i"),
+					new EmbedBuilder().setDescription("wh4i"),
+					new EmbedBuilder().setDescription("whi1"),
+					new EmbedBuilder().setDescription("wzhi"),
+					new EmbedBuilder().setDescription("wwhi"),
+					new EmbedBuilder()
+						.setDescription("w1hi")
+						.setDescription("sbsbs"),
+					new EmbedBuilder().setDescription("whi"),
+					new EmbedBuilder().setDescription("whi").setTitle("SV"),
+					new EmbedBuilder().setDescription("ccc").setTitle("SBSBSB"),
+					new EmbedBuilder().setDescription("643")
+				],
+				{
+					footer: "nico nico ni!!"
+				}
+			);
 		}
 	});
 
@@ -88,7 +150,7 @@ async function load(client: Client, cm: Manager) {
 	cm.register({
 		command: "userinfo",
 		category: "Basic",
-		desc: "Display user information from snowflake.",
+		desc: "Display user information from snowflake",
 		cooldown: 5 * 1000,
 		force: true,
 		handler: async (msg, { prefix }) => {

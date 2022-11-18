@@ -2,10 +2,22 @@ import "@services/i18n";
 import "@services/random";
 import "@services/ap";
 
-import { ActivityType, Client } from "discord.js";
+import {
+	ActivityType,
+	ApplicationCommandType,
+	Client,
+	ContextMenuCommandBuilder
+} from "discord.js";
 
 import PluginLoader from "@core/PluginLoader";
 import { CommandHandler, InteractionHandler } from "~/core/Handlers";
+
+const __T__T = [
+	new ContextMenuCommandBuilder()
+		.setName("Steal emojis")
+		.setType(ApplicationCommandType.User)
+		.toJSON()
+];
 
 const { client, db } = storage;
 
@@ -40,13 +52,22 @@ async function botMain(client: Client) {
 			console.log(
 				`connected to mongo! DB ping: ${require("ms")(
 					Date.now() - _tmp
-				)}`
+				)}, s: ${await db.get("sys:time")}`
 			);
 		}
 		const loader = new PluginLoader(client);
 
 		client.loader = loader;
 		await loader.load();
+
+		// Register for a single guild
+
+		// await client.guilds.cache
+		// 	.get("1026816602588590100")!
+		// 	.commands.set(__T__T);
+
+		// Register for all the guilds the bot is in
+		await client.application!.commands.set(__T__T);
 
 		console.log("-> miraicle has started!");
 		console.log(

@@ -4,7 +4,9 @@ import {
 	Client,
 	ButtonInteraction,
 	SelectMenuInteraction,
-	ModalSubmitInteraction
+	ModalSubmitInteraction,
+	UserContextMenuCommandInteraction,
+	MessageContextMenuCommandInteraction
 } from "discord.js";
 
 import type {
@@ -31,9 +33,21 @@ class Manager {
 	register(
 		ctx:
 			| (InteractionContext<ButtonInteraction> & {
-					type: "button" | "selection" | "modal" | "autocomplete";
+					type: "button";
 			  })
-			| MessageCommand
+			| (InteractionContext<SelectMenuInteraction> & {
+					type: "selectMenu";
+			  })
+			| (InteractionContext<ModalSubmitInteraction> & {
+					type: "modal";
+			  })
+			| (InteractionContext<UserContextMenuCommandInteraction> & {
+					type: "userContext";
+			  })
+			| (InteractionContext<MessageContextMenuCommandInteraction> & {
+					type: "messageContext";
+			  })
+			| (MessageCommand & { type?: never | "command" })
 	): void;
 	register(ctx): void {
 		if (ctx.type == "command" || !ctx.type) {

@@ -5,8 +5,15 @@ import "discord.js";
 
 import "@services/djsAddition";
 
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import * as Discord from "discord.js";
+import {
+	Client,
+	GatewayIntentBits,
+	Partials,
+	disableValidators
+} from "discord.js";
 import { Database } from "quickmongo";
+disableValidators();
 
 const client = new Client({
 	intents: [

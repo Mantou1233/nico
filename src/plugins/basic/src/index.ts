@@ -1,4 +1,4 @@
-import { version } from "discord.js";
+import { ButtonStyle, version } from "discord.js";
 import { inspect } from "util";
 
 import * as Discord from "discord.js";
@@ -255,8 +255,8 @@ async function load(client: Discord.Client, cm: Manager) {
 					new Discord.EmbedBuilder()
 						.setConfig()
 						.setTitle(
-							`nico ${"0.1"} ${(
-								(process.env.BUILD as string) || "Development "
+							`nico - ${(
+								(process.env.BUILD as string) || "Development"
 							).toLowerCase()}`
 						)
 						.setThumbnail(
@@ -341,7 +341,7 @@ async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "choose",
 		category: "Basic",
-		desc: "Display bot information",
+		desc: "Choose a random",
 		handler: async msg => {
 			const args = ap(msg.content, true);
 			let arr = args[1].split(";");
@@ -361,7 +361,7 @@ async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "lang",
 		category: "Basic",
-		desc: "Get how many money you got!",
+		desc: "set language of your usage",
 		handler: async msg => {
 			let args = ap(msg.content);
 			const p = await UserProfile(msg.author.id);
@@ -399,7 +399,7 @@ async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "first-msg",
 		category: "Basic",
-		desc: "Display bot information",
+		desc: "Get the first message sent on this channel",
 		handler: async msg => {
 			const messages = await msg.channel.messages.fetch({
 				limit: 1,
@@ -416,7 +416,360 @@ async function load(client: Discord.Client, cm: Manager) {
 		alias: ["h"],
 		force: true,
 		handler: async (msg, { prefix }) => {
-			help(client, msg, prefix);
+			const args = ap(msg.content, true)
+				.slice(1)
+				.filter(v => !(v === ""));
+			//start
+			// change emojis according to your category
+			let emojis = {
+				basic: "ℹ️",
+				owner: "👑",
+				info: "📊",
+				fun: "😂"
+			};
+
+			//limit of commands shown every page
+			let limit = 5;
+			//end
+
+			if (!args.length) {
+				const categoryList = [
+					...new Set(client.manager.commands.map(cmd => cmd.category))
+				];
+
+				const categorys = categoryList.map(cat => {
+					return {
+						category: cat?.toLowerCase(),
+						commands: [
+							...client.manager.commands
+								.filter(
+									cmd => !cmd.hidden && cmd.category === cat
+								)
+								.values()
+						].map(cmd => {
+							return {
+								name: cmd.command,
+								description: (i18n
+									.parse(
+										msg.lang ?? "en",
+										`-${cmd.category?.toLowerCase()}.${cmd.command.toLowerCase()}.description`
+									)
+									.endsWith(".description")
+									? cmd.desc || `${prefix}${cmd.command}`
+									: i18n.parse(
+											msg.lang ?? "en",
+											`-${cmd.category?.toLowerCase()}.${cmd.command.toLowerCase()}.description`
+									  )
+								).replaceAll("%p", prefix)
+							};
+						})
+					};
+				});
+
+				let capf = (baa: string) => {
+					const [first, ...rst] = baa.split("");
+					return first.toUpperCase() + rst.join("");
+				};
+				let menu = boo =>
+					new Discord.ActionRowBuilder().addComponents(
+						new Discord.SelectMenuBuilder()
+							.setPlaceholder("Select...")
+							.setCustomId("h-menu")
+							.setDisabled(boo)
+							.addOptions([
+								{
+									label: "main menu",
+									emoji: "🏡",
+									value: "menu",
+									description: "going back to the home menu"
+								},
+								...categorys.map(c => {
+									return {
+										label: c.category!,
+										value: c.category?.toLowerCase()!,
+										emoji:
+											emojis[
+												c.category?.toLowerCase() || ""
+											] || ("❓" as string)
+									};
+								})
+							] as any)
+					);
+
+				let nav = (b1, b2) =>
+					new Discord.ActionRowBuilder().addComponents([
+						new Discord.ButtonBuilder()
+							.setStyle(ButtonStyle.Secondary)
+							.setEmoji("⏪")
+							.setCustomId("h-prev")
+							.setDisabled(b1),
+						new Discord.ButtonBuilder()
+							.setStyle(ButtonStyle.Secondary)
+							.setEmoji("⏩")
+							.setCustomId("h-next")
+							.setDisabled(b2)
+					]);
+
+				let int = new Discord.EmbedBuilder()
+					.setConfig()
+					.setTitle(`nico help menu`)
+					.setDescription(
+						i18n.parse(
+							msg.lang,
+							"basic.help.description",
+							prefix,
+							prefix
+						)
+					)
+					.setThumbnail(client.user!.displayAvatarURL());
+
+				let msg2 = await msg.channel.send({
+					embeds: [int],
+					components: [menu(false) as any]
+				});
+
+				let collector = await msg2.createMessageComponentCollector({
+					time: 60000
+				});
+
+				let ch;
+				let page = 0;
+				let home = true;
+
+				collector.on("collect", async (i: any) => {
+					if (i.user.id !== msg.author.id)
+						return i.reply({
+							content: "You can't interact in this message",
+							ephemeral: true
+						});
+
+					await i.deferUpdate();
+
+					collector.resetTimer();
+
+					if (i.isSelectMenu() && i.customId === "h-menu") {
+						let [dir] = i.values;
+						if (dir === "menu") {
+							home = true;
+							return i.editReply({
+								embeds: [int],
+								components: [menu(false)]
+							});
+						}
+
+						ch = dir;
+
+						const cg = categorys.find(
+							m => m.category!.toLowerCase() === dir
+						)!.commands;
+						let max = Math.ceil(cg.length / limit);
+
+						page = 0;
+
+						if (page + 1 > max) page = max;
+
+						let em = new Discord.EmbedBuilder()
+							.setConfig()
+							.setTitle(
+								`${
+									emojis[dir || ""] || ("❓" as string)
+								} ${capf(dir)} commands`
+							)
+							.addFields(
+								cg!
+									.map(c => {
+										return {
+											name: `• ${c.name}`,
+											value:
+												c.description || "Not provided",
+											inline: false
+										};
+									})
+									.slice(0, (page + 1) * limit)
+							)
+							.setFooter({
+								text: `page 1 of ${max}`
+							});
+
+						home = false;
+
+						if (page + 1 === 1 && max === 1) {
+							return i.editReply({
+								embeds: [em],
+								components: [menu(false), nav(true, true)]
+							});
+						} else {
+							return i.editReply({
+								embeds: [em],
+								components: [menu(false), nav(true, false)]
+							});
+						}
+					}
+
+					if (i.isButton()) {
+						const cg = categorys.find(
+							m => m.category!.toLowerCase() === ch
+						)!.commands;
+
+						let max = Math.ceil(cg.length / limit);
+						if (page + 1 > max) page = max;
+
+						home = false;
+
+						let eg = start => {
+							return new Discord.EmbedBuilder()
+								.setConfig()
+								.setTitle(
+									`${
+										emojis[ch || ""] || ("❓" as string)
+									} ${capf(ch)} commands`
+								)
+								.addFields(
+									cg!
+										.map(c => {
+											return {
+												name: `• ${c.name}`,
+												value:
+													c.description ||
+													"Not provided",
+												inline: false
+											};
+										})
+										.slice(
+											(start + 1) * limit - limit,
+											(start + 1) * limit
+										)
+								)
+
+								.setFooter({
+									text: `page ${start + 1} of ${max}`
+								});
+						};
+
+						if (i.customId === "h-prev") {
+							page = page > 0 ? --page : cg!.length - 1;
+						}
+
+						if (i.customId === "h-next") {
+							page = page + 1 < cg!.length ? ++page : 0;
+						}
+
+						if (page + 1 === 1 && max === 1) {
+							return i.editReply({
+								embeds: [eg(page)],
+								components: [menu(false), nav(true, true)]
+							});
+						}
+
+						if (page + 1 === 1) {
+							return i.editReply({
+								embeds: [eg(page)],
+								components: [menu(false), nav(true, false)]
+							});
+						}
+
+						if (page + 1 === max) {
+							return i.editReply({
+								embeds: [eg(page)],
+								components: [menu(false), nav(false, true)]
+							});
+						} else {
+							return i.editReply({
+								embeds: [eg(page)],
+								components: [menu(false), nav(false, false)]
+							});
+						}
+					}
+				});
+
+				collector.on("end", async () => {
+					if (!home) {
+						return void msg2.edit({
+							components: [menu(true), nav(true, true)] as any[]
+						});
+					} else {
+						return void msg2.edit({
+							components: [menu(true)] as any[]
+						});
+					}
+				});
+			} else {
+				const command = client.manager.commands.find(
+					a =>
+						(a.alias ?? []).includes(args[1]) ||
+						a.command === args[1]
+				);
+				if (!command)
+					return msg.channel.send({
+						embeds: [
+							new Discord.EmbedBuilder()
+								.setColor("#B33A3A")
+								.setDescription(
+									i18n.parse(msg.lang, "basic.help.notfound")
+								)
+						]
+					});
+				/*
+        args[0] = 'help'
+        var path = `../../commands/${args[0]}.js`;
+        //
+        try{
+            require(`../commands/${args[0]}`)
+        }catch (err){
+            exists = 0
+        }
+        ///
+        fs.access(path, (err) => {
+            if (!err) {
+              exists = 1
+              return;
+            }
+        })*/
+				let [desc, usage] = [
+					i18n.parse(
+						msg.lang ?? "en",
+						`-${command.category?.toLowerCase()}.${command.command.toLowerCase()}.description`
+					),
+					i18n.parse(
+						msg.lang ?? "en",
+						`-${command.category?.toLowerCase()}.${command.command.toLowerCase()}.usage`
+					)
+				].map(v =>
+					v.endsWith(".usage") || v.endsWith(".description")
+						? undefined
+						: v
+				);
+				usage = (
+					usage ??
+					(command.usage || `${prefix}${command.command}`)
+				).replaceAll("%p", prefix);
+				desc = (
+					desc ??
+					(command.desc || `${prefix}${command.command}`)
+				).replaceAll("%p", prefix);
+				const newEmbed = new Discord.EmbedBuilder()
+					.setColor(i18n.globe.color)
+					.setTitle(
+						`\`${prefix}${command.command}\`` +
+							(command.alias ?? []).reduce(
+								(p, v) => p + ` **/** \`${prefix}${v}\``,
+								""
+							)
+					)
+					.setDescription(`${desc}`)
+					.addFields({
+						name: "Usage",
+						value: `${usage}`,
+						inline: true
+					})
+					.setFooter({
+						text: `category: ${
+							emojis[command.category || ""] || "❓"
+						} ${command.category}`
+					});
+				msg.channel.send({ embeds: [newEmbed] });
+			}
+			//help(client, msg, prefix);
 		}
 	});
 
@@ -436,7 +789,6 @@ async function load(client: Discord.Client, cm: Manager) {
 			if (prefix.includes(" ")) return msg.reply("no space!!!@");
 
 			g.prefix = prefix;
-			console.log(g);
 			msg.reply(
 				`server prefix has been changed from ${oprefix} to ${prefix}`
 			);

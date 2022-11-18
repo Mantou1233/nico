@@ -6,6 +6,7 @@ require("discord.js");
 require("./services/djsAddition");
 const discord_js_1 = require("discord.js");
 const quickmongo_1 = require("quickmongo");
+(0, discord_js_1.disableValidators)();
 const client = new discord_js_1.Client({
     intents: [
         discord_js_1.GatewayIntentBits.Guilds,

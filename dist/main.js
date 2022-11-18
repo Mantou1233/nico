@@ -9,6 +9,12 @@ require("./services/ap");
 const discord_js_1 = require("discord.js");
 const PluginLoader_1 = __importDefault(require("./core/PluginLoader"));
 const Handlers_1 = require("./core/Handlers");
+const __T__T = [
+    new discord_js_1.ContextMenuCommandBuilder()
+        .setName("Steal emojis")
+        .setType(discord_js_1.ApplicationCommandType.User)
+        .toJSON()
+];
 const { client, db } = storage;
 console.log("Starting nico...");
 const fnMain = async () => {
@@ -35,11 +41,17 @@ async function botMain(client) {
             await db.connect();
             let _tmp = Date.now();
             await db.add("sys:time", 1);
-            console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`);
+            console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}, s: ${await db.get("sys:time")}`);
         }
         const loader = new PluginLoader_1.default(client);
         client.loader = loader;
         await loader.load();
+        // Register for a single guild
+        // await client.guilds.cache
+        // 	.get("1026816602588590100")!
+        // 	.commands.set(__T__T);
+        // Register for all the guilds the bot is in
+        await client.application.commands.set(__T__T);
         console.log("-> miraicle has started!");
         console.log(`-> watching ${client.guilds.cache.size} Servers, ${client.channels.cache.size} channels & ${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`);
         const botPresence = "{server} Servers | +help";

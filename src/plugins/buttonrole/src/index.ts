@@ -3,7 +3,7 @@ import * as Discord from "discord.js";
 import { validateSnowflake } from "@services/snowflake";
 import Manager from "~/core/Manager";
 import { GuildProfile } from "~/core/Profile";
-import { getMessageId, getRole } from "./../../../services/gets";
+import { getMessageId, getRole } from "../../../services/gets";
 
 /**
  * @returns void
@@ -11,7 +11,7 @@ import { getMessageId, getRole } from "./../../../services/gets";
 async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		type: "button",
-		handler: async (interaction: Discord.ButtonInteraction) => {
+		handler: async interaction => {
 			if (
 				interaction.customId.startsWith("grole/") &&
 				interaction.member!.roles instanceof
@@ -62,7 +62,7 @@ async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "buttonrole",
 		category: "Moderation",
-		desc: "",
+		desc: "make a button on a existing message of me so when people press it they can get roles boo",
 		usage: "`%pbuttonrole <MessageID> <buttontext> <role> [addmessage] [removemessage]`",
 		handler: async (msg, { prefix }) => {
 			if (!msg.member?.permissions.has("ManageRoles"))
@@ -115,7 +115,6 @@ async function load(client: Discord.Client, cm: Manager) {
 				[]) as Discord.ButtonComponent[]) {
 				buttons.push({
 					custom_id: compo.customId!,
-
 					label: compo.label!,
 					type: 2,
 					style: 1
