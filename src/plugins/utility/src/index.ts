@@ -54,33 +54,6 @@ async function load(client: Client, cm: Manager) {
 	*/
 
 	cm.register({
-		command: "fetchr",
-		category: "Fun",
-		desc: "get a q&a from bill wurtz's website",
-		handler: async msg => {
-			const args = ap(msg.content);
-			args[1] = getMessageId(args[1]);
-			const vl = validateSnowflake(args[1]);
-			if (typeof vl == "string") return msg.reply(vl);
-
-			let msg2: Message;
-			try {
-				msg2 = await msg.channel.messages.fetch(args[1]);
-			} catch (e) {
-				return msg.channel.send({
-					embeds: [
-						{
-							description: `nah, ${e.message}`,
-							color: parseInt(i18n.globe["color"], 16)
-						}
-					]
-				});
-			}
-			console.log(msg2);
-		}
-	});
-
-	cm.register({
 		command: "test",
 		category: "Fun",
 		desc: "test the newest pagination module from 2027",

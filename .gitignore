@@ -5,6 +5,7 @@ package-lock.json
 
 # enviroments
 .env
+*.tmp
 config.json
 
 # debug
