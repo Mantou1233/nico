@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.interaction = exports.command = exports.Cogs = exports.Inject = exports.DefinePlugin = void 0;
-const Reflector_1 = require("../services/Reflector");
+const Reflector_1 = require("@services/Reflector");
 function DefinePlugin(meta = {}) {
     return function PluginPatcher(C) {
         Reflector_1.md.set(C, "pluginMeta", {
@@ -34,13 +34,7 @@ exports.DefinePlugin = DefinePlugin;
 function Inject(obj, key) {
     if (!storage[key])
         return;
-    console.log("uh");
-    obj.constructor = function constructor() {
-        this[key] = storage[key];
-        console.log(this);
-        return obj.constructor();
-    };
-    console.log(obj.constructor);
+    return (0, Reflector_1.md)("Inject");
 }
 exports.Inject = Inject;
 function Cogs(extenstions) {

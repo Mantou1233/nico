@@ -1,26 +1,25 @@
-class Metadata {
-	get(obj, key: string | symbol, prop?: string | symbol) {
-		return Reflect.getMetadata(key, obj, ...(([prop] ?? []) as [string]));
-	}
-	set(obj, key: string | symbol, value, prop?: string | symbol) {
-		return Reflect.defineMetadata(
-			key,
-			value,
-			obj,
-			...(([prop] ?? []) as [string])
-		);
-	}
-	delete(obj, key: string | symbol, prop?: string | symbol) {
-		return Reflect.deleteMetadata(
-			key,
-			obj,
-			...(([prop] ?? []) as [string])
-		);
-	}
-	keys(obj, prop?: string | symbol) {
-		return Reflect.getMetadataKeys(obj, ...(([prop] ?? []) as [string]));
+import { MetadataSetter, Reflector } from "typed-reflector";
+import { ToArrayMap } from "~/core/Utils";
+import { Registries } from "./Registries";
+
+const metadata = new MetadataSetter<
+	Registries.MetadataMap,
+	Registries.MetadataArrayMap
+>();
+
+const reflector = new Reflector<
+	Registries.MetadataMap,
+	Registries.MetadataArrayMap
+>();
+
+class Injector<T> {
+	patch<K extends keyof T>(obj, key: K, value: T[K], prop?) {
+		Reflect.defineMetadata(key, value, obj, prop);
 	}
 }
 
-const md = new Metadata();
-export { md, Metadata };
+const injector = new Injector<
+	Registries.MetadataMap & ToArrayMap<Registries.MetadataArrayMap>
+>();
+
+export { metadata as md, reflector as rf, injector as ij };

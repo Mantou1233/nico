@@ -5,6 +5,9 @@ interface Events {
 	unknown: {
 		params: [];
 	};
+	any: {
+		params: [];
+	};
 	command: {
 		command?: string;
 		disabled?: boolean;
@@ -19,7 +22,7 @@ interface Events {
 }
 
 type EventMeta<K extends keyof Events = "unknown"> = {
-	__type__: K;
+	__type__: K extends "unknown" ? any : K;
 	from: string;
 	at: string;
 	handler: (...args: Events[K]["params"]) => Awaitable<any>;

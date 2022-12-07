@@ -37,5 +37,5 @@ class i18n {
         return str;
     }
 }
-globalThis.i18n = new i18n();
+global.i18n = new i18n();
 //# sourceMappingURL=i18n.js.map

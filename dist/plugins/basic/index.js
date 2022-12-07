@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Decorators_1 = require("../../core/Decorators");
+const Decorators_1 = require("~/core/Decorators");
 const discord_js_1 = require("discord.js");
 let BasicPlugin = class BasicPlugin {
     client;

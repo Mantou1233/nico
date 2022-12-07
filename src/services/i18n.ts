@@ -42,4 +42,4 @@ class i18n {
 	}
 }
 
-globalThis.i18n = new i18n();
+global.i18n = new i18n();

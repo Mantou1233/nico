@@ -6,3 +6,11 @@ export type KeyOfUnion<T> = T[keyof T];
 export type Copy<T> = {
 	[K in keyof T]: T[K];
 };
+
+export type SectAny<T, VType = any> = T & {
+	[key: string]: VType;
+};
+
+export type ToArrayMap<T> = {
+	[K in keyof T]: T[K][];
+};

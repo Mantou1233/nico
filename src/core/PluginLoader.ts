@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Client } from "discord.js";
 import fg from "fast-glob";
-import { md } from "@services/Reflector";
+import { rf } from "@services/Reflector";
 import { EventMeta } from "./structure/Types";
+import { Registries } from "./../services/Registries";
 const outpath = "../../";
 const log = (times: number, message: string): void =>
 	console.log(`${"  ".repeat(times)}-> ${message}`);
@@ -55,21 +56,8 @@ class PluginLoader {
 			);
 			entry = typeof entry == "function" ? entry : entry.default;
 
-			const meta = md.get(entry, "pluginMeta");
-			const data = md.get(entry, "pluginData");
-			const inst = new entry();
-			if (!meta || !data) {
-				console.log(`${pluginName} isnt a vaild plugin, rejecting.`);
-				continue;
-			}
-			(Object.values(data.handlers) as EventMeta[]).map((pr: any) =>
-				pr.map(pr =>
-					this.client.manager.register({
-						...pr,
-						handler: pr.handler.bind(inst)
-					})
-				)
-			);
+			Registries["Loaders"][temp.vl || 2](entry, { name: pluginName });
+
 			log(2, `Loaded plugin ${pluginName}!`);
 			continue;
 		}
