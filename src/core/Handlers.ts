@@ -69,16 +69,18 @@ async function InteractionHandler(interaction: Interaction) {
 
 	let handlers: any[] = [];
 	if (interaction.isButton())
-		handlers = client.manager.interactions.filter(v => v.type === "button");
+		handlers = client.manager.interactions.filter(
+			v => v.type === "button" && (v.filter || (() => true))(interaction)
+		);
 	if (interaction.isSelectMenu())
 		handlers = client.manager.interactions.filter(
-			v => v.type === "selection"
+			v =>
+				v.type === "selectmenu" &&
+				(v.filter || (() => true))(interaction)
 		);
 	if (interaction.isModalSubmit())
-		handlers = client.manager.interactions.filter(v => v.type === "modal");
-	if (interaction.isAutocomplete())
 		handlers = client.manager.interactions.filter(
-			v => v.type === "autocomplete"
+			v => v.type === "modal" && (v.filter || (() => true))(interaction)
 		);
 	for (let handler of handlers) {
 		await handler.handler(interaction);

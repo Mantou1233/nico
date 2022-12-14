@@ -16,7 +16,7 @@ interface Events {
 		params: [msg: Message, ext: any];
 	};
 	interaction: {
-		type: "button" | "selection" | "modal" | "autocomplete";
+		type: "button" | "selectmenu" | "modal";
 		params: [interaction: Interaction, ext: any];
 	};
 }

@@ -1,0 +1,145 @@
+{
+    "info": {
+        "id": "305389581304463360",
+        "username": "KiziRay",
+        "avatar": "f70bb354f380bf4829a145681bc64d6b",
+        "avatar_decoration": null,
+        "discriminator": "0001",
+        "public_flags": 4194560,
+        "banner": "1a605384445adf73663ff5428eb4d573",
+        "banner_color": "#695cb2",
+        "accent_color": 6905010,
+        "tag": "KiziRay#0001",
+        "createdAt": "2017-04-22T17:09:10.047Z",
+        "createdTimestamp": 1492880950047,
+        "public_flags_array": [
+            "HOUSE_BALANCE",
+            "ACTIVE_DEVELOPER",
+            "NITRO",
+            "BOOSTER_24"
+        ],
+        "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/1.png",
+        "avatarURL": "https://cdn.discordapp.com/avatars/305389581304463360/f70bb354f380bf4829a145681bc64d6b.png",
+        "bannerURL": "https://cdn.discordapp.com/banners/305389581304463360/1a605384445adf73663ff5428eb4d573.png",
+        "bio": "> 如果您有興趣應徵，歡迎聯絡我\n> __https://discord.gg/zeitfrei__  ` ⎯ ❐ ⤬ `",
+        "premium_since": "2019-10-27T03:22:47.055513+00:00",
+        "premium_guild_since": "2019-10-27T05:15:21.628000+00:00"
+    },
+    "presence": {
+        "status": "online",
+        "activities": [
+            {
+                "name": "Custom Status",
+                "type": 4,
+                "url": null,
+                "details": null,
+                "state": "徵求 程序員、宣傳員、美術員",
+                "applicationId": null,
+                "timestamps": null,
+                "party": null,
+                "assets": null,
+                "flags": 0,
+                "emoji": {
+                    "animated": true,
+                    "name": "bulbarolling",
+                    "id": "934029407067209729",
+                    "createdTimestamp": 1642760364072,
+                    "url": "https://cdn.discordapp.com/emojis/934029407067209729.gif",
+                    "identifier": "a:bulbarolling:934029407067209729"
+                },
+                "buttons": [],
+                "createdTimestamp": 1671019750000
+            }
+        ],
+        "clientStatus": [
+            "mobile",
+            "desktop"
+        ]
+    },
+    "connections": [
+        {
+            "type": "battlenet",
+            "id": "Kisa#4798",
+            "name": "Kisa#4798",
+            "verified": true,
+            "url": null
+        },
+        {
+            "type": "facebook",
+            "id": "144480529842905",
+            "name": "Ki Zi",
+            "verified": true,
+            "url": "https://facebook.com/144480529842905"
+        },
+        {
+            "type": "github",
+            "id": "89194114",
+            "name": "KiziRay",
+            "verified": true,
+            "url": "https://github.com/KiziRay"
+        },
+        {
+            "type": "playstation",
+            "id": "6809513496637713009",
+            "name": "KiziRay",
+            "verified": true,
+            "url": null
+        },
+        {
+            "type": "reddit",
+            "id": "bs3r35qy",
+            "name": "Funny-Possible-4036",
+            "verified": true,
+            "url": "https://reddit.com/user/Funny-Possible-4036"
+        },
+        {
+            "type": "spotify",
+            "id": "6kbdsurlhqdrdfn3d1j3mb8gl",
+            "name": "RAY",
+            "verified": true,
+            "url": "https://open.spotify.com/user/6kbdsurlhqdrdfn3d1j3mb8gl"
+        },
+        {
+            "type": "steam",
+            "id": "76561198124034160",
+            "name": "Raymagicjaso",
+            "verified": true,
+            "url": "https://steamcommunity.com/profiles/76561198124034160"
+        },
+        {
+            "type": "twitch",
+            "id": "541759999",
+            "name": "jolin34565",
+            "verified": true,
+            "url": "https://twitch.tv/jolin34565"
+        },
+        {
+            "type": "twitter",
+            "id": "1333034837045723136",
+            "name": "Ray12668410",
+            "verified": true,
+            "url": "https://twitter.com/Ray12668410"
+        },
+        {
+            "type": "xbox",
+            "id": "3071880556279880",
+            "name": "KiziRay",
+            "verified": true,
+            "url": null
+        },
+        {
+            "type": "xbox",
+            "id": "NTQ3OTRhNjQ1ZmE2MjU4ODJlNTJlZTY3MTUxYTQ4YzExYzJiNDkyNmI3ZTZmNWYzYmFlMDY0Nzc0ZDU2YTY4ZA",
+            "name": "KiziRay",
+            "verified": true,
+            "url": null
+        },
+        {
+            "type": "youtube",
+            "id": "UC5VlHMvlCD3l7Z6_ESBTtqg",
+            "name": "Ray Kizi",
+            "verified": true,
+            "url": "https://www.youtube.com/channel/UC5VlHMvlCD3l7Z6_ESBTtqg"
+        }
+    ]
+}

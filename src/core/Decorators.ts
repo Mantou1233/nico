@@ -61,18 +61,27 @@ function command(meta: RawEventMeta<"command"> = {}) {
 		});
 	};
 }
-function interaction(meta: RawEventMeta<"interaction">) {
-	return function (
-		target: any,
-		propertyKey: string,
-		descriptor: PropertyDescriptor
-	) {
-		return md.set("EventMeta", {
-			...meta,
-			__type__: "interaction"
-		});
+function interactionDecoratorMixin(type) {
+	return function interaction(meta: RawEventMeta<"interaction">) {
+		return function (
+			target: any,
+			propertyKey: string,
+			descriptor: PropertyDescriptor
+		) {
+			return md.set("EventMeta", {
+				type,
+				...meta,
+				__type__: "interaction"
+			});
+		};
 	};
 }
+
+const interaction = {
+	button: interactionDecoratorMixin("button"),
+	select_menu: interactionDecoratorMixin("selectmenu"),
+	modal: interactionDecoratorMixin("modal")
+} as const;
 
 // prettier-ignore
 export {
