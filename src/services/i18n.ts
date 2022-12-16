@@ -21,25 +21,24 @@ export type langTypes = keyof typeof langs;
 export let globes = {
 	color: "CFF2FF"
 };
-class i18n {
-	public globe: typeof globes;
-	public icon: typeof icons;
-	constructor() {
-		this.globe = globes;
-		this.icon = icons;
-	}
-	parse(lang: string, string: langKeys, ...opt): string {
-		if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
-		if (!Object.keys(langs).includes(lang))
-			throw new Error("No lang specified found!");
-		let str =
-			langs[lang][string] ??
-			langs["en"][string] ??
-			`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
-		if (typeof str != "string") return str;
-		for (let ot of opt) str = str.replace("%s", `${ot}`);
-		return str;
-	}
+
+function __i18n__parse(lang: string, string: langKeys, ...opt): string {
+	if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
+	if (!Object.keys(langs).includes(lang))
+		throw new Error("No lang specified found!");
+	let str =
+		langs[lang][string] ??
+		langs["en"][string] ??
+		`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
+	if (typeof str != "string") return str;
+	for (let ot of opt) str = str.replace("%s", `${ot}`);
+	return str;
 }
 
-globalThis.i18n = new i18n();
+const i18n = __i18n__parse.bind(null);
+
+i18n.globe = globes;
+i18n.icon = icons;
+i18n.parse = __i18n__parse.bind(null);
+
+global.i18n = i18n;

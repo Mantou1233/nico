@@ -15,27 +15,23 @@ exports.langAlias = {
 exports.globes = {
     color: "CFF2FF"
 };
-class i18n {
-    globe;
-    icon;
-    constructor() {
-        this.globe = exports.globes;
-        this.icon = icons_json_1.default;
-    }
-    parse(lang, string, ...opt) {
-        if (string.startsWith("-"))
-            string = string.slice(1);
-        if (!Object.keys(exports.langs).includes(lang))
-            throw new Error("No lang specified found!");
-        let str = exports.langs[lang][string] ??
-            exports.langs["en"][string] ??
-            `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
-        if (typeof str != "string")
-            return str;
-        for (let ot of opt)
-            str = str.replace("%s", `${ot}`);
+function __i18n__parse(lang, string, ...opt) {
+    if (string.startsWith("-"))
+        string = string.slice(1);
+    if (!Object.keys(exports.langs).includes(lang))
+        throw new Error("No lang specified found!");
+    let str = exports.langs[lang][string] ??
+        exports.langs["en"][string] ??
+        `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
+    if (typeof str != "string")
         return str;
-    }
+    for (let ot of opt)
+        str = str.replace("%s", `${ot}`);
+    return str;
 }
-globalThis.i18n = new i18n();
+const i18n = __i18n__parse.bind(null);
+i18n.globe = exports.globes;
+i18n.icon = icons_json_1.default;
+i18n.parse = __i18n__parse.bind(null);
+global.i18n = i18n;
 //# sourceMappingURL=i18n.js.map
