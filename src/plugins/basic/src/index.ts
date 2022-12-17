@@ -306,6 +306,7 @@ async function load(client: Discord.Client, cm: Manager) {
 									os.totalmem()
 								).toFixed(1)}%)\n\`\`\``
 							),
+							// myAxiosTesty
 							ux(
 								":computer: System statistics",
 								`\`\`\`yml\n${process.platform} ${
