@@ -882,6 +882,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
   integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
 
+"@types/node@^17.0.9":
+  version "17.0.45"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.45.tgz#2c0fafd78705e7a18b7906b5201a522719dc5190"
+  integrity sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==
+
 "@types/qs@*":
   version "6.9.7"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
@@ -985,7 +990,7 @@ axios@*:
     form-data "^4.0.0"
     proxy-from-env "^1.1.0"
 
-axios@^0.21.4:
+axios@^0.21.1, axios@^0.21.4:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
@@ -1024,6 +1029,14 @@ body-parser@1.20.1:
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+botarcapi_lib@^1.1.9:
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/botarcapi_lib/-/botarcapi_lib-1.1.9.tgz#c803bc41309b95bc14e7e6648259c7e62e02905c"
+  integrity sha512-7WArNwIsfES87n76IJh/8wwT0h2C0qRsdxBTPl9hE3m2CyUkaM5I7rmSsaRDFVZXYMsrUUitTHveB0a21r1FoQ==
+  dependencies:
+    "@types/node" "^17.0.9"
+    axios "^0.21.1"
 
 bowser@^2.11.0:
   version "2.11.0"
@@ -1071,11 +1084,6 @@ bytes@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.1.2.tgz#8b0beeb98605adf1b128fa4386403c009e0221a5"
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
-
-calc@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/calc/-/calc-0.0.2.tgz#2e30e3b4ce5c80f5686116e01911f70314f3652c"
-  integrity sha512-UqPa9F/Yl19unzN/QLFTVuEV2vlsx0aTnkfFL+uTTuB1SP3Ptsa5RHfX+Xo8VqpJjTOQslOeoICwnOYMv65pEw==
 
 call-bind@^1.0.0:
   version "1.0.2"
@@ -2128,7 +2136,7 @@ ts-mixer@^6.0.1:
   resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-6.0.1.tgz#7c2627fb98047eb5f3c7f2fee39d1521d18fe87a"
   integrity sha512-hvE+ZYXuINrx6Ei6D6hz+PTim0Uf++dYbK9FFifLNwQj+RwKquhQpn868yZsCtJYiclZF1u8l6WZxxKi+vv7Rg==
 
-ts-node@^10.9.1:
+ts-node@^10.2.1:
   version "10.9.1"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.9.1.tgz#e73de9102958af9e1f0b168a6ff320e25adcff4b"
   integrity sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==
@@ -2175,13 +2183,6 @@ type-is@~1.6.18:
   dependencies:
     media-typer "0.3.0"
     mime-types "~2.1.24"
-
-typed-reflector@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/typed-reflector/-/typed-reflector-1.0.11.tgz#49ad40afa4e767ea9df84b24c3f9ed55b4798c6c"
-  integrity sha512-OhryVYaR+tBEW9Yt2PsPqAniNfbVk1idKbnLxBCBPUSHVRm+Ajik/QxifoJUuGoaXAZDLW9JlJTO6ctXGZX9gQ==
-  dependencies:
-    reflect-metadata "^0.1.13"
 
 typescript@^5.0.0-dev.20221102:
   version "5.0.0-dev.20221102"
