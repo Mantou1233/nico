@@ -38,7 +38,7 @@ export class Profile<
 		return db;
 	}
 
-	async newSchema(initType = "user") {
+	async newSchema() {
 		if (!this.__schema) return false;
 		Object.assign(this, this.__schema);
 		return void this.save();
@@ -52,12 +52,9 @@ export class Profile<
 	}
 
 	async save() {
-		const data = JSON.parse(JSON.stringify(this));
-		delete data["__id"];
-		delete data["__schema"];
-		delete data["__prefix"];
 		return (
-			void (await db.set(`${this.__prefix}${this.__id}`, data)) ?? this
+			void (await db.set(`${this.__prefix}${this.__id}`, this.raw)) ??
+			this
 		);
 	}
 
