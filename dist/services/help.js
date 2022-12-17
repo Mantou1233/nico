@@ -23,7 +23,7 @@ exports.default = async (client, msg, prefix) => {
             }
         }
         const newEmbed = new discord_js_1.default.EmbedBuilder()
-            .setColor("#CFF2FF")
+            .setConfig()
             .setTitle("nico")
             .setDescription(i18n.parse(msg.lang, "basic.help.description", prefix, prefix));
         for (let [key, value] of Object.entries(categorys)) {
@@ -66,7 +66,7 @@ exports.default = async (client, msg, prefix) => {
         desc = (desc ??
             (command.desc || `${prefix}${command.command}`)).replaceAll("%p", prefix);
         const newEmbed = new discord_js_1.default.EmbedBuilder()
-            .setColor(i18n.globe.color)
+            .setConfig()
             .setTitle(`\`${prefix}${command.command}\`` +
             (command.alias ?? []).reduce((p, v) => p + ` **/** \`${prefix}${v}\``, ""))
             .setDescription(`${desc}`)

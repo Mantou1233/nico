@@ -15,6 +15,9 @@ exports.langAlias = {
 exports.globes = {
     color: "CFF2FF"
 };
+function isObject(value) {
+    return Object.prototype.toString.call(value) === "[object Object]";
+}
 function __i18n__parse(lang, string, ...opt) {
     if (string.startsWith("-"))
         string = string.slice(1);
@@ -25,8 +28,19 @@ function __i18n__parse(lang, string, ...opt) {
         `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
     if (typeof str != "string")
         return str;
-    for (let ot of opt)
-        str = str.replace("%s", `${ot}`);
+    if (isObject(opt[0])) {
+        for (let [k, v] of opt[0]) {
+            str = str.replace(`<${k}>`, `${v}`);
+        }
+        opt = opt.slice();
+    }
+    if (opt.length) {
+        let i = 0;
+        for (let ot of opt) {
+            str = str.replace("%s", `${ot}`);
+            str = str.replace(`%${i++}%`, `${ot}`);
+        }
+    }
     return str;
 }
 const i18n = __i18n__parse.bind(null);

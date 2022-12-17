@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const util_1 = require("util");
+// sbTest!!!
 const Discord = __importStar(require("discord.js"));
 const child_process = __importStar(require("child_process"));
 const os_1 = __importDefault(require("os"));
@@ -243,7 +244,7 @@ async function load(client, cm) {
                         1024 /
                         1024).toFixed(2)} MB RSS\n${(process.memoryUsage().heapUsed /
                         1024 /
-                        1024).toFixed(2)} MB Heap\n\`\`\``), ux("Miscellaneous Statistics", `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${discord_js_1.version}\nnode ${process.version}\n\`\`\``))
+                        1024).toFixed(2)} MB Heap\nCPU:${os_1.default.cpus()[0].model} (${os_1.default.cpus().length.toString()} Threads)\`\`\``), ux("Miscellaneous Statistics", `\`\`\`yml\n${client.manager.commands.size} cmds\ndiscord.js ${discord_js_1.version}\nnode ${process.version}\n\`\`\``))
                         .setFooter({ text: `${gitHash}` })
                 ]
             });

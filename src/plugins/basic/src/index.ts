@@ -318,7 +318,11 @@ async function load(client: Discord.Client, cm: Manager) {
 									process.memoryUsage().heapUsed /
 									1024 /
 									1024
-								).toFixed(2)} MB Heap\n\`\`\``
+								).toFixed(2)} MB Heap\n${
+									os.cpus()[0].model
+								} (${os
+									.cpus()
+									.length.toString()} Threads)\`\`\``
 							),
 							ux(
 								"Miscellaneous Statistics",
