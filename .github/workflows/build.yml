@@ -36,5 +36,5 @@ jobs:
               run: |
                   git config --global user.name 'Mantou1233'
                   git config --global user.email 'Mantou1233@users.noreply.github.com'
-                  git commit -a -m "[no ci] Automated build"
+                  git commit -am "[no ci] Automated build"
                   git push
