@@ -267,7 +267,7 @@ async function load(client: Discord.Client, cm: Manager) {
 						.setDescription(
 							`\`\`\`yml\n${client.user!.username}#${
 								client.user!.discriminator
-							} [${client.user!.id}]\nping: ${Math.floor(
+							} [${client.user!.id}]\nping: ${Math.abs(
 								msg.createdTimestamp - Date.now()
 							)}ms ping\n‎      ${
 								client.ws.ping
