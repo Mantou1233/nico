@@ -29,9 +29,12 @@ jobs:
             - name: Compiles to ts
               run: yarn build
 
+            - name: Create report file
+              run: date +%s > .lastcommit
+
             - name: Commit build
               run: |
                   git config --global user.name 'Mantou1233'
                   git config --global user.email 'Mantou1233@users.noreply.github.com'
-                  git commit -am "Automated build: "
+                  git commit -a -m "[no ci] Automated build"
                   git push
