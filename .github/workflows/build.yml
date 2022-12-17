@@ -24,6 +24,9 @@ jobs:
             - name: Install deps
               run: yarn install --immutable --immutable-cache --check-cache
 
+            - name: Compiles to ts
+              run: yarn build
+
             - name: Compare the expected and actual dist/ directories
               run: |
                   if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
@@ -32,6 +35,3 @@ jobs:
                     exit 1
                   fi
               id: diff
-
-            - name: Compiles to ts
-              run: yarn build
