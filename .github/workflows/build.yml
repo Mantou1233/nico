@@ -18,16 +18,11 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: Cache Node Modules
-              uses: actions/cache@v3
-              with:
-                  path: node_modules
-                  key: node-modules-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('yarn.lock') }}
+            - name: Install yarn
+              run: npm i -g yarn
 
             - name: Install deps
-              uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: install --immutable --immutable-cache --check-cache
+              run: yarn install --immutable --immutable-cache --check-cache
 
             - name: Get yarn cache directory path
               id: yarn-cache-dir-path
@@ -42,6 +37,4 @@ jobs:
                       ${{ runner.os }}-yarn-
 
             - name: Compiles to ts
-              uses: borales/actions-yarn@v2.0.0
-              with:
-                  cmd: build
+              run: yarn build
