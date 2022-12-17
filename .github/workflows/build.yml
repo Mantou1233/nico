@@ -14,6 +14,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v3
+              with:
+                  token: ${{ secrets.PAT }}
             - uses: actions/setup-node@v3
               with:
                   node-version: ${{ matrix.node-version }}
@@ -26,3 +28,10 @@ jobs:
 
             - name: Compiles to ts
               run: yarn build
+
+            - name: Commit build
+              run: |
+                  git config --global user.name 'Mantou1233'
+                  git config --global user.email 'Mantou1233@users.noreply.github.com'
+                  git commit -am "Automated build: "
+                  git push
