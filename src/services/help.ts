@@ -24,7 +24,7 @@ export default async (
 		}
 
 		const newEmbed = new Discord.EmbedBuilder()
-			.setColor("#CFF2FF")
+			.setConfig()
 			.setTitle("nico")
 			.setDescription(
 				i18n.parse(msg.lang, "basic.help.description", prefix, prefix)
@@ -93,7 +93,7 @@ export default async (
 		).replaceAll("%p", prefix);
 
 		const newEmbed = new Discord.EmbedBuilder()
-			.setColor(i18n.globe.color)
+			.setConfig()
 			.setTitle(
 				`\`${prefix}${command.command}\`` +
 					(command.alias ?? []).reduce(

@@ -22,6 +22,10 @@ export let globes = {
 	color: "CFF2FF"
 };
 
+function isObject(value) {
+	return Object.prototype.toString.call(value) === "[object Object]";
+}
+
 function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 	if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
 	if (!Object.keys(langs).includes(lang))
@@ -31,7 +35,19 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 		langs["en"][string] ??
 		`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
 	if (typeof str != "string") return str;
-	for (let ot of opt) str = str.replace("%s", `${ot}`);
+	if (isObject(opt[0])) {
+		for (let [k, v] of opt[0]) {
+			str = str.replace(`<${k}>`, `${v}`);
+		}
+		opt = opt.slice();
+	}
+	if (opt.length) {
+		let i = 0;
+		for (let ot of opt) {
+			str = str.replace("%s", `${ot}`);
+			str = str.replace(`%${i++}%`, `${ot}`);
+		}
+	}
 	return str;
 }
 

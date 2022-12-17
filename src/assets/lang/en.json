@@ -1,4 +1,5 @@
 {
+	"color": "",
 	"command.run.cooldown": "You have to wait %s to use the command again!",
 	"command.run.error": "Oops! a error appeared: %s",
 	"command.run.notfound": "Command not found.",
