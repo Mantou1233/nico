@@ -19,6 +19,7 @@ function isObject(value) {
     return Object.prototype.toString.call(value) === "[object Object]";
 }
 function __i18n__parse(lang, string, ...opt) {
+    lang = (lang.lang ?? lang);
     if (string.startsWith("-"))
         string = string.slice(1);
     if (!Object.keys(exports.langs).includes(lang))

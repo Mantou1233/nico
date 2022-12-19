@@ -255,11 +255,11 @@ async function load(client, cm) {
         }
     });
     cm.register({
-        command: "expo",
+        command: "restart",
         category: "Basic",
         hidden: true,
         handler: async (msg, { prefix }) => {
-            client.loader.expo();
+            client.loader.restart();
         }
     });
     cm.register({
@@ -273,7 +273,7 @@ async function load(client, cm) {
                 embeds: [
                     new Discord.EmbedBuilder()
                         .setColor(i18n.globe.color)
-                        .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] ?? "NOTHING"}`)
+                        .setDescription(`:thinking:\n${arr[random(0, arr.length - 1)] || "NOTHING"}`)
                 ]
             });
         }
