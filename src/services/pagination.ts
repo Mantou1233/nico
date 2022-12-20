@@ -101,7 +101,7 @@ export async function pagination(
 	let filter = m => m.member.id === msg.member!.id;
 
 	const collector = msg2.createMessageComponentCollector({
-		filter: filter,
+		//filter,
 		time: 60000,
 		componentType: ComponentType.Button
 	});
@@ -109,6 +109,12 @@ export async function pagination(
 	let page = 0;
 
 	collector.on("collect", async b => {
+		if ((b.member! as any).id !== msg.member!.id)
+			return void (await b.reply({
+				content: "this isnt your button!!! dont click",
+				ephemeral: true
+			}));
+
 		await b.deferUpdate().catch(() => null);
 
 		switch (b.customId) {
