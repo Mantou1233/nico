@@ -12,7 +12,7 @@ const GuildSchema = {
     prefix: process.env.PREFIX,
     lastUsed: 0,
     ducks: 0,
-    buttons: { n: 0 }
+    buttonroles: { n: 0 }
 };
 exports.GuildSchema = GuildSchema;
 //# sourceMappingURL=Schema.js.map

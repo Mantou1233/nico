@@ -4,7 +4,6 @@ import en from "~/assets/lang/en.json";
 import tw from "~/assets/lang/zh_tw.json";
 
 import icons from "~/assets/icons.json";
-import { Message } from "discord.js";
 
 export let langs = { en, tw };
 
@@ -21,18 +20,13 @@ export type langTypes = keyof typeof langs;
 
 export let globes = {
 	color: "CFF2FF"
-} as const;
+};
 
 function isObject(value) {
 	return Object.prototype.toString.call(value) === "[object Object]";
 }
 
-function __i18n__parse(
-	lang: string | Message,
-	string: langKeys,
-	...opt
-): string {
-	lang = ((lang as any).lang ?? lang) as string;
+function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 	if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
 	if (!Object.keys(langs).includes(lang))
 		throw new Error("No lang specified found!");

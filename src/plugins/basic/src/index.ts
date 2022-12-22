@@ -336,11 +336,11 @@ async function load(client: Discord.Client, cm: Manager) {
 		}
 	});
 	cm.register({
-		command: "restart",
+		command: "expo",
 		category: "Basic",
 		hidden: true,
 		handler: async (msg, { prefix }) => {
-			client.loader.restart();
+			client.loader.expo();
 		}
 	});
 	cm.register({
@@ -356,7 +356,7 @@ async function load(client: Discord.Client, cm: Manager) {
 						.setColor(i18n.globe.color)
 						.setDescription(
 							`:thinking:\n${
-								arr[random(0, arr.length - 1)] || "NOTHING"
+								arr[random(0, arr.length - 1)] ?? "NOTHING"
 							}`
 						)
 				]

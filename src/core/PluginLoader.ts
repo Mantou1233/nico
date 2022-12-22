@@ -63,7 +63,7 @@ class PluginLoader {
 		log(1, "Plugin loaded!");
 		log(0, "Bot started!");
 	}
-	async restart() {
+	async expo() {
 		this.client.removeAllListeners();
 		for (let k3 of Object.keys(require.cache)) {
 			if (k3.includes("node_modules")) continue;

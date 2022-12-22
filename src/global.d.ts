@@ -7,8 +7,8 @@ import { Client, Interaction } from "discord.js";
 import { Database } from "quickmongo";
 
 interface I18n {
-	(lang: string | Message, string: langKeys, ...opt): string;
-	parse: (lang: string | Message, string: langKeys, ...opt) => string;
+	(lang: string, string: langKeys, ...opt): string;
+	parse: (lang: string, string: langKeys, ...opt) => string;
 	globe: {
 		color: any;
 	};

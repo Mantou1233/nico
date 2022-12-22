@@ -24,8 +24,7 @@ interface MessageCommand extends RawMessageHandler {
 interface InteractionContext<T extends Interaction = Interaction> {
 	type: "button" | "messageContext" | "userContext" | "selectMenu" | "modal";
 	from?: string;
-	filter?: (interaction: T, ext?: any) => boolean;
-	handler: (interaction: T, ext?: any) => Awaitable<void | any>;
+	handler: (interaction: T, ext: any) => Awaitable<void | any>;
 }
 
 export type { MessageCommand, InteractionContext, RawMessageHandler };

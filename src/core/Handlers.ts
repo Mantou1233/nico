@@ -73,28 +73,20 @@ async function InteractionHandler(interaction: Interaction) {
 
 	let handlers: any[] = [];
 	if (interaction.isButton())
-		handlers = client.manager.interactions.filter(
-			v => v.type === "button" && (v.filter ?? (() => true))(interaction)
-		);
+		handlers = client.manager.interactions.filter(v => v.type === "button");
 	if (interaction.isSelectMenu())
 		handlers = client.manager.interactions.filter(
-			v =>
-				v.type === "selectMenu" &&
-				(v.filter ?? (() => true))(interaction)
+			v => v.type === "selectMenu"
 		);
 	if (interaction.isModalSubmit())
-		handlers = client.manager.interactions.filter(
-			v => v.type === "modal" && (v.filter ?? (() => true))(interaction)
-		);
+		handlers = client.manager.interactions.filter(v => v.type === "modal");
 	if (interaction.isMessageContextMenuCommand())
 		handlers = client.manager.interactions.filter(
-			v => v.type === "messageContext" && (v.filter ?? (() => true))(interaction)
+			v => v.type === "messageContext"
 		);
 	if (interaction.isUserContextMenuCommand())
 		handlers = client.manager.interactions.filter(
-			v =>
-				v.type === "userContext" &&
-				(v.filter ?? (() => true))(interaction)
+			v => v.type === "userContext"
 		);
 	for (let handler of handlers) {
 		handler.handler(interaction);

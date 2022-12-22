@@ -1,5 +1,5 @@
 {
-	"color": "CFF2FF",
+	"color": "",
 	"command.run.cooldown": "You have to wait %s to use the command again!",
 	"command.run.error": "Oops! a error appeared: %s",
 	"command.run.notfound": "Command not found.",
@@ -29,8 +29,6 @@
 
 	"basic.avatar.self": "your avatar:",
 	"basic.avatar.others": "`%s`'s avatar:",
-
-	"moderation.addbutton.message": "Press the buttons below to create buttons of different type!!",
 
 	"moderation.buttonrole.error.noperms": "You do not have sufficent permission to run this command!",
 	"moderation.buttonrole.error.botnoperms": "well, i got no permission to set roles. please give me permission to set roles.",
