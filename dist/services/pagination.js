@@ -65,12 +65,17 @@ async function pagination(msg, embeds, { color = "CFF2FF", footer = "" } = {}) {
     });
     let filter = m => m.member.id === msg.member.id;
     const collector = msg2.createMessageComponentCollector({
-        filter: filter,
+        //filter,
         time: 60000,
         componentType: discord_js_1.ComponentType.Button
     });
     let page = 0;
     collector.on("collect", async (b) => {
+        if (b.member.id !== msg.member.id)
+            return void (await b.reply({
+                content: "this isnt your button!!! dont click",
+                ephemeral: true
+            }));
         await b.deferUpdate().catch(() => null);
         switch (b.customId) {
             case "next": {
