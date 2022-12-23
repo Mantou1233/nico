@@ -15,11 +15,11 @@ import { CommandHandler, InteractionHandler } from "~/core/Handlers";
 const __T__T = [
 	new ContextMenuCommandBuilder()
 		.setName("Steal emojis")
-		.setType(ApplicationCommandType.User)
+		.setType(ApplicationCommandType.Message)
 		.toJSON()
 ];
 
-const { client, db } = storage;
+let { client, db } = storage;
 
 console.log("Starting nico...");
 
@@ -45,16 +45,14 @@ main();
 async function botMain(client: Client) {
 	try {
 		// Load Plugins
-		if (!db.ready) {
-			await db.connect();
-			let _tmp = Date.now();
-			await db.add("sys:time", 1);
-			console.log(
-				`connected to mongo! DB ping: ${require("ms")(
-					Date.now() - _tmp
-				)}, s: ${await db.get("sys:time")}`
-			);
-		}
+
+		let _tmp = Date.now();
+		await db.add("sys:time", 1);
+		console.log(
+			`connected to mongo! DB ping: ${require("ms")(
+				Date.now() - _tmp
+			)}, s: ${await db.get("sys:time")}`
+		);
 		const loader = new PluginLoader(client);
 
 		client.loader = loader;

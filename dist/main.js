@@ -12,10 +12,10 @@ const Handlers_1 = require("./core/Handlers");
 const __T__T = [
     new discord_js_1.ContextMenuCommandBuilder()
         .setName("Steal emojis")
-        .setType(discord_js_1.ApplicationCommandType.User)
+        .setType(discord_js_1.ApplicationCommandType.Message)
         .toJSON()
 ];
-const { client, db } = storage;
+let { client, db } = storage;
 console.log("Starting nico...");
 const fnMain = async () => {
     console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
@@ -37,12 +37,9 @@ main();
 async function botMain(client) {
     try {
         // Load Plugins
-        if (!db.ready) {
-            await db.connect();
-            let _tmp = Date.now();
-            await db.add("sys:time", 1);
-            console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}, s: ${await db.get("sys:time")}`);
-        }
+        let _tmp = Date.now();
+        await db.add("sys:time", 1);
+        console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}, s: ${await db.get("sys:time")}`);
         const loader = new PluginLoader_1.default(client);
         client.loader = loader;
         await loader.load();

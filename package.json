@@ -8,7 +8,8 @@
 		"main": "node dist/index",
 		"deploy": "node dist/services/deploy",
 		"build": "tsc && resolve-tspaths",
-		"watch": "tsc-watch --onSuccess resolve-tspaths"
+		"watch": "tsc-watch --onSuccess resolve-tspaths",
+		"w": "yarn watch"
 	},
 	"keywords": [
 		"bad",
