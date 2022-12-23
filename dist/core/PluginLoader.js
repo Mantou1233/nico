@@ -26,10 +26,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.log = void 0;
 const fast_glob_1 = __importDefault(require("fast-glob"));
-const Reflector_1 = require("../services/Reflector");
+const Registries_1 = require("../services/Registries");
 const outpath = "../../";
 const log = (times, message) => console.log(`${"  ".repeat(times)}-> ${message}`);
+exports.log = log;
 class PluginLoader {
     client;
     ready;
@@ -43,12 +45,11 @@ class PluginLoader {
         this.loadedNames = [];
     }
     async load(path = "src/plugins") {
-        var _a;
         const plugins = await (await (0, fast_glob_1.default)(["**/.plugin.json"], { dot: true }))
             .map(e => e.replace(".plugin.json", ""))
             .filter(e => e.includes("dist"));
-        log(0, `fetched ${plugins.length} plugin${plugins.length > 1 ? "s" : ""}!`);
-        log(1, "Loading plugin...");
+        (0, exports.log)(0, `fetched ${plugins.length} plugin${plugins.length > 1 ? "s" : ""}!`);
+        (0, exports.log)(1, "Loading plugin...");
         for (const plugin of plugins) {
             let pluginName = plugin
                 .replace(path, "")
@@ -59,7 +60,7 @@ class PluginLoader {
                 temp = require(`${outpath}${plugin}.plugin.json`);
             }
             catch (e) {
-                log(3, `Loading config ${pluginName} fail: ${e.message}`);
+                (0, exports.log)(3, `Loading config ${pluginName} fail: ${e.message}`);
                 continue;
             }
             pluginName = temp.name;
@@ -67,27 +68,20 @@ class PluginLoader {
                 throw new Error("Plugin Names should be unique!");
             this.loadedNames.push(pluginName);
             this.client.manager.nowLoading = pluginName;
-            let entry = await (_a = `${outpath}${plugin}${temp.entry
+            let entry = await Promise.resolve(`${`${outpath}${plugin}${temp.entry
                 .replace(".ts", "")
                 .replace(".js", "")
-                .replace("./", "")}`, Promise.resolve().then(() => __importStar(require(_a))));
+                .replace("./", "")}`}`).then(s => __importStar(require(s)));
             entry = typeof entry == "function" ? entry : entry.default;
-            const meta = Reflector_1.md.get(entry, "pluginMeta");
-            const data = Reflector_1.md.get(entry, "pluginData");
-            const inst = new entry();
-            if (!meta || !data) {
-                console.log(`${pluginName} isnt a vaild plugin, rejecting.`);
-                continue;
-            }
-            Object.values(data.handlers).map((pr) => pr.map(pr => this.client.manager.register({
-                ...pr,
-                handler: pr.handler.bind(inst)
-            })));
-            log(2, `Loaded plugin ${pluginName}!`);
+            Registries_1.Registries["Loaders"][temp.vl || 2](entry, {
+                name: pluginName,
+                path: plugin
+            });
+            (0, exports.log)(2, `Loaded plugin ${pluginName}!`);
             continue;
         }
-        log(1, "Plugin loaded!");
-        log(0, "Bot started!");
+        (0, exports.log)(1, "Plugin loaded!");
+        (0, exports.log)(0, "Bot started!");
         this.ready = true;
     }
     async expo() {

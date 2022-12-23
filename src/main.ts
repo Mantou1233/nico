@@ -45,9 +45,8 @@ async function botMain(client: Client) {
 			);
 		}
 		const loader = new PluginLoader(client);
-		client.manager = new Manager(client);
-
 		client.loader = loader;
+		client.manager = new Manager(client);
 		await loader.load();
 
 		console.log("-> miraicle has started!");

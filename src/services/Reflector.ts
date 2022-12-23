@@ -1,25 +1,44 @@
-import { MetadataSetter, Reflector } from "typed-reflector";
-import { ToArrayMap } from "~/core/Utils";
-import { Registries } from "./Registries";
+import "reflect-metadata";
 
-const metadata = new MetadataSetter<
-	Registries.MetadataMap,
-	Registries.MetadataArrayMap
->();
-
-const reflector = new Reflector<
-	Registries.MetadataMap,
-	Registries.MetadataArrayMap
->();
-
-class Injector<T> {
-	patch<K extends keyof T>(obj, key: K, value: T[K], prop?) {
-		Reflect.defineMetadata(key, value, obj, prop);
-	}
+interface IMetaData {
+	(key: string | symbol, value: any): ReturnType<typeof Reflect["metadata"]>;
+	get(obj: any, key: string | symbol, prop?: string | symbol): any;
+	set(
+		obj: any,
+		key: string | symbol,
+		value: any,
+		prop?: string | symbol
+	): void;
+	append(obj, key: string | symbol, value: any, prop?: string | symbol): void;
+	delete(obj: any, key: string | symbol, prop?: string | symbol): boolean;
+	keys(obj: any, prop?: string | symbol): any[];
 }
 
-const injector = new Injector<
-	Registries.MetadataMap & ToArrayMap<Registries.MetadataArrayMap>
->();
+const md = function md(key: string | symbol, value) {
+	return Reflect.metadata(key, value);
+} as IMetaData;
 
-export { metadata as md, reflector as rf, injector as ij };
+Object.assign(md, {
+	get(obj, key: string | symbol, prop?: string | symbol) {
+		return Reflect.getMetadata(key, obj, ...([prop] as [string]));
+	},
+	set(obj, key: string | symbol, value, prop?: string | symbol) {
+		return Reflect.defineMetadata(key, value, obj, ...([prop] as [string]));
+	},
+	append(obj, key: string | symbol, value, prop?: string | symbol) {
+		const arr =
+			Reflect.getMetadata(key, obj, ...([prop] as [string])) ?? [];
+		if (!Array.isArray(arr)) throw new Error("obj origin not a array");
+		arr.push(value);
+		return Reflect.defineMetadata(key, arr, obj);
+	},
+	delete(obj, key: string | symbol, prop?: string | symbol) {
+		return Reflect.deleteMetadata(key, obj, ...([prop] as [string]));
+	},
+	keys(obj, prop?: string | symbol) {
+		return Reflect.getMetadataKeys(obj, ...([prop] as [string]));
+	}
+});
+
+export default md;
+export { md };

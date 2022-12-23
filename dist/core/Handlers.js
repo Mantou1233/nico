@@ -12,7 +12,7 @@ const Cooldown = new discord_js_1.Collection();
 const client = storage.client;
 let prefix = process.env.PREFIX;
 async function CommandHandler(msg) {
-    if (!client.loader.ready)
+    if (!client.loader?.ready ?? false)
         return;
     if (msg.author.bot)
         return;
@@ -59,13 +59,12 @@ async function InteractionHandler(interaction) {
     await g.checkAndUpdate();
     let handlers = [];
     if (interaction.isButton())
-        handlers = client.manager.interactions.filter(v => v.type === "button");
+        handlers = client.manager.interactions.filter(v => v.type === "button" && (v.filter || (() => true))(interaction));
     if (interaction.isSelectMenu())
-        handlers = client.manager.interactions.filter(v => v.type === "selection");
+        handlers = client.manager.interactions.filter(v => v.type === "selectmenu" &&
+            (v.filter || (() => true))(interaction));
     if (interaction.isModalSubmit())
-        handlers = client.manager.interactions.filter(v => v.type === "modal");
-    if (interaction.isAutocomplete())
-        handlers = client.manager.interactions.filter(v => v.type === "autocomplete");
+        handlers = client.manager.interactions.filter(v => v.type === "modal" && (v.filter || (() => true))(interaction));
     for (let handler of handlers) {
         await handler.handler(interaction);
     }

@@ -10,7 +10,7 @@ const client: Client = storage.client;
 let prefix: string = process.env.PREFIX as string;
 
 async function CommandHandler(msg: Message) {
-	if (!client.loader.ready) return;
+	if (!client.loader?.ready ?? false) return;
 	if (msg.author.bot) return;
 
 	const p = await UserProfile(msg);

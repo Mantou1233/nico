@@ -17,6 +17,7 @@ interface Events {
 	};
 	interaction: {
 		type: "button" | "selectmenu" | "modal";
+		filter?: (interaction: Interaction) => boolean;
 		params: [interaction: Interaction, ext: any];
 	};
 }

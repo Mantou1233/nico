@@ -9,11 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Decorators_1 = require("~/core/Decorators");
+const Decorators_1 = require("../../core/Decorators");
 const discord_js_1 = require("discord.js");
 let BasicPlugin = class BasicPlugin {
     client;
-    extenstions;
     async ping(msg) {
         const row = new discord_js_1.ActionRowBuilder().addComponents(new discord_js_1.ButtonBuilder()
             .setCustomId("pong")
@@ -33,7 +32,7 @@ let BasicPlugin = class BasicPlugin {
             components: [row]
         });
     }
-    async restart(msg) {
+    async RestartCommand(msg) {
         msg.reply("ending;;");
         this.client.loader.expo();
     }
@@ -82,10 +81,6 @@ __decorate([
     __metadata("design:type", discord_js_1.Client)
 ], BasicPlugin.prototype, "client", void 0);
 __decorate([
-    (0, Decorators_1.Cogs)(["./cogs1.ts", "./cogs2.ts", "./cogs3.ts"]),
-    __metadata("design:type", Object)
-], BasicPlugin.prototype, "extenstions", void 0);
-__decorate([
     (0, Decorators_1.command)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message]),
@@ -102,19 +97,15 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message]),
     __metadata("design:returntype", Promise)
-], BasicPlugin.prototype, "restart", null);
+], BasicPlugin.prototype, "RestartCommand", null);
 __decorate([
-    (0, Decorators_1.interaction)({
-        type: "button"
-    }),
+    Decorators_1.interaction.button(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.ButtonInteraction]),
     __metadata("design:returntype", Promise)
 ], BasicPlugin.prototype, "PingHandler", null);
 __decorate([
-    (0, Decorators_1.interaction)({
-        type: "button"
-    }),
+    Decorators_1.interaction.button(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.ButtonInteraction]),
     __metadata("design:returntype", Promise)

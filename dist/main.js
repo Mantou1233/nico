@@ -39,8 +39,8 @@ async function botMain(client) {
             console.log(`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`);
         }
         const loader = new PluginLoader_1.default(client);
-        client.manager = new Manager_1.default(client);
         client.loader = loader;
+        client.manager = new Manager_1.default(client);
         await loader.load();
         console.log("-> miraicle has started!");
         console.log(`-> watching ${client.guilds.cache.size} Servers, ${client.channels.cache.size} channels & ${client.guilds.cache.reduce((users, value) => users + value.memberCount, 0)} users`);

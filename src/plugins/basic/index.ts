@@ -17,11 +17,11 @@ import {
 	TextInputStyle
 } from "discord.js";
 
+type infs = TypedPropertyDescriptor<any>;
+
 @DefinePlugin()
 class BasicPlugin {
 	@Inject client: Client;
-
-	@Cogs(["./cogs1.ts", "./cogs2.ts", "./cogs3.ts"]) extenstions;
 
 	@command()
 	async ping(msg: Message) {
@@ -51,14 +51,12 @@ class BasicPlugin {
 	}
 
 	@command()
-	async restart(msg: Message) {
+	async RestartCommand(msg: Message) {
 		msg.reply("ending;;");
 		this.client.loader.expo();
 	}
 
-	@interaction({
-		type: "button"
-	})
+	@interaction.button()
 	async PingHandler(interaction: ButtonInteraction) {
 		if (interaction.customId !== "pong") return;
 		interaction.reply({
@@ -69,9 +67,7 @@ class BasicPlugin {
 		});
 	}
 
-	@interaction({
-		type: "button"
-	})
+	@interaction.button()
 	async MenuHandler(interaction: ButtonInteraction) {
 		if (interaction.customId !== "menu") return;
 		const modal = new ModalBuilder()

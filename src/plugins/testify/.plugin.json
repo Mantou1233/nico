@@ -1,0 +1,5 @@
+{
+	"name": "testify",
+	"entry": "./index.ts",
+	"vl": 2
+}

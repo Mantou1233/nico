@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Client } from "discord.js";
 import fg from "fast-glob";
-import { rf } from "@services/Reflector";
-import { EventMeta } from "./structure/Types";
 import { Registries } from "./../services/Registries";
 const outpath = "../../";
-const log = (times: number, message: string): void =>
+export const log = (times: number, message: string): void =>
 	console.log(`${"  ".repeat(times)}-> ${message}`);
 class PluginLoader {
 	client: Client;
@@ -56,7 +54,10 @@ class PluginLoader {
 			);
 			entry = typeof entry == "function" ? entry : entry.default;
 
-			Registries["Loaders"][temp.vl || 2](entry, { name: pluginName });
+			Registries["Loaders"][temp.vl || 2](entry, {
+				name: pluginName,
+				path: plugin
+			});
 
 			log(2, `Loaded plugin ${pluginName}!`);
 			continue;
