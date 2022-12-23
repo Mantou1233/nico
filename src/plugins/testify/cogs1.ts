@@ -11,8 +11,6 @@ import {
 class TestifyCog {
 	@Inject client: Client;
 
-	@Cogs(["./cogs1.ts"]) extenstions;
-
 	@command()
 	async testcog(msg: Message) {
 		msg.reply(

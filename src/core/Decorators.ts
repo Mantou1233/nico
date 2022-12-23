@@ -76,12 +76,6 @@ function _handleCogs(inst, _path, name) {
 	if (!_cogs) return;
 	for (let c of _cogs) {
 		let entry;
-		console.log(
-			`../../${_path}${c
-				.replace(".ts", "")
-				.replace(".js", "")
-				.replace("./", "")}`
-		);
 		try {
 			entry = require(`../../${_path}${c
 				.replace(".ts", "")
