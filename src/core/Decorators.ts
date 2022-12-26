@@ -3,6 +3,7 @@ import { EventMeta, Events, PluginMeta, RawEventMeta } from "./structure/Types";
 import path from "path";
 import { log } from "./PluginLoader";
 import { Registries } from "~/services/Registries";
+import { Message } from "discord.js";
 function DefinePlugin(meta: PluginMeta = {}) {
 	return function PluginPatcher<T extends { new (...args: any[]): {} }>(
 		plugin: T
@@ -11,7 +12,6 @@ function DefinePlugin(meta: PluginMeta = {}) {
 			name: plugin.name.toLowerCase().replace("plugin", ""),
 			...meta
 		});
-		global.sb = plugin;
 	};
 }
 
@@ -59,15 +59,27 @@ function interactionDecoratorMixin(type) {
 	};
 }
 
+function argumentPutDecoratorMixin(transformer: (...args) => any) {
+	return function ad(...args) {
+		return function argumentDec(target: any, key: string, index: number) {
+			const obj = md.get(target, "PluginDecArgs") || {};
+			const arr = obj[key] || [];
+			arr[index] = {
+				transformer,
+				args
+			};
+			md.appendMap(target, "PluginDecArgs", key, arr);
+		};
+	};
+}
+
 function _handleInjector(inst) {
 	const _injects = md.get(inst, "PluginInjector");
 	if (Array.isArray(_injects)) {
 		for (let k of _injects) {
-			console.log(k);
 			inst[k] = storage[k];
 		}
 	}
-	console.log(JSON.stringify(_injects));
 	return inst;
 }
 
@@ -96,6 +108,11 @@ function _handleCogs(inst, _path, name) {
 	}
 }
 
+const Msg = argumentPutDecoratorMixin((msg: Message) => msg);
+const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
+	parser(msg.content)
+);
+
 const interaction = {
 	button: interactionDecoratorMixin("button"),
 	select_menu: interactionDecoratorMixin("selectmenu"),
@@ -112,5 +129,8 @@ export {
     interaction,
 
 	_handleInjector,
-	_handleCogs
+	_handleCogs,
+	
+	Msg,
+	Args
 };

@@ -1,10 +1,12 @@
 import { Client, Message } from "discord.js";
 import {
+	Args,
 	Cogs,
 	command,
 	DefinePlugin,
 	Inject,
-	interaction
+	interaction,
+	Msg
 } from "~/core/Decorators";
 
 @DefinePlugin()
@@ -12,11 +14,13 @@ class TestifyCog {
 	@Inject client: Client;
 
 	@command()
-	async testcog(msg: Message) {
-		msg.reply(
-			"HOLY SHIT cog runs well!! fuck you + congrats" + this.client
-		);
-		console.log(this.client);
+	async test1(@Msg() msg: Message, @Args(ap) args: any[]) {
+		msg.reply(`test1! ${args.length} args: ${args.join(",")}`);
+	}
+
+	@command()
+	async test2(@Msg() msg: Message, @Args(ap.modern) args: any[]) {
+		msg.reply(`test2! ${args.length} args: ${args.join(",")}`);
 	}
 }
 

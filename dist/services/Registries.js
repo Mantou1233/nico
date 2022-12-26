@@ -31,7 +31,8 @@ var Registries;
                     __type__: data.__type__,
                     from: plugin.name,
                     at: name,
-                    handler: fn.bind(inst)
+                    handler: fn.bind(inst),
+                    args: Reflector_1.default.get(inst, "PluginDecArgs")?.[name] || undefined
                 });
             }
             if (!meta)

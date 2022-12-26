@@ -36,6 +36,9 @@ let BasicPlugin = class BasicPlugin {
         msg.reply("ending;;");
         this.client.loader.expo();
     }
+    async d(msg) {
+        console.log(ap("aa"));
+    }
     async PingHandler(interaction) {
         if (interaction.customId !== "pong")
             return;
@@ -73,6 +76,7 @@ let BasicPlugin = class BasicPlugin {
         const response = await interaction.awaitModalSubmit({
             time: 10000000
         });
+        console.log(1);
         response.reply(`woo, ${response.fields.getTextInputValue("name")}, you poem is ${response.fields.getTextInputValue("desc")}`);
     }
 };
@@ -93,11 +97,19 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BasicPlugin.prototype, "menu", null);
 __decorate([
-    (0, Decorators_1.command)(),
+    (0, Decorators_1.command)({
+        command: "restart"
+    }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message]),
     __metadata("design:returntype", Promise)
 ], BasicPlugin.prototype, "RestartCommand", null);
+__decorate([
+    (0, Decorators_1.command)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [discord_js_1.Message]),
+    __metadata("design:returntype", Promise)
+], BasicPlugin.prototype, "d", null);
 __decorate([
     Decorators_1.interaction.button(),
     __metadata("design:type", Function),

@@ -13,12 +13,10 @@ interface Events {
 		disabled?: boolean;
 		cooldown?: number;
 		alias?: string[];
-		params: [msg: Message, ext: any];
 	};
 	interaction: {
 		type: "button" | "selectmenu" | "modal";
 		filter?: (interaction: Interaction) => boolean;
-		params: [interaction: Interaction, ext: any];
 	};
 }
 
@@ -26,8 +24,14 @@ type EventMeta<K extends keyof Events = "unknown"> = {
 	__type__: K extends "unknown" ? any : K;
 	from: string;
 	at: string;
-	handler: (...args: Events[K]["params"]) => Awaitable<any>;
-} & Omit<Events[K], "params">;
+	args:
+		| {
+				transformer: (...arg) => any;
+				args: any[];
+		  }[]
+		| undefined;
+	handler: (...args: any) => Awaitable<any>;
+} & Events[K];
 type RawEventMeta<K extends keyof Events = "unknown"> = Omit<
 	Events[K],
 	"params"

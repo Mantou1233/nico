@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._handleCogs = exports._handleInjector = exports.interaction = exports.command = exports.Cogs = exports.Inject = exports.DefinePlugin = void 0;
+exports.Args = exports.Msg = exports._handleCogs = exports._handleInjector = exports.interaction = exports.command = exports.Cogs = exports.Inject = exports.DefinePlugin = void 0;
 const Reflector_1 = __importDefault(require("../services/Reflector"));
 const PluginLoader_1 = require("./PluginLoader");
 const Registries_1 = require("../services/Registries");
@@ -13,7 +13,6 @@ function DefinePlugin(meta = {}) {
             name: plugin.name.toLowerCase().replace("plugin", ""),
             ...meta
         });
-        global.sb = plugin;
     };
 }
 exports.DefinePlugin = DefinePlugin;
@@ -56,15 +55,26 @@ function interactionDecoratorMixin(type) {
         };
     };
 }
+function argumentPutDecoratorMixin(transformer) {
+    return function ad(...args) {
+        return function argumentDec(target, key, index) {
+            const obj = Reflector_1.default.get(target, "PluginDecArgs") || {};
+            const arr = obj[key] || [];
+            arr[index] = {
+                transformer,
+                args
+            };
+            Reflector_1.default.appendMap(target, "PluginDecArgs", key, arr);
+        };
+    };
+}
 function _handleInjector(inst) {
     const _injects = Reflector_1.default.get(inst, "PluginInjector");
     if (Array.isArray(_injects)) {
         for (let k of _injects) {
-            console.log(k);
             inst[k] = storage[k];
         }
     }
-    console.log(JSON.stringify(_injects));
     return inst;
 }
 exports._handleInjector = _handleInjector;
@@ -95,6 +105,10 @@ function _handleCogs(inst, _path, name) {
     }
 }
 exports._handleCogs = _handleCogs;
+const Msg = argumentPutDecoratorMixin((msg) => msg);
+exports.Msg = Msg;
+const Args = argumentPutDecoratorMixin((msg, ext, parser) => parser(msg.content));
+exports.Args = Args;
 const interaction = {
     button: interactionDecoratorMixin("button"),
     select_menu: interactionDecoratorMixin("selectmenu"),

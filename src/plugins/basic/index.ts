@@ -50,10 +50,16 @@ class BasicPlugin {
 		});
 	}
 
-	@command()
+	@command({
+		command: "restart"
+	})
 	async RestartCommand(msg: Message) {
 		msg.reply("ending;;");
 		this.client.loader.expo();
+	}
+	@command()
+	async d(msg: Message) {
+		console.log(ap("aa"));
 	}
 
 	@interaction.button()
@@ -107,6 +113,7 @@ class BasicPlugin {
 			time: 10000000
 		});
 
+		console.log(1);
 		response.reply(
 			`woo, ${response.fields.getTextInputValue(
 				"name"

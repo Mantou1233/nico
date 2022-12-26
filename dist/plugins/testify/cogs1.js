@@ -8,14 +8,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const Decorators_1 = require("../../core/Decorators");
 let TestifyCog = class TestifyCog {
     client;
-    async testcog(msg) {
-        msg.reply("HOLY SHIT cog runs well!! fuck you + congrats" + this.client);
-        console.log(this.client);
+    async test1(msg, args) {
+        msg.reply(`test1! ${args.length} args: ${args.join(",")}`);
+    }
+    async test2(msg, args) {
+        msg.reply(`test2! ${args.length} args: ${args.join(",")}`);
     }
 };
 __decorate([
@@ -24,10 +29,20 @@ __decorate([
 ], TestifyCog.prototype, "client", void 0);
 __decorate([
     (0, Decorators_1.command)(),
+    __param(0, (0, Decorators_1.Msg)()),
+    __param(1, (0, Decorators_1.Args)(ap)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [discord_js_1.Message]),
+    __metadata("design:paramtypes", [discord_js_1.Message, Array]),
     __metadata("design:returntype", Promise)
-], TestifyCog.prototype, "testcog", null);
+], TestifyCog.prototype, "test1", null);
+__decorate([
+    (0, Decorators_1.command)(),
+    __param(0, (0, Decorators_1.Msg)()),
+    __param(1, (0, Decorators_1.Args)(ap.modern)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [discord_js_1.Message, Array]),
+    __metadata("design:returntype", Promise)
+], TestifyCog.prototype, "test2", null);
 TestifyCog = __decorate([
     (0, Decorators_1.DefinePlugin)()
 ], TestifyCog);

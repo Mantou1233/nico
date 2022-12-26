@@ -3,6 +3,7 @@ import ms from "ms";
 //import { MessageCommand } from "./structure/Types";
 import { UserProfile, GuildProfile } from "./Profile";
 import { EventMeta } from "./structure/Types";
+import { argumentTransformer } from "~/services/args";
 
 const Cooldown = new Collection<string, number>();
 const client: Client = storage.client;
@@ -43,9 +44,17 @@ async function CommandHandler(msg: Message) {
 		);
 	global.d = Date.now();
 	try {
-		await command.handler(msg, {
-			prefix
-		});
+		const args: any = argumentTransformer(
+			"command",
+			[
+				msg,
+				{
+					prefix
+				}
+			],
+			command as EventMeta
+		);
+		await command.handler(...(args as [Message]));
 	} catch (e) {
 		return msg.channel.send(
 			`wawa!! something wrong happened...\n${e.message}`

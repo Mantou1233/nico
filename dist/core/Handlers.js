@@ -8,6 +8,7 @@ const discord_js_1 = require("discord.js");
 const ms_1 = __importDefault(require("ms"));
 //import { MessageCommand } from "./structure/Types.js";
 const Profile_1 = require("./Profile");
+const args_1 = require("../services/args");
 const Cooldown = new discord_js_1.Collection();
 const client = storage.client;
 let prefix = process.env.PREFIX;
@@ -35,9 +36,13 @@ async function CommandHandler(msg) {
         return msg.channel.send(`You need to wait ${(0, ms_1.default)(Cooldown.get(msg.author.id))} to use this command again!!`);
     global.d = Date.now();
     try {
-        await command.handler(msg, {
-            prefix
-        });
+        const args = (0, args_1.argumentTransformer)("command", [
+            msg,
+            {
+                prefix
+            }
+        ], command);
+        await command.handler(...args);
     }
     catch (e) {
         return msg.channel.send(`wawa!! something wrong happened...\n${e.message}`);

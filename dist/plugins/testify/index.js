@@ -17,7 +17,6 @@ let TestyPlugin = class TestyPlugin {
     async testify(msg) {
         msg.reply("HOLY SHIT IS THAT TESTYFI 測試乳鴿歪 FROM ARCAKA??? IS THAT A ACRAEA REFERCET???!" +
             this.client);
-        console.log(this.client);
     }
 };
 __decorate([

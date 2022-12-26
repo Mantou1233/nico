@@ -21,25 +21,49 @@ export type langTypes = keyof typeof langs;
 export let globes = {
 	color: "CFF2FF"
 };
-class i18n {
-	public globe: typeof globes;
-	public icon: typeof icons;
-	constructor() {
-		this.globe = globes;
-		this.icon = icons;
-	}
-	parse(lang: string, string: langKeys, ...opt): string {
-		if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
-		if (!Object.keys(langs).includes(lang))
-			throw new Error("No lang specified found!");
-		let str =
-			langs[lang][string] ??
-			langs["en"][string] ??
-			`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
-		if (typeof str != "string") return str;
-		for (let ot of opt) str = str.replace("%s", `${ot}`);
-		return str;
-	}
+
+function isObject(value) {
+	return Object.prototype.toString.call(value) === "[object Object]";
 }
 
-global.i18n = new i18n();
+function __i18n__parse(lang: string, string: langKeys, ...opt): string {
+	if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
+	if (!Object.keys(langs).includes(lang))
+		throw new Error("No lang specified found!");
+	let str =
+		langs[lang][string] ??
+		langs["en"][string] ??
+		`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
+	if (typeof str != "string") return str;
+	if (isObject(opt[0])) {
+		for (let [k, v] of opt[0]) {
+			str = str.replace(`<${k}>`, `${v}`);
+		}
+		opt = opt.slice();
+	}
+	if (opt.length) {
+		let i = 0;
+		for (let ot of opt) {
+			str = str.replace("%s", `${ot}`);
+			str = str.replace(`%${i++}%`, `${ot}`);
+		}
+	}
+	return str;
+}
+
+export const i18n = __i18n__parse.bind(null);
+
+i18n.globe = globes;
+i18n.icon = icons;
+i18n.parse = __i18n__parse.bind(null);
+
+global.i18n = i18n as I18n;
+
+export interface I18n {
+	(lang: string, string: langKeys, ...opt): string;
+	parse: (lang: string, string: langKeys, ...opt) => string;
+	globe: {
+		color: any;
+	};
+	icon: typeof icons;
+}

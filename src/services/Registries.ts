@@ -55,7 +55,8 @@ export namespace Registries {
 					__type__: data.__type__,
 					from: plugin.name,
 					at: name,
-					handler: fn.bind(inst)
+					handler: fn.bind(inst),
+					args: md.get(inst, "PluginDecArgs")?.[name] || undefined
 				});
 			}
 			if (!meta)

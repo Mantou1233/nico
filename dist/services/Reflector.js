@@ -20,6 +20,13 @@ Object.assign(md, {
         arr.push(value);
         return Reflect.defineMetadata(key, arr, obj);
     },
+    appendMap(obj, key, key2, value, prop) {
+        const arr = Reflect.getMetadata(key, obj, ...[prop]) ?? {};
+        if (!isObj(arr))
+            throw new Error("obj origin not a object");
+        arr[key2] = value;
+        return Reflect.defineMetadata(key, arr, obj);
+    },
     delete(obj, key, prop) {
         return Reflect.deleteMetadata(key, obj, ...[prop]);
     },
@@ -27,5 +34,8 @@ Object.assign(md, {
         return Reflect.getMetadataKeys(obj, ...[prop]);
     }
 });
+function isObj(arg) {
+    return Object.prototype.toString.call(arg) == "[object Object]";
+}
 exports.default = md;
 //# sourceMappingURL=Reflector.js.map
