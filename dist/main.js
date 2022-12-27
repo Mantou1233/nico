@@ -1,4 +1,8 @@
 "use strict";
+/*
+    main code part
+    this should be simple to read
+ */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -12,24 +16,20 @@ const Handlers_1 = require("./core/Handlers");
 const Manager_1 = __importDefault(require("./core/Manager"));
 const { client, db } = storage;
 console.log("Starting nico...");
-const fnMain = async () => {
-    console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
-    await botMain(client);
-};
 async function main() {
     // Legacy DiscordJS Client
     client.on("messageCreate", Handlers_1.CommandHandler);
     client.on("interactionCreate", Handlers_1.InteractionHandler);
     if (!client.isReady()) {
-        client.once("ready", fnMain);
+        client.once("ready", botMain);
         client.login(process.env.TOKEN).then(r => { });
     }
     else
-        fnMain();
+        botMain(client);
 }
 main();
-//Main Function
 async function botMain(client) {
+    console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
     try {
         // Load Plugins
         if (!db.ready) {

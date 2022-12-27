@@ -54,9 +54,10 @@ class PluginLoader {
 			);
 			entry = typeof entry == "function" ? entry : entry.default;
 
-			Registries["Loaders"][temp.vl || 2](entry, {
+			await Registries["Loaders"][temp.vl || 2](entry, {
 				name: pluginName,
-				path: plugin
+				path: plugin,
+				client: this.client
 			});
 
 			log(2, `Loaded plugin ${pluginName}!`);

@@ -39,3 +39,4 @@ export interface Ap {
 	(msg: string, mode: boolean): string[];
 	modern(msg: string): string[];
 }
+declare const wp: Ap;

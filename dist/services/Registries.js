@@ -6,10 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Registries = void 0;
 const Reflector_1 = __importDefault(require("./Reflector"));
 const Decorators_1 = require("../core/Decorators");
+const PluginLoader_1 = require("../core/PluginLoader");
 var Registries;
 (function (Registries) {
     Registries.Loaders = {
-        1 /* version */: function loader() { },
+        1 /* version */: async function loader(entry, { name, client }) {
+            try {
+                await entry(client, client.manager);
+            }
+            catch (e) {
+                console.log(e);
+                (0, PluginLoader_1.log)(3, `Launching plugin ${name} fail: ${e.message}`);
+            }
+        },
         2: function loader(plugin, { name, path, isCog = false }) {
             const meta = Reflector_1.default.get(plugin, "PluginMeta");
             const inst = (0, Decorators_1._handleInjector)(new plugin());

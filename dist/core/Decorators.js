@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Args = exports.Msg = exports._handleCogs = exports._handleInjector = exports.interaction = exports.command = exports.Cogs = exports.Inject = exports.DefinePlugin = void 0;
+exports.Ext = exports.Args = exports.Msg = exports._handleCogs = exports._handleInjector = exports.interaction = exports.command = exports.Cogs = exports.Inject = exports.DefinePlugin = void 0;
 const Reflector_1 = __importDefault(require("../services/Reflector"));
 const PluginLoader_1 = require("./PluginLoader");
 const Registries_1 = require("../services/Registries");
@@ -59,7 +59,16 @@ function argumentPutDecoratorMixin(transformer) {
     return function ad(...args) {
         return function argumentDec(target, key, index) {
             const obj = Reflector_1.default.get(target, "PluginDecArgs") || {};
-            const arr = obj[key] || [];
+            const arr = obj[key] || [
+                {
+                    transformer: (or, ext) => or,
+                    args: []
+                },
+                {
+                    transformer: (or, ext) => ext,
+                    args: []
+                }
+            ];
             arr[index] = {
                 transformer,
                 args
@@ -109,6 +118,8 @@ const Msg = argumentPutDecoratorMixin((msg) => msg);
 exports.Msg = Msg;
 const Args = argumentPutDecoratorMixin((msg, ext, parser) => parser(msg.content));
 exports.Args = Args;
+const Ext = argumentPutDecoratorMixin((msg, ext) => ext);
+exports.Ext = Ext;
 const interaction = {
     button: interactionDecoratorMixin("button"),
     select_menu: interactionDecoratorMixin("selectmenu"),

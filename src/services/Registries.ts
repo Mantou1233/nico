@@ -6,6 +6,7 @@ import {
 } from "@core/structure/Types";
 import md from "./Reflector";
 import { _handleCogs, _handleInjector } from "~/core/Decorators";
+import { log } from "~/core/PluginLoader";
 
 export namespace Registries {
 	export type MetadataMap = {
@@ -23,7 +24,17 @@ export namespace Registries {
 	};
 
 	export const Loaders = {
-		1 /* version */: function loader() {},
+		1 /* version */: async function loader(
+			entry: (client, cm) => Promise<void>,
+			{ name, client }
+		) {
+			try {
+				await entry(client, client.manager);
+			} catch (e) {
+				console.log(e);
+				log(3, `Launching plugin ${name} fail: ${e.message}`);
+			}
+		},
 		2: function loader(
 			plugin,
 			{

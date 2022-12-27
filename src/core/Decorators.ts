@@ -63,7 +63,16 @@ function argumentPutDecoratorMixin(transformer: (...args) => any) {
 	return function ad(...args) {
 		return function argumentDec(target: any, key: string, index: number) {
 			const obj = md.get(target, "PluginDecArgs") || {};
-			const arr = obj[key] || [];
+			const arr = obj[key] || [
+				{
+					transformer: (or, ext) => or,
+					args: []
+				},
+				{
+					transformer: (or, ext) => ext,
+					args: []
+				}
+			];
 			arr[index] = {
 				transformer,
 				args
@@ -112,6 +121,7 @@ const Msg = argumentPutDecoratorMixin((msg: Message) => msg);
 const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
 	parser(msg.content)
 );
+const Ext = argumentPutDecoratorMixin((msg: Message, ext) => ext);
 
 const interaction = {
 	button: interactionDecoratorMixin("button"),
@@ -132,5 +142,6 @@ export {
 	_handleCogs,
 	
 	Msg,
-	Args
+	Args,
+	Ext
 };

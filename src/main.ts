@@ -1,3 +1,8 @@
+/*
+	main code part
+	this should be simple to read
+ */
+
 //import "./services/i18n";
 import "./services/random";
 import "./services/ap";
@@ -12,11 +17,6 @@ const { client, db } = storage;
 
 console.log("Starting nico...");
 
-const fnMain = async () => {
-	console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
-	await botMain(client);
-};
-
 async function main() {
 	// Legacy DiscordJS Client
 
@@ -24,14 +24,13 @@ async function main() {
 	client.on("interactionCreate", InteractionHandler as any);
 
 	if (!client.isReady()) {
-		(client as Client).once("ready", fnMain);
+		(client as Client).once("ready", botMain);
 		(client as Client).login(process.env.TOKEN).then(r => {});
-	} else fnMain();
+	} else botMain(client);
 }
-
 main();
-//Main Function
 async function botMain(client: Client) {
+	console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
 	try {
 		// Load Plugins
 		if (!db.ready) {

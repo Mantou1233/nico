@@ -73,9 +73,10 @@ class PluginLoader {
                 .replace(".js", "")
                 .replace("./", "")}`}`).then(s => __importStar(require(s)));
             entry = typeof entry == "function" ? entry : entry.default;
-            Registries_1.Registries["Loaders"][temp.vl || 2](entry, {
+            await Registries_1.Registries["Loaders"][temp.vl || 2](entry, {
                 name: pluginName,
-                path: plugin
+                path: plugin,
+                client: this.client
             });
             (0, exports.log)(2, `Loaded plugin ${pluginName}!`);
             continue;
