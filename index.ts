@@ -31,7 +31,7 @@
 //     }
 // });
 
-// globalThis.storage = {
+// global.storage = {
 //     db,
 //     client
 // };

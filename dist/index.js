@@ -41,7 +41,7 @@ process.on("uncaughtException", (err, origin) => {
     if (process.env.MONGO_TABLE) {
         db = new db.table(process.env.MONGO_TABLE);
     }
-    globalThis.storage = { client, db };
+    global.storage = { client, db };
     require("./main.js");
 })();
 //# sourceMappingURL=index.js.map
