@@ -7,6 +7,13 @@ require("./services/djsAddition");
 const discord_js_1 = require("discord.js");
 (0, discord_js_1.disableValidators)();
 const quickmongo_1 = require("quickmongo");
+process.on("unhandledRejection", (reason, promise) => {
+    console.log("Unhandled Rejection at:", promise, "reason:", reason);
+    // Application specific logging, throwing an error, or other logic here.
+});
+process.on("uncaughtException", (err, origin) => {
+    console.log(err);
+});
 (async () => {
     const client = new discord_js_1.Client({
         intents: [

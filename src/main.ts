@@ -79,12 +79,3 @@ async function botMain(client: Client) {
 		process.exit(1);
 	}
 }
-
-process.on("unhandledRejection", (reason, promise) => {
-	console.log("Unhandled Rejection at:", promise, "reason:", reason);
-	// Application specific logging, throwing an error, or other logic here.
-});
-
-process.on("uncaughtException", (err, origin) => {
-	console.log(err);
-});
