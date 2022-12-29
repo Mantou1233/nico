@@ -7,7 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"main": "node dist/index",
 		"build": "tsc && resolve-tspaths",
-		"watch": "tsc-watch --onSuccess resolve-tspaths",
+		"watch": "tsc-watch ----onCompilationComplete resolve-tspaths",
 		"w": "yarn watch",
 		"cw": "rimraf dist && yarn w"
 	},

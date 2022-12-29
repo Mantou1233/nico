@@ -51,7 +51,7 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 	return str;
 }
 
-export const i18n = __i18n__parse.bind(null);
+export const i18n = __i18n__parse.bind(null) as I18n;
 
 i18n.globe = globes;
 i18n.icon = icons;

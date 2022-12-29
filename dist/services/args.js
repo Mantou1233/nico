@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.argumentTransformer = void 0;
-function argumentTransformer(type, origin, handler) {
+async function argumentTransformer(type, origin, handler) {
     const _args = [];
     let i = 0;
     for (let { transformer, args } of handler.args || [
@@ -14,7 +14,7 @@ function argumentTransformer(type, origin, handler) {
             args: []
         }
     ]) {
-        _args[i++] = transformer(...origin, ...args);
+        _args[i++] = await transformer(...origin, ...args);
     }
     return _args;
 }

@@ -34,14 +34,15 @@ async function CommandHandler(msg) {
         return;
     if (command.cooldown && Cooldown.has(msg.author.id))
         return msg.channel.send(`You need to wait ${(0, ms_1.default)(Cooldown.get(msg.author.id))} to use this command again!!`);
-    global.d = Date.now();
+    const args = await (0, args_1.argumentTransformer)("command", [
+        msg,
+        {
+            prefix,
+            p,
+            g
+        }
+    ], command);
     try {
-        const args = (0, args_1.argumentTransformer)("command", [
-            msg,
-            {
-                prefix
-            }
-        ], command);
         await command.handler(...args);
     }
     catch (e) {

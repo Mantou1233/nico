@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { EventMeta, Events } from "~/core/structure/Types";
 
-export function argumentTransformer<
+export async function argumentTransformer<
 	K extends Exclude<keyof Events, "any" | "unknown">
 >(type: K, origin: any[], handler: EventMeta<K>) {
 	const _args: any[] = [];
@@ -16,7 +16,7 @@ export function argumentTransformer<
 			args: []
 		}
 	]) {
-		_args[i++] = transformer(...origin, ...args);
+		_args[i++] = await transformer(...origin, ...args);
 	}
 	return _args;
 }

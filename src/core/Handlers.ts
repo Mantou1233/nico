@@ -42,18 +42,19 @@ async function CommandHandler(msg: Message) {
 				Cooldown.get(msg.author.id)
 			)} to use this command again!!`
 		);
-	global.d = Date.now();
+	const args = await argumentTransformer(
+		"command",
+		[
+			msg,
+			{
+				prefix,
+				p,
+				g
+			}
+		],
+		command as EventMeta
+	);
 	try {
-		const args: any = argumentTransformer(
-			"command",
-			[
-				msg,
-				{
-					prefix
-				}
-			],
-			command as EventMeta
-		);
 		await command.handler(...(args as [Message]));
 	} catch (e) {
 		return msg.channel.send(

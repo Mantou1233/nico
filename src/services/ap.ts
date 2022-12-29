@@ -26,7 +26,7 @@ export function flagParser(args, options) {
 	return flags;
 }
 
-const __ap = argumentParser.bind(null);
+const __ap = argumentParser.bind(null) as Ap;
 __ap.modern = modernArgumentParser.bind(null);
 
 global.ap = __ap as Ap;
@@ -39,4 +39,3 @@ export interface Ap {
 	(msg: string, mode: boolean): string[];
 	modern(msg: string): string[];
 }
-declare const wp: Ap;

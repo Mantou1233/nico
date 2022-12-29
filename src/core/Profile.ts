@@ -93,3 +93,8 @@ export async function UserProfile(
 		[K in keyof UserSchema]: UserSchema[K];
 	};
 }
+
+export namespace Schema {
+	export type User = Awaited<ReturnType<typeof UserProfile>>
+	export type Guild = Awaited<ReturnType<typeof GuildProfile>>;
+}

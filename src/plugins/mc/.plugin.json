@@ -1,0 +1,5 @@
+{
+	"name": "minecraft",
+	"entry": "./index.ts",
+	"vl": 2
+}
