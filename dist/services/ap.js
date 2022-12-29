@@ -1,14 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.emojiParser = exports.flagParser = void 0;
-function argumentParser(msg, mode = false, flags = []) {
-    if (mode) {
-        let temp = msg.split(/ +/);
-        temp.shift();
-        return [msg.split(/ +/)[0], temp.join(" ")];
-    }
+exports.emojiParser = exports.flagParser = exports.modernArgumentParser = exports.argumentParser = void 0;
+function argumentParser(msg, mode = false) {
+    if (mode)
+        return modernArgumentParser(msg);
     return [...msg.matchAll(/(?<=^| )("?)(.+?)\1(?= |$)/g)].map(match => match[0].replaceAll('"', ""));
 }
+exports.argumentParser = argumentParser;
+function modernArgumentParser(msg) {
+    let temp = msg.split(/ +/);
+    temp.shift();
+    return [msg.split(/ +/)[0], temp.join(" ")];
+}
+exports.modernArgumentParser = modernArgumentParser;
 function flagParser(args, options) {
     const flags = {};
     for (let i = 0; i < args.length; i++) {
@@ -34,5 +38,7 @@ function emojiParser(pr) {
     return emojis;
 }
 exports.emojiParser = emojiParser;
-global.ap = argumentParser;
+const __ap = argumentParser.bind(null);
+__ap.modern = modernArgumentParser.bind(null);
+global.ap = __ap;
 //# sourceMappingURL=ap.js.map
