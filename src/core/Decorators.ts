@@ -1,3 +1,4 @@
+import { i18n } from './../services/i18n';
 import md from "@services/Reflector";
 import { EventMeta, Events, PluginMeta, RawEventMeta } from "./structure/Types";
 import path from "path";
@@ -122,6 +123,8 @@ const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
 	parser(msg.content)
 );
 const Ext = argumentPutDecoratorMixin((msg: Message, ext) => ext);
+const I18n = argumentPutDecoratorMixin((msg: Message) => i18n.bind(null, msg.lang));
+const Tr = I18n
 
 const interaction = {
 	button: interactionDecoratorMixin("button"),
@@ -143,5 +146,7 @@ export {
 	
 	Msg,
 	Args,
-	Ext
+	Ext,
+	I18n,
+	Tr
 };

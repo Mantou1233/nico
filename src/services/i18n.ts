@@ -55,15 +55,15 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 	return str;
 }
 
-export const i18n = __i18n__parse.bind(null) as I18n;
+export const i18n = __i18n__parse.bind(null) as I18nDef;
 
 i18n.globe = globes;
 i18n.icon = icons;
 i18n.parse = __i18n__parse.bind(null);
 
-global.i18n = i18n as I18n;
+global.i18n = i18n as I18nDef;
 
-export interface I18n {
+export interface I18nDef {
 	(lang: string, string: langKeys, ...opt): string;
 	parse: (lang: string, string: langKeys, ...opt) => string;
 	globe: {
