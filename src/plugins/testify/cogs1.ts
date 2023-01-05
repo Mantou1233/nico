@@ -10,7 +10,7 @@ import {
 } from "~/core/Decorators";
 
 @DefinePlugin()
-class TestifyCog {
+class TestyCog {
 	@Inject client: Client;
 
 	@command()
@@ -24,4 +24,4 @@ class TestifyCog {
 	}
 }
 
-export default TestifyCog;
+export default TestyCog;

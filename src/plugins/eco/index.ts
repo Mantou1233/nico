@@ -4,7 +4,7 @@ import { Schema, UserProfile } from "~/core/Profile";
 import { Database } from "quickmongo";
 
 @DefinePlugin()
-class BasicPlugin {
+class EconomyPlugin {
 	@Inject client: Client;
 	@Inject db: Database;
 
@@ -21,4 +21,4 @@ class BasicPlugin {
 	}
 }
 
-export default BasicPlugin;
+export default EconomyPlugin;
