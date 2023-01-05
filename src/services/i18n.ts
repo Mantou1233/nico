@@ -30,17 +30,21 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 	if (string.startsWith("-")) string = string.slice(1) as `-${string}`;
 	if (!Object.keys(langs).includes(lang))
 		throw new Error("No lang specified found!");
+	const constants = {
+		lang,
+		...(isObject(opt[0]) ? opt.shift() : {})
+	} as Record<string, string>;
+
 	let str =
 		langs[lang][string] ??
 		langs["en"][string] ??
 		`${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
 	if (typeof str != "string") return str;
-	if (isObject(opt[0])) {
-		for (let [k, v] of opt[0]) {
-			str = str.replace(`<${k}>`, `${v}`);
-		}
-		opt = opt.slice();
+
+	for (let [k, v] of Object.entries(constants)) {
+		str = str.replace(`<${k}>`, `${v}`);
 	}
+
 	if (opt.length) {
 		let i = 0;
 		for (let ot of opt) {

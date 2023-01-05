@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
 const Decorators_1 = require("../../core/Decorators");
-let TestifyCog = class TestifyCog {
+let TestyCog = class TestyCog {
     client;
     async test1(msg, args) {
         msg.reply(`test1! ${args.length} args: ${args.join(",")}`);
@@ -26,7 +26,7 @@ let TestifyCog = class TestifyCog {
 __decorate([
     Decorators_1.Inject,
     __metadata("design:type", discord_js_1.Client)
-], TestifyCog.prototype, "client", void 0);
+], TestyCog.prototype, "client", void 0);
 __decorate([
     (0, Decorators_1.command)(),
     __param(0, (0, Decorators_1.Msg)()),
@@ -34,7 +34,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message, Array]),
     __metadata("design:returntype", Promise)
-], TestifyCog.prototype, "test1", null);
+], TestyCog.prototype, "test1", null);
 __decorate([
     (0, Decorators_1.command)(),
     __param(0, (0, Decorators_1.Msg)()),
@@ -42,9 +42,9 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message, Array]),
     __metadata("design:returntype", Promise)
-], TestifyCog.prototype, "test2", null);
-TestifyCog = __decorate([
+], TestyCog.prototype, "test2", null);
+TestyCog = __decorate([
     (0, Decorators_1.DefinePlugin)()
-], TestifyCog);
-exports.default = TestifyCog;
+], TestyCog);
+exports.default = TestyCog;
 //# sourceMappingURL=cogs1.js.map

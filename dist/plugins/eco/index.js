@@ -13,7 +13,7 @@ const Decorators_1 = require("../../core/Decorators");
 const discord_js_1 = require("discord.js");
 const Profile_1 = require("../../core/Profile");
 const quickmongo_1 = require("quickmongo");
-let BasicPlugin = class BasicPlugin {
+let EconomyPlugin = class EconomyPlugin {
     client;
     db;
     async dbinfo(msg) {
@@ -26,19 +26,19 @@ let BasicPlugin = class BasicPlugin {
 __decorate([
     Decorators_1.Inject,
     __metadata("design:type", discord_js_1.Client)
-], BasicPlugin.prototype, "client", void 0);
+], EconomyPlugin.prototype, "client", void 0);
 __decorate([
     Decorators_1.Inject,
     __metadata("design:type", quickmongo_1.Database)
-], BasicPlugin.prototype, "db", void 0);
+], EconomyPlugin.prototype, "db", void 0);
 __decorate([
     (0, Decorators_1.command)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message]),
     __metadata("design:returntype", Promise)
-], BasicPlugin.prototype, "dbinfo", null);
-BasicPlugin = __decorate([
+], EconomyPlugin.prototype, "dbinfo", null);
+EconomyPlugin = __decorate([
     (0, Decorators_1.DefinePlugin)()
-], BasicPlugin);
-exports.default = BasicPlugin;
+], EconomyPlugin);
+exports.default = EconomyPlugin;
 //# sourceMappingURL=index.js.map

@@ -14,31 +14,24 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Decorators_1 = require("../../core/Decorators");
 const discord_js_1 = require("discord.js");
-let TestyPlugin = class TestyPlugin {
+let TestingPlugin = class TestingPlugin {
     client;
-    extenstions;
-    async mcparse(msg, args) {
-        const content = args[1];
-        msg.reply(args[1]);
+    async trans(msg, args) {
     }
 };
 __decorate([
     Decorators_1.Inject,
     __metadata("design:type", discord_js_1.Client)
-], TestyPlugin.prototype, "client", void 0);
-__decorate([
-    (0, Decorators_1.Cogs)(["./cogs1.ts"]),
-    __metadata("design:type", Object)
-], TestyPlugin.prototype, "extenstions", void 0);
+], TestingPlugin.prototype, "client", void 0);
 __decorate([
     (0, Decorators_1.command)(),
     __param(1, (0, Decorators_1.Args)(ap.modern)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [discord_js_1.Message, Array]),
     __metadata("design:returntype", Promise)
-], TestyPlugin.prototype, "mcparse", null);
-TestyPlugin = __decorate([
+], TestingPlugin.prototype, "trans", null);
+TestingPlugin = __decorate([
     (0, Decorators_1.DefinePlugin)()
-], TestyPlugin);
-exports.default = TestyPlugin;
+], TestingPlugin);
+exports.default = TestingPlugin;
 //# sourceMappingURL=index.js.map

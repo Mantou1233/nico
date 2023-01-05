@@ -23,16 +23,17 @@ function __i18n__parse(lang, string, ...opt) {
         string = string.slice(1);
     if (!Object.keys(exports.langs).includes(lang))
         throw new Error("No lang specified found!");
+    const constants = {
+        lang,
+        ...(isObject(opt[0]) ? opt.shift() : {})
+    };
     let str = exports.langs[lang][string] ??
         exports.langs["en"][string] ??
         `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
     if (typeof str != "string")
         return str;
-    if (isObject(opt[0])) {
-        for (let [k, v] of opt[0]) {
-            str = str.replace(`<${k}>`, `${v}`);
-        }
-        opt = opt.slice();
+    for (let [k, v] of Object.entries(constants)) {
+        str = str.replace(`<${k}>`, `${v}`);
     }
     if (opt.length) {
         let i = 0;
