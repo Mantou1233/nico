@@ -17,7 +17,8 @@
 	"basic.toggle.command.enabledText": "enabled",
 	"basic.toggle.command.disabledText": "disabled",
 
-	"basic.help.description": "do `%sh <command>` to see a description of a command you need more info on! For example `%sh hitokoto`.",
+	"basic.help.description": "See the command list",
+	"basic.help.ext_description": "do `%sh <command>` to see a description of a command you need more info on! For example `%sh hitokoto`.",
 	"basic.help.usage": "%phelp\n%phelp <command>",
 	"basic.help.notfound": "I can't find that command. Please verify that the command exists before trying again.",
 

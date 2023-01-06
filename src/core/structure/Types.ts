@@ -9,10 +9,14 @@ interface Events {
 		params: [];
 	};
 	command: {
-		command?: string;
+		command: string;
 		disabled?: boolean;
 		cooldown?: number;
 		alias?: string[];
+		category?: string;
+		desc?: string;
+		usage?: string;
+		hidden?: boolean
 	};
 	interaction: {
 		type: "button" | "selectmenu" | "modal";
@@ -31,7 +35,12 @@ type EventMeta<K extends keyof Events = "unknown"> = {
 		  }[]
 		| undefined;
 	handler: (...args: any) => Awaitable<any>;
+} & Partial<Events[K]>;
+
+type UnsignedEventMeta<K extends keyof Events = "unknown"> = {
+	handler: (...args: any) => Awaitable<any>;
 } & Events[K];
+
 type RawEventMeta<K extends keyof Events = "unknown"> = Omit<
 	Events[K],
 	"params"
@@ -47,6 +56,7 @@ export type {
 
 	RawEventMeta,
 	EventMeta,
+	UnsignedEventMeta,
 	
 	PluginMeta
 };

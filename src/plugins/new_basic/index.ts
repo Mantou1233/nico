@@ -25,7 +25,7 @@ class BasicPlugin {
 	@Inject client: Client;
 
 	@command()
-	async ping(msg: Message) {
+	async ping2(msg: Message) {
 		const row = new ActionRowBuilder().addComponents(
 			new ButtonBuilder()
 				.setCustomId("pong")
@@ -49,12 +49,6 @@ class BasicPlugin {
 		msg.reply({
 			components: [row as any]
 		});
-	}
-
-	@command({ command: "restart" })
-	async restart(msg: Message) {
-		msg.reply("ending;;");
-		this.client.loader.expo();
 	}
 
 	@interaction.button()
@@ -114,53 +108,6 @@ class BasicPlugin {
 				"name"
 			)}, you poem is ${response.fields.getTextInputValue("desc")}`
 		);
-	}
-
-	@command()
-	async eval(@Msg() msg: Message, @Args(ap.modern) args: string[]) {
-		if (msg.author.id !== "644504218798915634")
-			return msg.channel.send("Insuffent permission.");
-		const code = args[1];
-		if (code.trim() === "")
-			return msg.channel.send("Dont give me nothing u dumb!!");
-		let msg2 = await msg.channel.send("evaling...");
-		try {
-			let output = await eval(code);
-			if (
-				output instanceof Promise ||
-				(Boolean(output) &&
-					typeof output.then === "function" &&
-					typeof output.catch === "function")
-			)
-				output = await output;
-			output = inspect(output, {
-				depth: 0,
-				maxArrayLength: null
-			});
-			msg2.edit({
-				embeds: [
-					{
-						author: {
-							name: "Evaluation Completed!"
-						},
-						description: `**Input**\n\`\`\`js\n${code}\`\`\`\n**Output**\n\`\`\`js\n${output}\`\`\``,
-						color: 0x2f3136
-					}
-				]
-			}).catch(() => {});
-		} catch (err) {
-			msg2.edit({
-				embeds: [
-					{
-						author: {
-							name: "Error!"
-						},
-						description: `**Input**\n\`\`\`js\n${code}\`\`\`\n**Error**\n\`\`\`js\n${err}\`\`\``,
-						color: 0x2f3136
-					}
-				]
-			}).catch(() => {});
-		}
 	}
 }
 

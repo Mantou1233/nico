@@ -44,7 +44,6 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 			langs["en"][string] ||
 			`${string}${opt.length ? `(${opt.join(", ")})` : ""}`);
 
-	console.log(str)
 	if (typeof str != "string") return str;
 
 	for (let [k, v] of Object.entries(constants)) {

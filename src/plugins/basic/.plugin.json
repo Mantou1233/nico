@@ -1,5 +1,5 @@
 {
-	"name": "basic",
-	"entry": "./index.ts",
-	"vl": 2
+	"name": "_old_basic",
+	"entry": "./src/index.ts",
+	"vl": 1
 }

@@ -29,17 +29,17 @@ function Cogs(extenstions: string[]) {
 	};
 }
 
-function command(meta: RawEventMeta<"command"> = {}) {
+function command(meta: RawEventMeta<"command"> = {command: ""}) {
 	return function (
 		target: any,
 		propertyKey: string,
 		descriptor: PropertyDescriptor
 	) {
 		md.set(descriptor.value, "EventMeta", {
-			command: propertyKey,
 			disabled: false,
 			cooldown: 0,
 			...meta,
+			command: meta.command || propertyKey,
 			__type__: "command"
 		});
 	};
