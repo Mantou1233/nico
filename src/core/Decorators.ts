@@ -123,8 +123,7 @@ const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
 	parser(msg.content)
 );
 const Ext = argumentPutDecoratorMixin((msg: Message, ext) => ext);
-const I18n = argumentPutDecoratorMixin((msg: Message) => i18n.bind(null, msg.lang));
-const Tr = I18n
+const Tr = argumentPutDecoratorMixin((msg: Message) => i18n.bind(null, msg.lang));
 
 const interaction = {
 	button: interactionDecoratorMixin("button"),
@@ -147,6 +146,5 @@ export {
 	Msg,
 	Args,
 	Ext,
-	I18n,
 	Tr
 };

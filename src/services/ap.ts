@@ -26,12 +26,12 @@ export function flagParser(args, options) {
 	return flags;
 }
 
-const __ap = argumentParser.bind(null) as ApDef;
+const __ap = argumentParser.bind(null) as TAp;
 __ap.modern = modernArgumentParser.bind(null);
 
-global.ap = __ap as ApDef;
+global.ap = __ap as TAp;
 
-export interface ApDef {
+export interface TAp {
 	(msg: string): string[];
 	/**
 	 * @deprecated use `ap.modern` instead.

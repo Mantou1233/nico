@@ -9,6 +9,8 @@
 	"basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
 	"basic.say.error.noargs": "what do you want to say??",
 
+	"basic.replacer.testify": "holy shit: <holy_shit>\nholy fuck (this should gives \"en\"): <lang>\ntry array: %0%, %s, %1%, %2%, %s, %s\ntry escape: %\\, <\\, \\>",
+
 	"basic.toggle.description": "Toggle specified modules.",
 	"basic.toggle.usage": "%ptoggle <category|command> <name> [--s|--l]",
 	"basic.toggle.command.toggled": "%s is %s",

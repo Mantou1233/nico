@@ -6,8 +6,8 @@
 
 	"basic.say.description": "Say something you want to say. supports raw ctx.",
 	"basic.say.usage": "Say something you want to say. supports raw ctx.",
-	"basic.say.error.invaildparams": "there is a error when sending a embed, try again and check is the embed legal or not.",
-	"basic.say.error.noargs": "what do you want to say??",
+	"basic.say.error.invaildparams": "我發信息的時候故障了xwx, 請看看你有沒有違法字符.",
+	"basic.say.error.noargs": "不是，你想説啥??",
 
 	"basic.toggle.description": "Toggle specified modules.",
 	"basic.toggle.usage": "%stoggle <category|command> <name> [--s|--l]",
