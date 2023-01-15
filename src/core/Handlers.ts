@@ -8,7 +8,7 @@ import { UserProfile, GuildProfile } from "./Profile";
 const Cooldown = new Collection<string, number>();
 const client: Client = storage.client;
 
-let prefix: string = process.env.PREFIX as string;
+let prefix: string;
 
 async function CommandHandler(msg: Message) {
 	if (msg.author.bot) return;
@@ -19,7 +19,7 @@ async function CommandHandler(msg: Message) {
 	const g = await GuildProfile(msg);
 	await g.checkAndUpdate();
 
-	prefix = g.prefix ?? (process.env.PREFIX as string);
+	prefix = process.env.FORCE_PREFIX! || g.prefix || process.env.PREFIX!;
 	msg.lang = p.lang ?? "en";
 	const mappings = client.manager.commands as Collection<
 		string,

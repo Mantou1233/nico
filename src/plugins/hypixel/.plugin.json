@@ -1,0 +1,5 @@
+{
+	"name": "hypixel",
+	"version": "b0",
+	"entry": "src/index.js"
+}

@@ -338,8 +338,10 @@ async function load(client: Discord.Client, cm: Manager) {
 	cm.register({
 		command: "expo",
 		category: "Basic",
+		alias: ["restart"],
 		hidden: true,
 		handler: async (msg, { prefix }) => {
+			msg.reply("wawa \\*dies*");
 			client.loader.expo();
 		}
 	});
