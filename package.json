@@ -10,7 +10,7 @@
 		"build": "tsc && resolve-tspaths",
 		"watch": "tsc-watch --onSuccess resolve-tspaths",
 		"w": "rimraf dist && yarn watch",
-		"quick": "rimraf dist && rimraf node_modules && yarn && node ."
+		"quick": "rimraf dist && rimraf node_modules && yarn && yarn build && node ."
 	},
 	"keywords": [
 		"bad",
