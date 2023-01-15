@@ -9,6 +9,7 @@ config.json
 
 # debug
 arc/
+dist/
 
 #
 public/
