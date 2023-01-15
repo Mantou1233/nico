@@ -16,6 +16,7 @@ export type langKeys =
 	| Exclude<AllKeysOf<KeyOfUnion<typeof langs>>, `item.${string}`>
 	| `-${string}` // any key
 	| `>${string}` // any string
+	| `--ignore` // allowance ignore input, use `tr(asdf as "--ignore")` (ONLY TYPINGS)
 	;
 
 export type langTypes = keyof typeof langs;

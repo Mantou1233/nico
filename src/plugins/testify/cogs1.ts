@@ -19,7 +19,7 @@ class TestyCog {
 	}
 
 	@command()
-	async test2(@Msg() msg: Message, @Args(ap.modern) args: any[]) {
+	async test2(@Msg() msg: Message, @Args(ap.old) args: any[]) {
 		msg.reply(`test2! ${args.length} args: ${args.join(",")}`);
 	}
 }

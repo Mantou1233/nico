@@ -33,16 +33,11 @@ async function botMain(client: Client) {
 	console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
 	try {
 		// Load Plugins
-		if (!db.ready) {
-			await db.connect();
-			let _tmp = Date.now();
-			await db.add("sys:time", 1);
-			console.log(
-				`connected to mongo! DB ping: ${require("ms")(
-					Date.now() - _tmp
-				)}`
-			);
-		}
+		let _tmp = Date.now();
+		await db.add("sys:time", 1);
+		console.log(
+			`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`
+		);
 		const loader = new PluginLoader(client);
 		client.loader = loader;
 		client.manager = new Manager(client);

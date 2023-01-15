@@ -1,4 +1,4 @@
-import { i18n } from './../services/i18n';
+import { i18n } from "./../services/i18n";
 import md from "@services/Reflector";
 import { EventMeta, Events, PluginMeta, RawEventMeta } from "./structure/Types";
 import path from "path";
@@ -24,12 +24,12 @@ function Inject(obj, key) {
 function Cogs(extenstions: string[]) {
 	return function CogSetter(obj, ext) {
 		if (md.get(obj, "PluginCogs")) throw new Error("Already setted cogs");
-		if (ext !== "extenstions") throw new Error("notExtendErrorAlias");
+		if (ext !== "extensions") throw new Error("notExtendErrorAlias");
 		md.set(obj, "PluginCogs", extenstions);
 	};
 }
 
-function command(meta: RawEventMeta<"command"> = {command: ""}) {
+function command(meta: RawEventMeta<"command"> = { command: "" }) {
 	return function (
 		target: any,
 		propertyKey: string,
@@ -123,7 +123,9 @@ const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
 	parser(msg.content)
 );
 const Ext = argumentPutDecoratorMixin((msg: Message, ext) => ext);
-const Tr = argumentPutDecoratorMixin((msg: Message) => i18n.bind(null, msg.lang));
+const Tr = argumentPutDecoratorMixin((msg: Message) =>
+	i18n.bind(null, msg.lang)
+);
 
 const interaction = {
 	button: interactionDecoratorMixin("button"),

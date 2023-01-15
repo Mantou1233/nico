@@ -21,14 +21,11 @@ import {
 class TestyPlugin {
 	@Inject client: Client;
 
-	@Cogs(["./cogs1.ts"]) extenstions;
+	@Cogs(["./cogs1.ts"]) extensions;
 
 	@command()
 	async testify(msg: Message) {
-		msg.reply(
-			"HOLY SHIT IS THAT TESTYFI 測試乳鴿歪 FROM ARCAKA??? IS THAT A ACRAEA REFERCET???!" +
-				this.client
-		);
+		msg.reply("test");
 	}
 }
 
