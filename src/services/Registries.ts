@@ -12,13 +12,13 @@ export namespace Registries {
 	export type MetadataMap = {
 		// @sector plugins
 		PluginMeta: PluginMeta;
+		PluginCogs: string[];
 
 		// @sector "events"
 		EventMeta: RawEventMeta | EventMeta;
 	};
 	export type MetadataArrayMap = {
 		PluginInjector: string;
-		PluginCogs: string;
 
 		EventKeys: string;
 	};

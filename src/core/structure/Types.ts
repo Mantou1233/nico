@@ -2,12 +2,8 @@ import { Message, Interaction } from "discord.js";
 import { Awaitable } from "../Utils";
 
 interface Events {
-	unknown: {
-		params: [];
-	};
-	any: {
-		params: [];
-	};
+	unknown: {};
+	any: {};
 	command: {
 		command: string;
 		disabled?: boolean;
@@ -16,7 +12,7 @@ interface Events {
 		category?: string;
 		desc?: string;
 		usage?: string;
-		hidden?: boolean
+		hidden?: boolean;
 	};
 	interaction: {
 		type: "button" | "selectmenu" | "modal";

@@ -22,7 +22,7 @@
 	"basic.help.usage": "%phelp\n%phelp <command>",
 	"basic.help.notfound": "I can't find that command. Please verify that the command exists before trying again.",
 
-	"basic.ping.pong": "Pong! :ping_pong: %s ms",
+	"basic.ping.pong": "%s! :ping_pong: %s ms",
 	"basic.lang.current": "Your current language on the bot is %s.\ncurrently %s langs available: %s",
 	"basic.lang.set": "I have set your language to %s!",
 

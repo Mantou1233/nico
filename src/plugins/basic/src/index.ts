@@ -154,7 +154,7 @@ async function load(client: Discord.Client, cm: Manager) {
 			});
 		}
 	});
-	
+
 	const ux = (name, value, inline = false) => ({ name, value, inline });
 	cm.register({
 		command: "botstats",
@@ -174,7 +174,7 @@ async function load(client: Discord.Client, cm: Manager) {
 						.setConfig()
 						.setTitle(
 							`nico - ${(
-								(process.env.BUILD as string) || "Development"
+								(process.env.BUILD as string) || "Stable"
 							).toLowerCase()}`
 						)
 						.setThumbnail(
@@ -725,6 +725,7 @@ async function load(client: Discord.Client, cm: Manager) {
 				i18n.parse(
 					msg.lang,
 					"basic.ping.pong",
+					process.env.BUILD ? "Pang" : "Pong",
 					`${Math.abs(Date.now() - msg.createdTimestamp)}`
 				)
 			);
