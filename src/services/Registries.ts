@@ -12,15 +12,23 @@ export namespace Registries {
 	export type MetadataMap = {
 		// @sector plugins
 		PluginMeta: PluginMeta;
-		PluginCogs: string[];
 
 		// @sector "events"
 		EventMeta: RawEventMeta | EventMeta;
 	};
 	export type MetadataArrayMap = {
 		PluginInjector: string;
+		PluginCogs: string;
 
 		EventKeys: string;
+	};
+	export type MetadataObjectMap = {
+		PluginDecArgs:
+			| {
+					transformer: (...arg) => any;
+					args: any[];
+			  }
+			| undefined;
 	};
 
 	export const Loaders = {
@@ -57,7 +65,7 @@ export namespace Registries {
 					continue;
 
 				const fn = plugin.prototype[name];
-				const data = md.get(fn, "EventMeta");
+				const data = md.get(fn, "EventMeta") as EventMeta;
 				if (!data) continue;
 				if (!Object.hasOwn(handlers, data.__type__))
 					handlers[data.__type__] = [];
