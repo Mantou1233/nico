@@ -9,7 +9,8 @@
 		"deploy": "node dist/services/deploy",
 		"build": "tsc && resolve-tspaths",
 		"watch": "tsc-watch --onSuccess resolve-tspaths",
-		"w": "rimraf dist && yarn watch"
+		"w": "rimraf dist && yarn watch",
+		"quick": "rimraf dist && rimraf node_modules && yarn && yarn build && node ."
 	},
 	"keywords": [
 		"bad",
