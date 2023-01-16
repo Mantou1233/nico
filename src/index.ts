@@ -6,6 +6,8 @@ import "discord.js";
 import "@services/djsAddition";
 
 import * as Discord from "discord.js";
+
+import { Client as Hypixel } from "hypixel-api-reborn";
 import {
 	Client,
 	GatewayIntentBits,
@@ -38,11 +40,12 @@ disableValidators();
 		}
 	});
 
+	let hypixel = new Hypixel(process.env.HYPIXEL_API_KEY!);
 	let db = new Database(process.env.MONGO!);
 	await db.connect();
 	if (process.env.MONGO_TABLE) {
 		db = new db.table(process.env.MONGO_TABLE);
 	}
-	globalThis.storage = { client, db };
+	globalThis.storage = { client, db, hypixel };
 	require("./main.js");
 })();

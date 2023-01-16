@@ -7,6 +7,7 @@ import { Client, Interaction } from "discord.js";
 import { Database } from "quickmongo";
 import { Ap } from "./services/ap";
 import { I18n } from "./services/i18n";
+import { Client as Hypixel } from "hypixel-api-reborn";
 
 declare global {
 	var i18n: I18n;
@@ -14,6 +15,7 @@ declare global {
 	var storage: {
 		client: Client;
 		db: Database;
+		hypixel: Hypixel;
 	};
 	var ap: Ap;
 }
