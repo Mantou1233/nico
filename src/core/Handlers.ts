@@ -1,17 +1,49 @@
-import { Client, Collection, Interaction, Message } from "discord.js";
+import {
+	Client,
+	Collection,
+	EmbedBuilder,
+	Interaction,
+	Message
+} from "discord.js";
 import ms from "ms";
 import { MessageCommand } from "./structure/Types";
 import { flagParser } from "@services/ap";
 import Parsers from "@services/parsers";
 import { UserProfile, GuildProfile } from "./Profile";
+import NanaApi from "@lordzagreus/nana-api-cf";
+const nana = new NanaApi();
 
 const Cooldown = new Collection<string, number>();
 const client: Client = storage.client;
 
 let prefix: string;
 
+async function idkTbh(msg: Message) {
+	if (msg.channelId !== "981378087646285864") return false;
+	const match = /#[0-9]{1,6}/.exec(msg.content);
+	if (!match) return false;
+	const n = parseInt(match[0].slice(1));
+	const rst = await nana.g(n);
+	if (!rst) return false;
+	else {
+		msg.reply({
+			embeds: [
+				new EmbedBuilder().setTitle(rst.title.pretty).setDescription(
+					`page: ${rst.num_pages}\ntags: ${rst.tags
+						.filter(v => v.type == "tag")
+						.map(v => `\`${v.name}\``)
+						.join(",")}`
+				)
+			]
+		});
+		return true;
+	}
+	return false;
+}
+
 async function CommandHandler(msg: Message) {
 	if (msg.author.bot) return;
+	if (await idkTbh(msg)) return;
 
 	const p = await UserProfile(msg);
 	await p.checkAndUpdate();
