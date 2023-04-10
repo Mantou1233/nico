@@ -3,13 +3,13 @@ import { Client } from "discord.js";
 import fg from "fast-glob";
 import { Registries } from "./../services/Registries";
 const outpath = "../../";
-export const log = (times: number, message: string): void =>
-	console.log(`${"  ".repeat(times)}-> ${message}`);
+
 class PluginLoader {
 	client: Client;
 	ready: boolean;
 	loadedList: string[];
 	loadedNames: string[];
+	__tmp_loadedCogs: string[] = [];
 	loadArgs: any;
 	constructor(client: Client) {
 		this.client = client;
@@ -24,11 +24,10 @@ class PluginLoader {
 			.filter(e => e.includes("dist"));
 
 		log(
-			0,
 			`fetched ${plugins.length} plugin${plugins.length > 1 ? "s" : ""}!`
 		);
 
-		log(1, "Loading plugin...");
+		log("Loading plugin...");
 		for (const plugin of plugins) {
 			let pluginName = plugin
 				.replace(path, "")
@@ -38,7 +37,7 @@ class PluginLoader {
 			try {
 				temp = require(`${outpath}${plugin}.plugin.json`);
 			} catch (e) {
-				log(3, `Loading config ${pluginName} fail: ${e.message}`);
+				log(`Loading config of ${pluginName} fail: ${e.message}`);
 				continue;
 			}
 			pluginName = temp.name;
@@ -54,18 +53,21 @@ class PluginLoader {
 			);
 			entry = typeof entry == "function" ? entry : entry.default;
 
-			await Registries["Loaders"][temp.vl || 2](entry, {
+			const cogs = await Registries["Loaders"][temp.vl || 2](entry, {
 				name: pluginName,
 				path: plugin,
 				client: this.client
 			});
 
-			log(2, `Loaded plugin ${pluginName}!`);
+			log(
+				`loaded plugin ${pluginName}!${
+					cogs !== -1 && cogs?.length >= 1
+						? ` also loaded ${cogs.length} cogs: ${cogs.join(",")}`
+						: ""
+				}`
+			);
 			continue;
 		}
-
-		log(1, "Plugin loaded!");
-		log(0, "Bot started!");
 		this.ready = true;
 	}
 	async expo() {

@@ -106,7 +106,7 @@ class BasicPlugin {
 		response.reply(
 			`woo, ${response.fields.getTextInputValue(
 				"name"
-			)}, you poem is ${response.fields.getTextInputValue("desc")}`
+			)}, hi! <> > ${response.fields.getTextInputValue("desc")}`
 		);
 	}
 }

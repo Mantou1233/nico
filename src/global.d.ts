@@ -7,6 +7,7 @@ import { Client, Interaction } from "discord.js";
 import { Database } from "quickmongo";
 import { TAp } from "./services/ap";
 import { TI18n } from "./services/i18n";
+import { logTypes } from "./services/logger";
 
 declare global {
 	var i18n: TI18n;
@@ -16,6 +17,18 @@ declare global {
 		db: Database;
 	};
 	var ap: TAp;
+
+	var log: (...args: any[]) => void;
+	var info: (...args: any[]) => void;
+	var success: (...args: any[]) => void;
+	var debug: (...args: any[]) => void;
+	var error: (...args: any[]) => void;
+	var warn: (...args: any[]) => void;
+	var event: (...args: any[]) => void;
+	var logger: {
+		(type: keyof typeof logTypes, ...args: any[]): void;
+		writeLog: (content: any, date?: any) => void;
+	};
 }
 
 declare module "discord.js" {

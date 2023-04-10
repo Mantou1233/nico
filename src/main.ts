@@ -30,29 +30,27 @@ async function main() {
 }
 main();
 async function botMain(client: Client) {
-	console.log(`[miraicle] DiscordJS logged in as ${client.user?.tag}!`);
+	success(`logged in as ${client.user?.tag}!`);
 	try {
 		// Load Plugins
 		let _tmp = Date.now();
 		await db.add("sys:time", 1);
-		console.log(
-			`connected to mongo! DB ping: ${require("ms")(Date.now() - _tmp)}`
-		);
+		info(`connected to database! database ping: ${Date.now() - _tmp} ms`);
 		const loader = new PluginLoader(client);
 		client.loader = loader;
 		client.manager = new Manager(client);
 		await loader.load();
 
-		console.log("-> miraicle has started!");
-		console.log(
-			`-> watching ${client.guilds.cache.size} Servers, ${
+		success("loaded all plugins!");
+		info(
+			`watching ${client.guilds.cache.size} Servers, ${
 				client.channels.cache.size
 			} channels & ${client.guilds.cache.reduce(
 				(users, value) => users + value.memberCount,
 				0
 			)} users`
 		);
-		const botPresence = "{server} Servers | +help";
+		const botPresence = "{server} Servers | {prefix}help";
 
 		const active = botPresence
 			.replace(/{server}/g, `${client.guilds.cache.size}`)
@@ -63,7 +61,7 @@ async function botMain(client: Client) {
 					(users, value) => users + value.memberCount,
 					0
 				)}`
-			);
+			).replace(/{prefix}/g, process.env.PREFIX || "+");
 
 		client.user!.setPresence({
 			activities: [{ name: active, type: ActivityType.Watching }]

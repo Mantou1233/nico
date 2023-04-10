@@ -6,7 +6,6 @@ import {
 } from "@core/structure/Types";
 import md from "./Reflector";
 import { _handleCogs, _handleInjector } from "~/core/Decorators";
-import { log } from "~/core/PluginLoader";
 
 export namespace Registries {
 	export type MetadataMap = {
@@ -48,12 +47,15 @@ export namespace Registries {
 			{
 				name,
 				path,
-				isCog = false
-			}: { name: string; path: string; isCog: boolean }
-		) {
+				cog = false
+			}: { name: string; path: string; cog: boolean }
+		): string[] | -1 /* loaded cogs */ {
+			let cogs;
 			const meta = md.get(plugin, "PluginMeta");
-			const inst = _handleInjector(new plugin());
-			if (!isCog) _handleCogs(inst, path, name);
+			if (!meta) throw new Error("Plugin is not a plugin!");
+			const inst = new plugin();
+			_handleInjector(inst);
+			if (!cog) cogs = _handleCogs(inst, path, name);
 			const handlers: {
 				[K in keyof Events]?: EventMeta<K>[];
 			} = {};
@@ -79,15 +81,20 @@ export namespace Registries {
 				});
 			}
 			if (!meta)
-				return console.log(`${name} isnt a vaild plugin, rejecting.`);
+				return (
+					void console.log(
+						`${name} isnt a vaild plugin, rejecting.`
+					) ?? -1
+				);
 			(Object.values(handlers) as unknown as EventMeta[]).map((pr: any) =>
 				pr.map(pr =>
 					storage.client.manager.register({
 						...pr,
-						handler: pr.handler.bind(inst)
+						handler: pr.handler
 					})
 				)
 			);
+			return cogs;
 		}
 	};
 }

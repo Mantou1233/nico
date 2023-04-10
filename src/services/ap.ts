@@ -35,6 +35,42 @@ export function flagParser(args, options) {
 	return flags;
 }
 
+export function emojiParser(pr: string) {
+	const emojis: {
+		animated: boolean;
+		name: string;
+		id: string;
+		url: string;
+		display: string;
+	}[] = [];
+	pr.replace(
+		/<(?<animated>a)?:(?<name>\w{2,32}):(?<id>\d{17,20})>/g,
+		(
+			display,
+			_1,
+			_2,
+			_3,
+			_4,
+			_5,
+			group: {
+				animated: "a" | undefined;
+				name: string;
+				id: string;
+			}
+		) =>
+			void emojis.push({
+				...group,
+				animated: Boolean(group.animated ?? false),
+				// prettier-ignore
+				url: `https://cdn.discordapp.com/emojis/${group.id}.${Boolean(group.animated ?? false) ? "gif" : "png"}`,
+
+				// prettier-ignore
+				display
+			}) ?? display
+	);
+	return emojis;
+}
+
 const __ap = argumentParser.bind(null) as TAp;
 __ap.old = oldAP.bind(null);
 

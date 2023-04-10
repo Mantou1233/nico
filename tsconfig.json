@@ -109,5 +109,5 @@
 			"@core/*": ["./src/core/*"]
 		}
 	},
-	"include": ["src/**/*", "src/**/.plugin.json", "src/services/Reflector.ts"]
+	"include": ["src/**/*", "src/**/.plugin.json", "src/**/*.json"]
 }

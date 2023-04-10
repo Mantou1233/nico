@@ -11,6 +11,9 @@
     "[json]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
+    "[log]": {
+        "editor.largeFileOptimizations": false
+    },
     "git.ignoreLimitWarning": true,
     "editor.formatOnSave": true,
     "search.exclude": {

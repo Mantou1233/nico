@@ -6,6 +6,7 @@ package-lock.json
 # enviroments
 .env
 config.json
+ascent.json
 
 # debug
 arc/
@@ -13,3 +14,5 @@ arc/
 #
 public/
 dist/
+
+wip/

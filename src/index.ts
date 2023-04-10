@@ -14,6 +14,8 @@ import {
 
 disableValidators();
 
+import * as Loggers from "./services/logger";
+
 import { Database } from "quickmongo";
 
 process.on("unhandledRejection", (reason, promise) => {
@@ -24,6 +26,10 @@ process.on("unhandledRejection", (reason, promise) => {
 process.on("uncaughtException", (err, origin) => {
 	console.log(err);
 });
+
+for (let [name, logger] of Object.entries(Loggers)) {
+	globalThis[name] = logger;
+}
 
 (async () => {
 	const client = new Client({

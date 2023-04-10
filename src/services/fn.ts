@@ -17,4 +17,9 @@ const memo =
 		return (memo[arg] = fn(arg));
 	};
 
-export { curry, memo, range };
+const lazy = <T>(cb: () => T): (() => T) => {
+	let lastVal;
+	return () => lastVal ?? (lastVal = cb());
+};
+
+export { curry, memo, range, lazy };

@@ -70,17 +70,24 @@ const md = function md(key: keyof any, value) {
 
 Object.assign(md, {
 	get(obj, key: keyof any, prop?: keyof any) {
-		return Reflect.getMetadata(key, obj, ...([prop] as [string]));
+		return (
+			Reflect.getMetadata(key, obj, ...([prop] as [string])) ??
+			Reflect.getMetadata(
+				key,
+				Object.getPrototypeOf(obj) || {},
+				...([prop] as [string])
+			)
+		);
 	},
 	set(obj, key: keyof any, value, prop?: keyof any) {
 		return Reflect.defineMetadata(key, value, obj, ...([prop] as [string]));
 	},
 	append(obj, key: keyof any, value, prop?: keyof any) {
-		const arr =
+		const origin =
 			Reflect.getMetadata(key, obj, ...([prop] as [string])) ?? [];
-		if (!Array.isArray(arr)) throw new Error("obj origin not a array");
-		arr.push(value);
-		return Reflect.defineMetadata(key, arr, obj);
+		if (!Array.isArray(origin)) throw new Error("obj origin not a array");
+		origin.push(value);
+		return Reflect.defineMetadata(key, origin, obj);
 	},
 	appendMap(
 		obj,
@@ -89,11 +96,11 @@ Object.assign(md, {
 		value: any,
 		prop?: keyof any
 	) {
-		const arr =
+		const origin =
 			Reflect.getMetadata(key, obj, ...([prop] as [string])) ?? {};
-		if (!isObj(arr)) throw new Error("obj origin not a object");
-		arr[key2] = value;
-		return Reflect.defineMetadata(key, arr, obj);
+		if (!isObj(origin)) throw new Error("obj origin not a object");
+		origin[key2] = value;
+		return Reflect.defineMetadata(key, origin, obj);
 	},
 	delete(obj, key: keyof any, prop?: keyof any) {
 		return Reflect.deleteMetadata(key, obj, ...([prop] as [string]));

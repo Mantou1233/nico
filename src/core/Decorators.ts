@@ -1,10 +1,9 @@
 import { i18n } from "./../services/i18n";
 import md from "@services/Reflector";
-import { EventMeta, Events, PluginMeta, RawEventMeta } from "./structure/Types";
-import path from "path";
-import { log } from "./PluginLoader";
+import { PluginMeta, RawEventMeta } from "./structure/Types";
 import { Registries } from "~/services/Registries";
 import { Message } from "discord.js";
+
 function DefinePlugin(meta: PluginMeta = {}) {
 	return function PluginPatcher<T extends { new (...args: any[]): {} }>(
 		plugin: T
@@ -66,11 +65,11 @@ function argumentPutDecoratorMixin(transformer: (...args) => any) {
 			const obj = md.get(target, "PluginDecArgs") || {};
 			const arr = obj[key] || [
 				{
-					transformer: (or, ext) => or,
+					transformer: (origin, _ext) => origin,
 					args: []
 				},
 				{
-					transformer: (or, ext) => ext,
+					transformer: (_origin, ext) => ext,
 					args: []
 				}
 			];
@@ -94,8 +93,9 @@ function _handleInjector(inst) {
 }
 
 function _handleCogs(inst, _path, name) {
+	const loadedCogs: string[] = [];
 	const _cogs = md.get(inst, "PluginCogs");
-	if (!_cogs) return;
+	if (!_cogs) return [];
 	for (let c of _cogs) {
 		let entry;
 		try {
@@ -104,7 +104,9 @@ function _handleCogs(inst, _path, name) {
 				.replace(".js", "")
 				.replace("./", "")}`);
 		} catch (e) {
-			return log(2, `Cog ${c} of ${name} fail: not a entry`);
+			return log(
+				`cog [${c}] from ${name} failed to load, no entry point found, rejecting...`
+			);
 		}
 
 		entry = typeof entry == "function" ? entry : entry.default;
@@ -112,14 +114,15 @@ function _handleCogs(inst, _path, name) {
 		Registries["Loaders"][2](entry, {
 			name: `${name}_Cog`,
 			path: _path,
-			isCog: true
+			cog: true
 		});
-		log(4, `Loaded cog ${c} of ${name}`);
+		loadedCogs.push(c);
 	}
+	return loadedCogs;
 }
 
 const Msg = argumentPutDecoratorMixin((msg: Message) => msg);
-const Args = argumentPutDecoratorMixin((msg: Message, ext, parser) =>
+const Args = argumentPutDecoratorMixin((msg: Message, ext, parser = ap) =>
 	parser(msg.content)
 );
 const Ext = argumentPutDecoratorMixin((msg: Message, ext) => ext);
