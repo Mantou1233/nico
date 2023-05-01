@@ -14,4 +14,7 @@ interface GuildSchema {
 	ducks: number;
 }
 
-export { UserSchema, GuildSchema };
+export {
+	UserSchema,
+	GuildSchema
+};

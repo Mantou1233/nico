@@ -30,19 +30,19 @@ async function main() {
 }
 main();
 async function botMain(client: Client) {
-	success(`logged in as ${client.user?.tag}!`);
+	logger.success(`logged in as ${client.user?.tag}!`);
 	try {
 		// Load Plugins
 		let _tmp = Date.now();
 		await db.add("sys:time", 1);
-		info(`connected to database! database ping: ${Date.now() - _tmp} ms`);
+		logger.info(`connected to database! database ping: ${Date.now() - _tmp} ms`);
 		const loader = new PluginLoader(client);
 		client.loader = loader;
 		client.manager = new Manager(client);
 		await loader.load();
 
-		success("loaded all plugins!");
-		info(
+		logger.success("loaded all plugins!");
+		logger.info(
 			`watching ${client.guilds.cache.size} Servers, ${
 				client.channels.cache.size
 			} channels & ${client.guilds.cache.reduce(

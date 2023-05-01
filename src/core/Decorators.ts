@@ -104,9 +104,9 @@ function _handleCogs(inst, _path, name) {
 				.replace(".js", "")
 				.replace("./", "")}`);
 		} catch (e) {
-			return log(
-				`cog [${c}] from ${name} failed to load, no entry point found, rejecting...`
-			);
+			return {
+				error: `cog [${c}] from ${name} failed to load, no entry point found, rejecting...`
+			}
 		}
 
 		entry = typeof entry == "function" ? entry : entry.default;

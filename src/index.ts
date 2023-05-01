@@ -12,11 +12,13 @@ import {
 	disableValidators
 } from "discord.js";
 
-disableValidators();
-
-import * as Loggers from "./services/logger";
+import {
+	createLogger
+} from "./services/logger";
 
 import { Database } from "quickmongo";
+
+disableValidators();
 
 process.on("unhandledRejection", (reason, promise) => {
 	console.log("Unhandled Rejection at:", promise, "reason:", reason);
@@ -27,9 +29,9 @@ process.on("uncaughtException", (err, origin) => {
 	console.log(err);
 });
 
-for (let [name, logger] of Object.entries(Loggers)) {
-	globalThis[name] = logger;
-}
+const logger = createLogger("nico");
+
+globalThis.logger = logger as any;
 
 (async () => {
 	const client = new Client({

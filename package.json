@@ -33,7 +33,8 @@
 		"fast-glob": "^3.2.12",
 		"quickmongo": "^5.2.0",
 		"reflect-metadata": "^0.1.13",
-		"source-map-js": "^1.0.2"
+		"source-map-js": "^1.0.2",
+		"tsx": "^3.12.6"
 	},
 	"devDependencies": {
 		"@types/axios": "^0.14.0",
@@ -43,6 +44,7 @@
 		"nodemon": "^2.0.13",
 		"resolve-tspaths": "^0.8.3",
 		"rimraf": "^4.0.7",
+		"three.js": "^0.77.1",
 		"ts-node": "^10.9.1",
 		"tsc-watch": "^5.0.3",
 		"typescript": "^5.0.0-dev.20221102"

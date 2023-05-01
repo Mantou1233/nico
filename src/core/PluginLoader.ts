@@ -23,11 +23,11 @@ class PluginLoader {
 			.map(e => e.replace(".plugin.json", ""))
 			.filter(e => e.includes("dist"));
 
-		log(
+		logger.log(
 			`fetched ${plugins.length} plugin${plugins.length > 1 ? "s" : ""}!`
 		);
 
-		log("Loading plugin...");
+		logger.log("Loading plugin...");
 		for (const plugin of plugins) {
 			let pluginName = plugin
 				.replace(path, "")
@@ -37,7 +37,7 @@ class PluginLoader {
 			try {
 				temp = require(`${outpath}${plugin}.plugin.json`);
 			} catch (e) {
-				log(`Loading config of ${pluginName} fail: ${e.message}`);
+				logger.log(`Loading config of ${pluginName} fail: ${e.message}`);
 				continue;
 			}
 			pluginName = temp.name;
@@ -59,10 +59,10 @@ class PluginLoader {
 				client: this.client
 			});
 
-			log(
+			logger.log(
 				`loaded plugin ${pluginName}!${
 					cogs !== -1 && cogs?.length >= 1
-						? ` also loaded ${cogs.length} cogs: ${cogs.join(",")}`
+						? ` also loaded ${cogs.length} cog${cogs.length > 1 ? "s" : ""}: ${cogs.join(",")}`
 						: ""
 				}`
 			);

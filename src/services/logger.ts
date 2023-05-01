@@ -1,10 +1,10 @@
-import fs, { write } from "fs";
+import fs from "fs";
 import { SourceMapConsumer } from "source-map-js";
 import { inspect } from "util";
 
 // you should not call the logs in this function or it will omit it!
 
-const logTypes = {
+const logColors = {
 	log: "\x1b[38;5;15m",
 	info: "\x1b[38;5;214m",
 	success: "\x1b[38;5;10m",
@@ -28,49 +28,48 @@ type Traceable = {
 	column: number | null;
 };
 
-export const logger = function (type: keyof typeof logTypes, ...args) {
-	let text = "";
-	for (let arg of args) {
-		if (text !== "") text += " ";
-		if (typeof arg !== "object") text += arg;
-		else {
-			text += inspect(arg, {
-				depth: 2,
-				colors: false
-			});
+export type logTypes = keyof typeof logColors;
+
+export function createLogger(name: string) {
+	function logger(type: keyof typeof logColors, ...args: any[]) {
+		let text = "";
+		for (let arg of args) {
+			if (text !== "") text += " ";
+			if (typeof arg !== "object") text += arg;
+			else {
+				text += inspect(arg, {
+					depth: 2,
+					colors: false
+				});
+			}
 		}
-	}
-	if (!Object.keys(logTypes).includes(type.toLowerCase()))
-		throw new Error("invaild type.");
+		if (!Object.keys(logColors).includes(type.toLowerCase())) throw new Error("invaild type.");
 
-	const [time, date] = getDates();
-	const file = getTSTrace(getFileTrace());
-	console.log(
-		`${extraColors.timestamp}[${time}]${extraColors.reset} - ${
-			extraColors.logType
-		}[${type}]${extraColors.reset} ~ ${extraColors.fileName}[${file
-			.filename!.split(/[\\/]/)
-			.pop()}]${extraColors.reset} ${logTypes[type]}${text}${
-			extraColors.reset
-		}`
-	);
-	writeLog(
-		`[${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`,
-		date
-	);
-};
-
-function writeLog(content, date = getDates()[1]) {
-	if (!fs.existsSync("./logs")) {
-		fs.mkdirSync("./logs");
+		const [time, date] = getDates();
+		const file = getTSTrace(getFileTrace());
+		console.log(
+			`${extraColors.logType}(${name})${extraColors.reset} ${extraColors.timestamp}[${time}]${extraColors.reset} - ${extraColors.logType}[${type}]${
+				extraColors.reset
+			} ~ ${extraColors.fileName}[${file.filename!.split(/[\\/]/).pop()}]${extraColors.reset} ${logColors[type]}${text}${extraColors.reset}`
+		);
+		writeLog(`(${name}) [${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`, date);
 	}
-	fs.writeFileSync(`./logs/${date}.log`, content, { flag: "a+" });
+	function writeLog(content: string, date = getDates()[1]) {
+		if (!fs.existsSync("./logs")) {
+			fs.mkdirSync("./logs");
+		}
+		fs.writeFileSync(`./logs/${date}.log`, content, { flag: "a+" });
+	}
+	logger.writeLog = writeLog;
+	for (let key of Object.keys(logColors) as (keyof typeof logColors)[]) {
+		logger[key] = logger.bind(null, key);
+	}
+	return logger;
 }
-logger.writeLog = writeLog;
 
 function getFileTrace(): Traceable {
 	let _pst = Error.prepareStackTrace;
-	Error.prepareStackTrace = function (err, stack) {
+	Error.prepareStackTrace = function (_err, stack) {
 		return stack;
 	};
 	const err = new Error();
@@ -100,8 +99,7 @@ function getFileTrace(): Traceable {
 }
 
 function getTSTrace(file: Traceable): Traceable {
-	if (!file.line || !file.column || file.filename == "?.js" || !file.filename)
-		return file;
+	if (!file.line || !file.column || file.filename == "?.js" || !file.filename) return file;
 	if (fs.existsSync(`${file.filename}.map`)) {
 		let result;
 		try {
@@ -111,17 +109,13 @@ function getTSTrace(file: Traceable): Traceable {
 				})
 			);
 
-			const originPos = new SourceMapConsumer(result).originalPositionFor(
-				{
-					line: file.line,
-					column: file.column
-				}
-			);
+			const originPos = new SourceMapConsumer(result).originalPositionFor({
+				line: file.line,
+				column: file.column
+			});
 
 			return {
-				filename: `${
-					file.filename?.split("/dist")[0]
-				}/${originPos.source.replaceAll("../", "")}`,
+				filename: `${file.filename?.split("/dist")[0]}/${originPos.source.replaceAll("../", "")}`,
 				line: originPos.line,
 				column: originPos.column
 			};
@@ -134,20 +128,6 @@ function getTSTrace(file: Traceable): Traceable {
 function getDates(date: Date = new Date()) {
 	return [
 		date.toISOString().replace("T", " ").replace("Z", "").split(".")[0],
-		`${date.getDay().toString().padStart(2, "0")}-${date
-			.getMonth()
-			.toString()
-			.padStart(2, "0")}-${date
-			.getFullYear()
-			.toString()
-			.replace("20", "")}`
+		`${date.getDay().toString().padStart(2, "0")}-${date.getMonth().toString().padStart(2, "0")}-${date.getFullYear().toString().replace("20", "")}`
 	];
 }
-
-export const log = (...args) => logger("log", ...args);
-export const info = (...args) => logger("info", ...args);
-export const success = (...args) => logger("success", ...args);
-export const error = (...args) => logger("error", ...args);
-export const warn = (...args) => logger("warn", ...args);
-export const event = (...args) => logger("event", ...args);
-export const debug = (...args) => logger("debug", ...args);

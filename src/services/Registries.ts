@@ -38,8 +38,8 @@ export namespace Registries {
 			try {
 				await entry(client, client.manager);
 			} catch (e) {
-				console.log(e);
-				log(3, `Launching plugin ${name} fail: ${e.message}`);
+				logger.error(e);
+				logger.log(3, `Launching plugin ${name} fail: ${e.message}`);
 			}
 		},
 		2: function loader(
@@ -55,7 +55,14 @@ export namespace Registries {
 			if (!meta) throw new Error("Plugin is not a plugin!");
 			const inst = new plugin();
 			_handleInjector(inst);
-			if (!cog) cogs = _handleCogs(inst, path, name);
+			if (!cog) {
+				let _cog = _handleCogs(inst, path, name)
+				if((_cog as any).error) {
+					logger.error((_cog as any).error)
+					_cog = [];
+				}
+				cogs = _cog;
+			}
 			const handlers: {
 				[K in keyof Events]?: EventMeta<K>[];
 			} = {};
