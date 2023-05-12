@@ -53,7 +53,7 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 
 	if (opt.length) {
 		let i = 0;
-		for (let ot of opt) str = str.replace("%s", `${ot}`).replaceAll(`%${i++}`, `${ot}`);;
+		for (let ot of opt) str = str.replace("%s", `${ot}`).replaceAll(`%${i++}`, `${ot}`);
 	}
 	
 	str = str.replaceAll("%\\", "%").replaceAll("<\\", "<").replaceAll("\\>", ">")

@@ -1,0 +1,11 @@
+[2023-05-08 12:21:44] - [success] ~ /home/xi/nico/src/main.ts:33:8 > logged in as nico!#4729!
+[2023-05-08 12:21:44] - [info] ~ /home/xi/nico/src/main.ts:38:9 > connected to database! database ping: 112 ms
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:26:9 > fetched 5 plugins!
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:30:9 > Loading plugin...
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:62:10 > loaded plugin _old_basic!
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:62:10 > loaded plugin economy!
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:62:10 > loaded plugin basic!
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:62:10 > loaded plugin minecraft!
+[2023-05-08 12:21:44] - [log] ~ /home/xi/nico/src/core/PluginLoader.ts:62:10 > loaded plugin testify! also loaded 1 cog: ./cogs1.ts
+[2023-05-08 12:21:44] - [success] ~ /home/xi/nico/src/main.ts:44:9 > loaded all plugins!
+[2023-05-08 12:21:44] - [info] ~ /home/xi/nico/src/main.ts:45:9 > watching 10 Servers, 406 channels & 17768 users

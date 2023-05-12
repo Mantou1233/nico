@@ -30,7 +30,7 @@ type Traceable = {
 
 export type logTypes = keyof typeof logColors;
 
-export function createLogger(name: string) {
+export function createLogger() {
 	function logger(type: keyof typeof logColors, ...args: any[]) {
 		let text = "";
 		for (let arg of args) {
@@ -48,11 +48,11 @@ export function createLogger(name: string) {
 		const [time, date] = getDates();
 		const file = getTSTrace(getFileTrace());
 		console.log(
-			`${extraColors.logType}(${name})${extraColors.reset} ${extraColors.timestamp}[${time}]${extraColors.reset} - ${extraColors.logType}[${type}]${
+			`${extraColors.timestamp}[${time}]${extraColors.reset} - ${extraColors.logType}[${type}]${
 				extraColors.reset
 			} ~ ${extraColors.fileName}[${file.filename!.split(/[\\/]/).pop()}]${extraColors.reset} ${logColors[type]}${text}${extraColors.reset}`
 		);
-		writeLog(`(${name}) [${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`, date);
+		writeLog(`[${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`, date);
 	}
 	function writeLog(content: string, date = getDates()[1]) {
 		if (!fs.existsSync("./logs")) {
@@ -79,17 +79,11 @@ function getFileTrace(): Traceable {
 		if (__filename === stack.getFileName()) {
 			continue;
 		}
-		return stack
-			? {
-					filename: stack.getFileName(),
-					line: stack.getLineNumber(),
-					column: stack.getColumnNumber()
+		return {
+					filename: stack.getFileName()!,
+					line: stack.getLineNumber()!,
+					column: stack.getColumnNumber()!
 			  }
-			: {
-					filename: "?.js",
-					line: -1,
-					column: -1
-			  };
 	}
 	return {
 		filename: "?.js",

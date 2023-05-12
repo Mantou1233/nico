@@ -29,7 +29,7 @@ process.on("uncaughtException", (err, origin) => {
 	console.log(err);
 });
 
-const logger = createLogger("nico");
+const logger = createLogger();
 
 globalThis.logger = logger as any;
 
