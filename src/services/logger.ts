@@ -45,7 +45,8 @@ export function createLogger() {
 		}
 		if (!Object.keys(logColors).includes(type.toLowerCase())) throw new Error("invaild type.");
 
-		const [time, date] = getDates();
+		const date = new Date();
+		const time = date.toTSVString();
 		const file = getTSTrace(getFileTrace());
 		console.log(
 			`${extraColors.timestamp}[${time}]${extraColors.reset} - ${extraColors.logType}[${type}]${
@@ -54,11 +55,11 @@ export function createLogger() {
 		);
 		writeLog(`[${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`, date);
 	}
-	function writeLog(content: string, date = getDates()[1]) {
+	function writeLog(content: string, date = new Date()) {
 		if (!fs.existsSync("./logs")) {
 			fs.mkdirSync("./logs");
 		}
-		fs.writeFileSync(`./logs/${date}.log`, content, { flag: "a+" });
+		fs.writeFileSync(`./logs/${date.toShortDate()}.log`, content, { flag: "a+" });
 	}
 	logger.writeLog = writeLog;
 	for (let key of Object.keys(logColors) as (keyof typeof logColors)[]) {
@@ -117,11 +118,4 @@ function getTSTrace(file: Traceable): Traceable {
 			return file;
 		}
 	} else return file;
-}
-
-function getDates(date: Date = new Date()) {
-	return [
-		date.toISOString().replace("T", " ").replace("Z", "").split(".")[0],
-		`${date.getDay().toString().padStart(2, "0")}-${date.getMonth().toString().padStart(2, "0")}-${date.getFullYear().toString().replace("20", "")}`
-	];
 }

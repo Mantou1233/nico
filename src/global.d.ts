@@ -10,6 +10,7 @@ import { TI18n } from "./services/i18n";
 import type { logTypes } from "./services/logger";
 
 declare global {
+	var __root: string;
 	var i18n: TI18n;
 	var random: (min: number, max: number) => number;
 	var storage: {
@@ -23,6 +24,11 @@ declare global {
 		(type: logTypes, ...args: any[]): void;
 		writeLog: (content: any, date?: any) => void;
 	}, keyof Function>
+
+	interface Date {
+		toTSVString(): string;
+		toShortDate(): string;
+	}
 }
 
 declare module "discord.js" {

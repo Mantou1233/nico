@@ -7,6 +7,16 @@
 import "./services/random";
 import "./services/ap";
 
+globalThis.__root = __dirname.trim();
+
+Date.prototype.toTSVString = function () {
+	return this.toISOString().replace("T", " ").replace("Z", "").split(".")[0];
+}
+
+Date.prototype.toShortDate = function () {
+	return `${this.getDay().toString().padStart(2, "0")}-${this.getMonth().toString().padStart(2, "0")}-${this.getFullYear().toString().replace("20", "")}`
+}
+
 import { ActivityType, Client } from "discord.js";
 
 import PluginLoader from "./core/PluginLoader";
