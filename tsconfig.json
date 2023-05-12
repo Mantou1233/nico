@@ -110,7 +110,6 @@
 	"include": [
 		"src/**/*",
 		"src/**/.plugin.json",
-		"src/**/*.json",
-		"src/x.ts"
+		"src/**/*.json"
 	]
 }

@@ -11,7 +11,7 @@ import Manager from "../../../core/Manager";
 
 import { langs, langAlias } from "../../../services/i18n";
 import pb from "../../../services/pb";
-import { GuildProfile, UserProfile } from "~/core/Profile";
+import { UserProfile } from "~/core/Profile";
 
 /**
  * @returns void

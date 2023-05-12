@@ -1,20 +1,16 @@
-const UserSchema = {
-	ducks: 0
-} satisfies UserSchema;
+import zod from "zod";
 
-const GuildSchema = {
-	ducks: 0,
-} satisfies GuildSchema;
-
-interface UserSchema {
-	ducks: number;
-}
-
-interface GuildSchema {
-	ducks: number;
-}
+const UserSchema = zod.object({
+	ducks: zod.number().default(0),
+	/*
+	complex example:
+    hi: zod.object({
+        a: zod.number().default(0)
+    }).default({})
+	*/
+})
+type UserSchema = zod.infer<typeof UserSchema>;
 
 export {
-	UserSchema,
-	GuildSchema
-};
+	UserSchema
+}

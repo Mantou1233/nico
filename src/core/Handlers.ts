@@ -1,7 +1,7 @@
-import { Client, Collection, Interaction, Message } from "discord.js";
+import { Client, Collection, Interaction, Message, User } from "discord.js";
 import ms from "ms";
 //import { MessageCommand } from "./structure/Types";
-import { UserProfile, GuildProfile } from "./Profile";
+import { UserProfile } from "./Profile";
 import { EventMeta } from "./structure/Types";
 import { argumentTransformer } from "~/services/args";
 
@@ -14,11 +14,7 @@ async function CommandHandler(msg: Message) {
 	if (!client.loader?.ready ?? false) return;
 	if (msg.author.bot) return;
 
-	const p = await UserProfile(msg);
-	await p.checkAndUpdate();
-
-	const g = await GuildProfile(msg);
-	await g.checkAndUpdate();
+	const p = await UserProfile(msg.author.id);
 
 	prefix = process.env.PREFIX as string;
 	msg.lang = "en";
@@ -48,8 +44,7 @@ async function CommandHandler(msg: Message) {
 			msg,
 			{
 				prefix,
-				p,
-				g
+				p
 			}
 		],
 		command as EventMeta
@@ -70,12 +65,6 @@ async function CommandHandler(msg: Message) {
 async function InteractionHandler(interaction: Interaction) {
 	if (!client.loader.ready) return;
 	if (interaction.user.bot) return;
-
-	const p = await UserProfile(interaction);
-	await p.checkAndUpdate();
-
-	const g = await GuildProfile(interaction);
-	await g.checkAndUpdate();
 
 	let handlers: any[] = [];
 	if (interaction.isButton())
