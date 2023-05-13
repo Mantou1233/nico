@@ -14,13 +14,13 @@ interface IMetaData<
 	}
 > {
 	<K extends keyof M>(key: K, value: M[K]): ReturnType<
-		typeof Reflect["metadata"]
+		(typeof Reflect)["metadata"]
 	>;
 	<K extends keyof AM>(key: K, value: AM[K]): ReturnType<
-		typeof Reflect["metadata"]
+		(typeof Reflect)["metadata"]
 	>;
 	<K extends keyof OM>(key: K, value: OM[K]): ReturnType<
-		typeof Reflect["metadata"]
+		(typeof Reflect)["metadata"]
 	>;
 	get<K extends keyof M>(obj: any, key: K, prop?: keyof any): M[K];
 	get<K extends keyof AM>(obj: any, key: K, prop?: keyof any): AM[K];

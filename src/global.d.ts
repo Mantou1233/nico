@@ -18,12 +18,15 @@ declare global {
 		db: Database;
 	};
 	var ap: TAp;
-	var logger: Omit<{
-		[K in logTypes]: (...args: any[]) => void;
-	} & {
-		(type: logTypes, ...args: any[]): void;
-		writeLog: (content: any, date?: any) => void;
-	}, keyof Function>
+	var logger: Omit<
+		{
+			[K in logTypes]: (...args: any[]) => void;
+		} & {
+			(type: logTypes, ...args: any[]): void;
+			writeLog: (content: any, date?: any) => void;
+		},
+		keyof Function
+	>;
 
 	interface Date {
 		toTSVString(): string;

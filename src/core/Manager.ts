@@ -7,7 +7,12 @@ import {
 	ModalSubmitInteraction
 } from "discord.js";
 
-import type { EventMeta, Events, RawEventMeta, UnsignedEventMeta } from "./structure/Types";
+import type {
+	EventMeta,
+	Events,
+	RawEventMeta,
+	UnsignedEventMeta
+} from "./structure/Types";
 import { Copy } from "./Utils";
 
 type ToSignature<T extends Record<string, any[]>> = {
@@ -24,9 +29,11 @@ class Manager {
 		this.client = client;
 	}
 
-	register<K extends keyof Events = "command">(ctx: UnsignedEventMeta<K>): void;
+	register<K extends keyof Events = "command">(
+		ctx: UnsignedEventMeta<K>
+	): void;
 	register(ctx): void {
-		if (ctx.__type__ == "command" || ctx.command && !ctx.__type__) {
+		if (ctx.__type__ == "command" || (ctx.command && !ctx.__type__)) {
 			delete ctx["__type__"];
 			if (this.commands.has(ctx.command))
 				throw new Error("Naming conflict!");

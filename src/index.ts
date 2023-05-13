@@ -12,9 +12,7 @@ import {
 	disableValidators
 } from "discord.js";
 
-import {
-	createLogger
-} from "./services/logger";
+import { createLogger } from "./services/logger";
 
 import { Database } from "quickmongo";
 

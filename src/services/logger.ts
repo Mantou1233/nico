@@ -43,23 +43,33 @@ export function createLogger() {
 				});
 			}
 		}
-		if (!Object.keys(logColors).includes(type.toLowerCase())) throw new Error("invaild type.");
+		if (!Object.keys(logColors).includes(type.toLowerCase()))
+			throw new Error("invaild type.");
 
 		const date = new Date();
 		const time = date.toTSVString();
 		const file = getTSTrace(getFileTrace());
 		console.log(
-			`${extraColors.timestamp}[${time}]${extraColors.reset} - ${extraColors.logType}[${type}]${
+			`${extraColors.timestamp}[${time}]${extraColors.reset} - ${
+				extraColors.logType
+			}[${type}]${extraColors.reset} ~ ${extraColors.fileName}[${file
+				.filename!.split(/[\\/]/)
+				.pop()}]${extraColors.reset} ${logColors[type]}${text}${
 				extraColors.reset
-			} ~ ${extraColors.fileName}[${file.filename!.split(/[\\/]/).pop()}]${extraColors.reset} ${logColors[type]}${text}${extraColors.reset}`
+			}`
 		);
-		writeLog(`[${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`, date);
+		writeLog(
+			`[${time}] - [${type}] ~ ${file.filename}:${file.line}:${file.column} > ${text}\n`,
+			date
+		);
 	}
 	function writeLog(content: string, date = new Date()) {
 		if (!fs.existsSync("./logs")) {
 			fs.mkdirSync("./logs");
 		}
-		fs.writeFileSync(`./logs/${date.toShortDate()}.log`, content, { flag: "a+" });
+		fs.writeFileSync(`./logs/${date.toShortDate()}.log`, content, {
+			flag: "a+"
+		});
 	}
 	logger.writeLog = writeLog;
 	for (let key of Object.keys(logColors) as (keyof typeof logColors)[]) {
@@ -81,10 +91,10 @@ function getFileTrace(): Traceable {
 			continue;
 		}
 		return {
-					filename: stack.getFileName()!,
-					line: stack.getLineNumber()!,
-					column: stack.getColumnNumber()!
-			  }
+			filename: stack.getFileName()!,
+			line: stack.getLineNumber()!,
+			column: stack.getColumnNumber()!
+		};
 	}
 	return {
 		filename: "?.js",
@@ -94,7 +104,8 @@ function getFileTrace(): Traceable {
 }
 
 function getTSTrace(file: Traceable): Traceable {
-	if (!file.line || !file.column || file.filename == "?.js" || !file.filename) return file;
+	if (!file.line || !file.column || file.filename == "?.js" || !file.filename)
+		return file;
 	if (fs.existsSync(`${file.filename}.map`)) {
 		let result;
 		try {
@@ -104,13 +115,17 @@ function getTSTrace(file: Traceable): Traceable {
 				})
 			);
 
-			const originPos = new SourceMapConsumer(result).originalPositionFor({
-				line: file.line,
-				column: file.column
-			});
+			const originPos = new SourceMapConsumer(result).originalPositionFor(
+				{
+					line: file.line,
+					column: file.column
+				}
+			);
 
 			return {
-				filename: `${file.filename?.split("/dist")[0]}/${originPos.source.replaceAll("../", "")}`,
+				filename: `${
+					file.filename?.split("/dist")[0]
+				}/${originPos.source.replaceAll("../", "")}`,
 				line: originPos.line,
 				column: originPos.column
 			};

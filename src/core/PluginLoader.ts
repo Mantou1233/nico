@@ -37,7 +37,9 @@ class PluginLoader {
 			try {
 				temp = require(`${outpath}${plugin}.plugin.json`);
 			} catch (e) {
-				logger.log(`Loading config of ${pluginName} fail: ${e.message}`);
+				logger.log(
+					`Loading config of ${pluginName} fail: ${e.message}`
+				);
 				continue;
 			}
 			pluginName = temp.name;
@@ -62,7 +64,9 @@ class PluginLoader {
 			logger.log(
 				`loaded plugin ${pluginName}!${
 					cogs !== -1 && cogs?.length >= 1
-						? ` also loaded ${cogs.length} cog${cogs.length > 1 ? "s" : ""}: ${cogs.join(",")}`
+						? ` also loaded ${cogs.length} cog${
+								cogs.length > 1 ? "s" : ""
+						  }: ${cogs.join(",")}`
 						: ""
 				}`
 			);

@@ -15,7 +15,7 @@ class EconomyPlugin {
 		msg.reply(
 			`db ping is ${Math.floor(await this.db.ping())}ms! u also got ${
 				p.ducks
-			} ducks gg`
+			}:`
 		);
 		p.save();
 	}

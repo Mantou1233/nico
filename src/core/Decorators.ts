@@ -106,7 +106,7 @@ function _handleCogs(inst, _path, name) {
 		} catch (e) {
 			return {
 				error: `cog [${c}] from ${name} failed to load, no entry point found, rejecting...`
-			}
+			};
 		}
 
 		entry = typeof entry == "function" ? entry : entry.default;

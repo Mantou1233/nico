@@ -16,8 +16,7 @@ export type langKeys =
 	| Exclude<AllKeysOf<KeyOfUnion<typeof langs>>, `item.${string}`>
 	| `-${string}` // any key
 	| `>${string}` // any string
-	| `--ignore` // allowance ignore input, use `tr(asdf as "--ignore")` (ONLY TYPINGS)
-	;
+	| `--ignore`; // allowance ignore input, use `tr(asdf as "--ignore")` (ONLY TYPINGS)
 
 export type langTypes = keyof typeof langs;
 
@@ -39,11 +38,11 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 		...(isObject(opt[0]) ? opt.shift() : {})
 	} as Record<string, string>;
 
-	str =
-		string.startsWith(">") ? 
-		 string.slice(1) : (langs[lang][string] ||
-			langs["en"][string] ||
-			`${string}${opt.length ? `(${opt.join(", ")})` : ""}`);
+	str = string.startsWith(">")
+		? string.slice(1)
+		: langs[lang][string] ||
+		  langs["en"][string] ||
+		  `${string}${opt.length ? `(${opt.join(", ")})` : ""}`;
 
 	if (typeof str != "string") return str;
 
@@ -53,10 +52,14 @@ function __i18n__parse(lang: string, string: langKeys, ...opt): string {
 
 	if (opt.length) {
 		let i = 0;
-		for (let ot of opt) str = str.replace("%s", `${ot}`).replaceAll(`%${i++}`, `${ot}`);
+		for (let ot of opt)
+			str = str.replace("%s", `${ot}`).replaceAll(`%${i++}`, `${ot}`);
 	}
-	
-	str = str.replaceAll("%\\", "%").replaceAll("<\\", "<").replaceAll("\\>", ">")
+
+	str = str
+		.replaceAll("%\\", "%")
+		.replaceAll("<\\", "<")
+		.replaceAll("\\>", ">");
 
 	return str;
 }

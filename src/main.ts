@@ -11,11 +11,13 @@ globalThis.__root = __dirname.trim();
 
 Date.prototype.toTSVString = function () {
 	return this.toISOString().replace("T", " ").replace("Z", "").split(".")[0];
-}
+};
 
 Date.prototype.toShortDate = function () {
-	return `${this.getDay().toString().padStart(2, "0")}-${this.getMonth().toString().padStart(2, "0")}-${this.getFullYear().toString().replace("20", "")}`
-}
+	return `${this.getDay().toString().padStart(2, "0")}-${this.getMonth()
+		.toString()
+		.padStart(2, "0")}-${this.getFullYear().toString().replace("20", "")}`;
+};
 
 import { ActivityType, Client } from "discord.js";
 
@@ -45,7 +47,9 @@ async function botMain(client: Client) {
 		// Load Plugins
 		let _tmp = Date.now();
 		await db.add("sys:time", 1);
-		logger.info(`connected to database! database ping: ${Date.now() - _tmp} ms`);
+		logger.info(
+			`connected to database! database ping: ${Date.now() - _tmp} ms`
+		);
 		const loader = new PluginLoader(client);
 		client.loader = loader;
 		client.manager = new Manager(client);
@@ -71,7 +75,8 @@ async function botMain(client: Client) {
 					(users, value) => users + value.memberCount,
 					0
 				)}`
-			).replace(/{prefix}/g, process.env.PREFIX || "+");
+			)
+			.replace(/{prefix}/g, process.env.PREFIX || "+");
 
 		client.user!.setPresence({
 			activities: [{ name: active, type: ActivityType.Watching }]

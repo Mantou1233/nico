@@ -56,9 +56,9 @@ export namespace Registries {
 			const inst = new plugin();
 			_handleInjector(inst);
 			if (!cog) {
-				let _cog = _handleCogs(inst, path, name)
-				if((_cog as any).error) {
-					logger.error((_cog as any).error)
+				let _cog = _handleCogs(inst, path, name);
+				if ((_cog as any).error) {
+					logger.error((_cog as any).error);
 					_cog = [];
 				}
 				cogs = _cog;
